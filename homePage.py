@@ -3,13 +3,15 @@ from tkinter import *
 from tkinter import *
 from PIL import Image,ImageTk
 from tkintertable import TableCanvas, TableModel
+import ctypes
 
+ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
 class HomePage:
     def __init__(self, window, Id):
         self.window = window
-        self.window.geometry("800x500+100+50")
+        self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
         self.database_frame = ImageTk.PhotoImage\
@@ -33,13 +35,13 @@ class HomePage:
             (file='images\\courses.png')
         self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
                                      cursor="hand2")
-        self.courses_button.place(x=0, y=150)
+        self.courses_button.place(x=0, y=200)
 
         self.timetable = ImageTk.PhotoImage \
             (file='images\\timetable.png')
         self.timetable_button = Button(self.window, command=self.timetable, image=self.timetable, relief=FLAT, borderwidth=0,
                                      cursor="hand2")
-        self.timetable_button.place(x=0, y=100)
+        self.timetable_button.place(x=0, y=600)
 
     def connectDB():
         pass

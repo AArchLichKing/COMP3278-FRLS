@@ -11,13 +11,17 @@ import cv2
 from faceCapture import faceCapture
 from train import train
 
+import ctypes
+
+ctypes.windll.shcore.SetProcessDpiAwareness(1)
+
 #myconn = mysql.connector.connect(host="localhost", user="root", passwd="123456", database="facerecognition")
 #cursor = myconn.cursor()
 
 class ConnectDatabase:
     def __init__(self, window):
         self.window = window
-        self.window.geometry("800x500+100+50")
+        self.window.geometry("3200x2000+100+50")
         self.window.title("HKU Student System")
         self.window.resizable(False,False)
         self.database_frame = ImageTk.PhotoImage\
@@ -30,26 +34,26 @@ class ConnectDatabase:
         self.color = ["#4f4e4d", "#f29844", "red2"]
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
-        self.heading.place(x=100, y=50, width=600)
+        self.heading.place(x=400, y=200, width=2400)
         self.slider()
         self.heading_color()
 
         self.username_label = Label(self.window, text="Username", bg="white", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
-        self.username_label.place(x=450, y=140)
+        self.username_label.place(x=1800, y=560)
 
         self.username_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
                                     font=("yu gothic ui semibold", 12))
-        self.username_entry.place(x=550, y=142, width=200)
+        self.username_entry.place(x=2200, y=568, width=800)
 
         # ==================Password Label and Entry==================
         self.password_label = Label(self.window, text="Password", bg="white", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
-        self.password_label.place(x=450, y=180)
+        self.password_label.place(x=1800, y=720)
 
         self.password_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
                                     font=("yu gothic ui semibold", 12))
-        self.password_entry.place(x=550, y=182, width=200)
+        self.password_entry.place(x=2200, y=728, width=800)
         
         def autoSignIn():
             now = time.time()  ###For calculate seconds of video
@@ -163,17 +167,17 @@ class ConnectDatabase:
                 train()
 
         self.submit = ImageTk.PhotoImage \
-            (file='images\\submit.png')
+            (file='images\\login.png')
 
         self.submit_button = Button(self.window, image=self.submit, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
-        self.submit_button.place(x=450, y=240)
+        self.submit_button.place(x=1800, y=940)
 
         self.face= ImageTk.PhotoImage \
             (file='images\\face.png')
         self.face_button = Button(self.window, command=autoSignIn, image=self.face, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
-        self.face_button.place(x=640, y=240)
+        self.face_button.place(x=2660, y=940)
         
         Notifica = tk.Label(self.window, text="", bg="Green", fg="white", width=33,
                             height=2, font=('times', 15, 'bold'))
@@ -184,7 +188,7 @@ class ConnectDatabase:
 
         self.login_button = Button(self.window,command=manuallySignIn ,image=self.login, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
-        self.login_button.place(x=450, y=340)
+        self.login_button.place(x=1800, y=1350)
 
     def slider(self):
         if self.count >= len(self.txt):
