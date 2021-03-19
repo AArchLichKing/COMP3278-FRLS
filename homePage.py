@@ -4,12 +4,14 @@ from tkinter import *
 from PIL import Image,ImageTk
 from tkintertable import TableCanvas, TableModel
 import ctypes
+import time
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
 class HomePage:
     def __init__(self, window, Id):
+        self.root = Tk()
         self.window = window
         self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
@@ -23,7 +25,6 @@ class HomePage:
         self.text = ''
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
-        self.slider()
 
 
         #self.profile = ImageTk.PhotoImage \
@@ -31,11 +32,22 @@ class HomePage:
         #self.profile_button = Button(self.window, command=profile, image=self.profile, relief=FLAT, borderwidth=0, cursor="hand2")
         #self.profile.place(x=0, y=0)
 
+        self.clabel = Label(self.window, text="Current time", bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.clabel.place(x=100, y=460)
+        self.label = Label(self.window, text="", bg="white", fg="#4f4e4d",
+                                    font=("yu gothic ui", 13, "bold"))
+        self.update_clock()
+        self.label.place(x=450, y=460)
+        """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.lastlogin.place(x=100, y=500)"""
+
         self.courses = ImageTk.PhotoImage \
             (file='images\\courses.png')
         self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
                                      cursor="hand2")
-        self.courses_button.place(x=0, y=200)
+        self.courses_button.place(x=0, y=800)
 
         self.timetable = ImageTk.PhotoImage \
             (file='images\\timetable.png')
@@ -81,6 +93,11 @@ class HomePage:
             self.heading.config(text=self.text)
         self.count += 1
         self.heading.after(100, self.slider)
+
+    def update_clock(self):
+        now = time.strftime("%H:%M:%S")
+        self.label.configure(text=now)
+        self.root.after(1000, self.update_clock)
 
 def win():
     window = Tk()
