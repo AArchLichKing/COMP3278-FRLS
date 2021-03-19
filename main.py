@@ -11,6 +11,9 @@ import cv2
 from faceCapture import faceCapture
 from train import train
 
+#myconn = mysql.connector.connect(host="localhost", user="root", passwd="123456", database="facerecognition")
+#cursor = myconn.cursor()
+
 class ConnectDatabase:
     def __init__(self, window):
         self.window = window
@@ -52,6 +55,16 @@ class ConnectDatabase:
         def autoSignIn():
             now = time.time()  ###For calculate seconds of video
             future = now + 20
+            
+            #record sign in time
+            global ts
+            global date
+            global timeStamp
+            
+            ts = time.time()
+            date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+            timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+            
             if time.time() < future:
             
                 recognizer = cv2.face.LBPHFaceRecognizer_create()  # cv2.createLBPHFaceRecognizer()
@@ -115,25 +128,37 @@ class ConnectDatabase:
             date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
             timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
             
-            #connect database
-            
             #read username from blank
+            username = self.username_entry.get()
             
-            #compare with corresponding pwd
-            
-            match = True
+            #get pwd
+            select = "SELECT pwd FROM Student WHERE username='%s'" % (username)
+            name = cursor.execute(select)
+            result = cursor.fetchall()            
+                       
+            #compare with corresponding pwd            
+            match = result == self.password_entry.get()            
             if match:
                 #open main page
                 pass
             else:
                 #generate err message
-                pass
+                e = 'Wrong pwd!'
+                Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+                Notifica.place(x=20, y=250)
 
         # ============Placing Button============
         def Register():            
             #read username from blank
+            username = self.register_username_entry.get()
+            pwd = self.register_password_entry.get()
+            
+            #capture photos of user
             faceCapture(username)
+            
             #save username, pwd to database
+            insert = '' #sql query of insert
+            cursor.execute(insert)
             
             if True:
                 #train new model with data
@@ -153,14 +178,14 @@ class ConnectDatabase:
                                     activebackground="white", cursor="hand2")
         self.face_button.place(x=640, y=240)
         
-        Notifica = tk.Label(self.window, text="Attendance filled Successfully", bg="Green", fg="white", width=33,
+        Notifica = tk.Label(self.window, text="", bg="Green", fg="white", width=33,
                             height=2, font=('times', 15, 'bold'))
 
         # ============Placing Button============
         self.login = ImageTk.PhotoImage \
             (file='images\\Register.png')
 
-        self.login_button = Button(self.window, image=self.login, relief=FLAT, borderwidth=0, background="white",
+        self.login_button = Button(self.window,command=manuallySignIn ,image=self.login, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.login_button.place(x=450, y=340)
 

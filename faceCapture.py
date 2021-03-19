@@ -4,7 +4,7 @@ import os
 def faceCapture(user_name):
     faceCascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
 
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
     # Specify the `user_name` and `NUM_IMGS` here.
     NUM_IMGS = 400
