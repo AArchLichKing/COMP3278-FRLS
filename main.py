@@ -19,7 +19,6 @@ class ConnectDatabase:
         self.window = window
         self.window.geometry("800x500+100+50")
         self.window.title("HKU Student System")
-        # self.window.iconbitmap('images/icon.ico')
         self.window.resizable(False,False)
         self.database_frame = ImageTk.PhotoImage\
             (file='images\\frame.png')
@@ -91,11 +90,11 @@ class ConnectDatabase:
                         if (conf <70):
                             #Is registered student
                             print(conf)
-                            global date
-                            global timeStamp
+                            global date1
+                            global timeStamp1
                             ts = time.time()
-                            date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
-                            timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+                            date1 = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+                            timeStamp1 = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
                             global tt
                             tt = str(Id)
                             cv2.rectangle(im, (x, y), (x + w, y + h), (0, 260, 0), 7)
@@ -147,7 +146,6 @@ class ConnectDatabase:
                 Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
                 Notifica.place(x=20, y=250)
 
-        # ============Placing Button============
         def Register():            
             #read username from blank
             username = self.register_username_entry.get()
@@ -170,10 +168,9 @@ class ConnectDatabase:
         self.submit_button = Button(self.window, image=self.submit, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.submit_button.place(x=450, y=240)
-        # ============Placing Button============
+
         self.face= ImageTk.PhotoImage \
             (file='images\\face.png')
-
         self.face_button = Button(self.window, command=autoSignIn, image=self.face, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.face_button.place(x=640, y=240)
@@ -194,7 +191,6 @@ class ConnectDatabase:
             self.count = -1
             self.text = ''
             self.heading.config(text=self.text)
-
         else:
             self.text = self.text + self.txt[self.count]
             self.heading.config(text=self.text)
@@ -212,6 +208,5 @@ def win():
     window = Tk()
     ConnectDatabase(window)
     window.mainloop()
-
 
 win()

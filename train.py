@@ -55,4 +55,4 @@ def train():
     # Train the recognizer and save the trained model.
     version = '1'
     recognizer.train(x_train, np.array(y_label))
-    recognizer.save("TrainingImageLabel\Trainner_{}.yml".format(version)
+    recognizer.save("TrainingImageLabel\Trainner_{}.yml".format(version))
