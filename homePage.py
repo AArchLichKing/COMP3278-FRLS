@@ -5,9 +5,14 @@ from PIL import Image,ImageTk
 from tkintertable import TableCanvas, TableModel
 import ctypes
 import time
+import mysql.connector
+
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
+
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="facerecognition")
+cursor = myconn.cursor()
 
 class HomePage:
     def __init__(self, window, Id):
@@ -25,7 +30,6 @@ class HomePage:
         self.text = ''
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
-
 
         #self.profile = ImageTk.PhotoImage \
         #   (file='images\\profile.png')
@@ -64,7 +68,9 @@ class HomePage:
     
     def sendEmails():
         #send emails
-        pass
+        if (False):
+            success("send emails")
+
 
     def profile(self):
         pass
@@ -99,10 +105,34 @@ class HomePage:
         self.label.configure(text=now)
         self.root.after(1000, self.update_clock)
 
+# a success window that shows "Successfully " + task each time when something completed by system
+class success:
+    def __init__(self, task, filepath):
+        self.txt = "Successfully " + task
+        self.window = Tk()
+        self.window.geometry("800x500+800+800")
+        self.window.title("success!")
+        self.window.resizable(False, False)
+        image = Image.open(filepath)
+        image = image.resize((800, 500), Image.ANTIALIAS)
+        self.database_frame = ImageTk.PhotoImage(image)
+        self.image_panel = Label(self.window, image=self.database_frame)
+        self.image_panel.pack(fill='both', expand='yes')
+        self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.msg.place(x=20, y=200)
+        self.window.mainloop()
+
 def win():
     window = Tk()
     Id = 0
     HomePage(window, Id)
     window.mainloop()
 
+#test function for success windows
+def testSuc(filepath):
+    success("send to your emails!", filepath)
+
 win()
+#file = "images\\Success\\email.png"
+#testSuc(file)
