@@ -1,9 +1,11 @@
 -- phpMyAdmin SQL Dump
 -- version 5.0.4
+
 -- https://www.phpmyadmin.net/
 --
+
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2021 at 06:44 AM
+-- Generation Time: Mar 19, 2021 at 07:42 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -18,12 +20,14 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+
 -- Database: `COMP3278`
 --
 
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Course`
 --
 
@@ -36,6 +40,7 @@ CREATE TABLE `Course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Course`
 --
 
@@ -52,6 +57,7 @@ INSERT INTO `Course` (`course_id`, `code`, `name`, `credit`, `dept_id`) VALUES
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Department`
 --
 
@@ -61,6 +67,7 @@ CREATE TABLE `Department` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Department`
 --
 
@@ -72,6 +79,7 @@ INSERT INTO `Department` (`dept_id`, `dept_name`) VALUES
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Instructor`
 --
 
@@ -85,6 +93,7 @@ CREATE TABLE `Instructor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Instructor`
 --
 
@@ -92,20 +101,21 @@ INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`,
 (1, 'Luo Ping', 'Dr.', 1, 'CB 326', ''),
 (2, 'Yu Yizhou', 'Prof.', 1, 'CB 325', 'Monday, 5:30 pm - 6:30 pm'),
 (3, 'Huang Zhiyi', 'Dr. ', 1, 'CB 423', 'Tuesday, 4:00 pm - 5:00 pm'),
-(4, 'Li Guodong', 'Dr.', 2, 'RRS 222', ''),
-(5, 'Zhang Xiaoyu', 'Miss', 2, 'RRS 114', ''),
+(4, 'Li Guodong', 'Dr.', 2, 'RRS 222', 'Friday,  2:30pm - 3:30pm'),
+(5, 'Zhang Xiaoyu', 'Miss', 2, 'RRS 114', 'None'),
 (7, 'Wu Jiannan', 'Mr', 1, 'None', 'None'),
-(8, 'Zhang Yan, Dora', 'Dr. ', 2, 'RR 304', ''),
-(9, 'Fang Yuwen', 'Miss', 2, 'RRS 112', '');
+(8, 'Zhang Yan, Dora', 'Dr. ', 2, 'RR 304', 'Friday, 1:30pm - 2:30pm'),
+(9, 'Fang Yuwen', 'Miss', 2, 'RRS 112', 'None');
 
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Material`
 --
 
 CREATE TABLE `Material` (
-  `course_id` varchar(40) NOT NULL,
+  `course_id` int NOT NULL,
   `section_id` int NOT NULL,
   `material_id` int NOT NULL,
   `name` varchar(80) NOT NULL,
@@ -113,9 +123,25 @@ CREATE TABLE `Material` (
   `link` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+
+-- Dumping data for table `Material`
+--
+
+INSERT INTO `Material` (`course_id`, `section_id`, `material_id`, `name`, `released_date`, `link`) VALUES
+(1, 1, 1, 'Lecture 2: ER model', '2021-02-01', 'https://drive.google.com/file/d/1qCF9CIfcNygJYUw3SFIJ2j6QavZxDjIp/view?usp=sharing'),
+(1, 1, 2, 'Lecture 2: ER design', '2021-02-04', 'https://drive.google.com/file/d/101XCSb-KcsF6A72l67i4WRowhSrNZGR1/view?usp=sharing'),
+(2, 1, 1, 'Lecture 6: Closest Pair', '2021-02-22', 'https://drive.google.com/file/d/14R5wo0G8VpjMJqTs0mkSeH-nTsFpqycZ/view?usp=sharing'),
+(2, 2, 1, 'Lecture 1: Divide and Conquer 1', '2021-01-25', 'https://drive.google.com/file/d/1fipkHqRjY6lqYT6BYAaFifQyKcO3rhln/view?usp=sharing'),
+(2, 2, 2, 'Lecture 2: Divide and Conquer 2', '2021-01-27', 'https://drive.google.com/file/d/1KNgR40D7ijOv51I3SBBXCu6eKSVmKYv8/view?usp=sharing'),
+(3, 1, 1, 'Assignment 1', '2021-03-05', 'https://drive.google.com/file/d/1hbLduFgCxh5LAkhXBsFXWbpOzDqfn5xX/view?usp=sharing'),
+(4, 1, 1, 'Assignment 3', '2021-03-12', 'https://drive.google.com/file/d/1mt_w27SktqDe3jkyDgzrf7vT4fi7kVyN/view?usp=sharing'),
+(6, 2, 1, 'Tutorial 1', '2021-01-26', 'https://drive.google.com/file/d/1cFsyKtkH0olpdl3fs8Et3Isw6pSgRJ_P/view?usp=sharing');
+
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Message`
 --
 
@@ -126,6 +152,7 @@ CREATE TABLE `Message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Message`
 --
 
@@ -135,6 +162,7 @@ INSERT INTO `Message` (`course_id`, `section_id`, `message`) VALUES
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Room`
 --
 
@@ -145,15 +173,19 @@ CREATE TABLE `Room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Room`
 --
 
 INSERT INTO `Room` (`building_name`, `room_number`, `capacity`) VALUES
+('CPD', 'LG.10', 50),
+('CYPP', '4', 200),
 ('online', 'online', 0);
 
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Section`
 --
 
@@ -166,6 +198,7 @@ CREATE TABLE `Section` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Section`
 --
 
@@ -183,6 +216,7 @@ INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) V
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Student`
 --
 
@@ -198,6 +232,7 @@ CREATE TABLE `Student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Student`
 --
 
@@ -207,6 +242,7 @@ INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admit
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Take`
 --
 
@@ -217,6 +253,7 @@ CREATE TABLE `Take` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Take`
 --
 
@@ -233,6 +270,7 @@ INSERT INTO `Take` (`student_id`, `course_id`, `section_id`) VALUES
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Teach`
 --
 
@@ -243,6 +281,7 @@ CREATE TABLE `Teach` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Teach`
 --
 
@@ -258,6 +297,7 @@ INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 -- --------------------------------------------------------
 
 --
+
 -- Table structure for table `Time`
 --
 
@@ -274,13 +314,14 @@ CREATE TABLE `Time` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+
 -- Dumping data for table `Time`
 --
 
 INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time`, `end_time`, `duration`, `building_name`, `room_number`) VALUES
 (1, 1, 1, 'FRI', '09:30:00', '12:20:00', '01:50:00', 'online', 'online'),
 (1, 2, 1, 'TUE', '09:30:00', '10:20:00', '00:50:00', 'online', 'online'),
-(2, 1, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 'CPD-LG', '10'),
+(2, 1, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 'CPD', 'LG.10'),
 (2, 1, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 'Online', 'Online'),
 (2, 2, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 'Online', 'Online'),
 (2, 2, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 'Online', 'Online'),
@@ -289,66 +330,87 @@ INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time
 (6, 1, 1, 'MON', '09:30:00', '12:20:00', '02:50:00', '', '');
 
 --
+
 -- Indexes for dumped tables
 --
 
 --
+
 -- Indexes for table `Course`
 --
+
 ALTER TABLE `Course`
   ADD PRIMARY KEY (`course_id`);
 
 --
+
 -- Indexes for table `Department`
 --
+
 ALTER TABLE `Department`
   ADD PRIMARY KEY (`dept_id`);
 
 --
+
 -- Indexes for table `Instructor`
 --
+
 ALTER TABLE `Instructor`
   ADD PRIMARY KEY (`instructor_id`);
 
 --
+
 -- Indexes for table `Material`
 --
+
 ALTER TABLE `Material`
   ADD PRIMARY KEY (`course_id`,`section_id`,`material_id`);
 
 --
+
 -- Indexes for table `Room`
 --
+
 ALTER TABLE `Room`
   ADD PRIMARY KEY (`building_name`,`room_number`);
 
 --
+
 -- Indexes for table `Section`
 --
+
 ALTER TABLE `Section`
   ADD PRIMARY KEY (`course_id`,`section_id`);
 
 --
+
 -- Indexes for table `Student`
 --
+
 ALTER TABLE `Student`
   ADD PRIMARY KEY (`student_id`);
 
 --
+
 -- Indexes for table `Take`
 --
+
 ALTER TABLE `Take`
   ADD PRIMARY KEY (`student_id`,`course_id`,`section_id`);
 
 --
+
 -- Indexes for table `Teach`
 --
+
 ALTER TABLE `Teach`
   ADD PRIMARY KEY (`instructor_id`,`course_id`,`section_id`);
 
 --
+
 -- Indexes for table `Time`
 --
+
 ALTER TABLE `Time`
   ADD PRIMARY KEY (`course_id`,`section_id`,`time_id`);
 COMMIT;
