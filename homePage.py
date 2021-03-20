@@ -7,6 +7,12 @@ import ctypes
 import time
 import mysql.connector
 
+import smtplib
+from email.mime.text import MIMEText
+## import packages for send_email()
+import pandas as pd
+## import packages for generateClassTable()
+
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
