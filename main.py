@@ -9,6 +9,7 @@ import os
 import random
 import cv2
 from faceCapture import faceCapture
+from homePage import HomePage
 from train import train
 
 import ctypes
@@ -54,7 +55,7 @@ class ConnectDatabase:
         self.password_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
                                     font=("yu gothic ui semibold", 12))
         self.password_entry.place(x=2200, y=728, width=800)
-        
+
         def autoSignIn():
             now = time.time()  ###For calculate seconds of video
             future = now + 20
@@ -142,8 +143,10 @@ class ConnectDatabase:
             #compare with corresponding pwd            
             match = result == self.password_entry.get()            
             if match:
-                #open main page
-                pass
+                home = Tk()
+                Id = 0
+                HomePage(home, Id)
+                home.mainloop()
             else:
                 #generate err message
                 e = 'Wrong pwd!'

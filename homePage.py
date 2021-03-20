@@ -16,7 +16,6 @@ cursor = myconn.cursor()
 
 class HomePage:
     def __init__(self, window, Id):
-        self.root = Tk()
         self.window = window
         self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
@@ -25,24 +24,27 @@ class HomePage:
             (file='images\\home.png')
         self.image_panel = Label(self.window, image=self.database_frame)
         self.image_panel.pack(fill='both', expand='yes')
-        self.txt = ""
-        self.count = 0
-        self.text = ''
+        self.txt = "home page"
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
+        self.profile = ImageTk.PhotoImage \
+            (file='images\\profile.png')
+        self.profile_button = Button(self.window, command=self.profile, image=self.profile, relief=FLAT, borderwidth=0,
+                                     cursor="hand2")
+        self.profile_button.place(x=0, y=0)
 
-        #self.profile = ImageTk.PhotoImage \
-        #   (file='images\\profile.png')
-        #self.profile_button = Button(self.window, command=profile, image=self.profile, relief=FLAT, borderwidth=0, cursor="hand2")
-        #self.profile.place(x=0, y=0)
+        self.name = "Zhang Maoqi"
+        self.clabel = Label(self.window, text= self.name, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.clabel.place(x=170, y=380)
 
         self.clabel = Label(self.window, text="Current time", bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
-        self.clabel.place(x=100, y=460)
+        self.clabel.place(x=100, y=480)
         self.label = Label(self.window, text="", bg="white", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
         self.update_clock()
-        self.label.place(x=450, y=460)
+        self.label.place(x=450, y=480)
         """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.lastlogin.place(x=100, y=500)"""
@@ -57,7 +59,16 @@ class HomePage:
             (file='images\\timetable.png')
         self.timetable_button = Button(self.window, command=self.timetable, image=self.timetable, relief=FLAT, borderwidth=0,
                                      cursor="hand2")
+
         self.timetable_button.place(x=0, y=600)
+
+        self.deadline = ImageTk.PhotoImage \
+            (file='images\\deadline.png')
+        self.deadline_button = Button(self.window, command=self.timetable, image=self.deadline, relief=FLAT,
+                                       borderwidth=0,
+                                       cursor="hand2")
+
+        self.deadline_button.place(x=0, y=1000)
 
     def connectDB():
         pass
@@ -71,7 +82,6 @@ class HomePage:
         if (False):
             success("send emails")
 
-
     def profile(self):
         pass
 
@@ -79,8 +89,17 @@ class HomePage:
         pass
 
     def courses(self):
-
-        pass
+        scrollbar = Scrollbar(self.window)
+        scrollbar.pack(side=RIGHT, fill=Y)
+        mylist = Listbox(self.window, yscrollcommand=scrollbar.set)
+        for line in range(100):
+            mylist.insert(END, "This is line number " + str(line))
+        mylist.pack(side=LEFT, fill=BOTH)
+        self.courses = ImageTk.PhotoImage \
+            (file='images\\courses.png')
+        self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
+                                     cursor="hand2")
+        self.courses_button.place(x=400, y=800)
 
     def generateClassTable():
         #generate class table
@@ -103,7 +122,8 @@ class HomePage:
     def update_clock(self):
         now = time.strftime("%H:%M:%S")
         self.label.configure(text=now)
-        self.root.after(1000, self.update_clock)
+        self.window.after(1000, self.update_clock)
+
 
 # a success window that shows "Successfully " + task each time when something completed by system
 class success:
