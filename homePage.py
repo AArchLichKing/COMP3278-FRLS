@@ -76,10 +76,27 @@ class HomePage:
         #generate latest messages
         pass 
     
-    def sendEmails():
+    def sendEmails(self, content, address):
         #send emails
-        if (False):
-            success("send emails")
+        ## set up sender's account
+        mail_host = 'smtp.163.com'
+        mail_user = 'comp3278_group2'
+        mail_pass = 'UGQEGXIPKFFLNHEQ'
+        sender = 'comp3278_group2@163.com'
+        receiver = [address]
+
+        ## set up email information
+        message = MIMEText(content,'plain','utf-8')
+        message['Subject'] = 'HKU Course Notices'
+        message['From'] = "{}".format(sender)
+        message['To'] = ",".join(receiver)
+
+        ## send email
+        smtp0bj = smtplib.SMTP_SSL(mail_host,465)
+        smtp0bj.login(mail_user,mail_pass)
+        smtp0bj.sendmail(sender,receiver,message.as_string())
+        smtp0bj.quit()
+        success("Emails sent successfully!")
 
     def profile(self):
 
@@ -97,11 +114,38 @@ class HomePage:
         self.courses_button.place(x=1000, y=800)
         self.window.mainloop()
 
-    def generateClassTable():
+    def generateClassTable(self, class_name, start_time, end_time, day):
         #generate class table
+        # class_name, start_time and end_time are lists containing each course's information
+        time_list = ["9:00-9:30","9:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
+        week_list = ['Monday','Tuesday','Wednesday','Thursday','Friday']
+        table = pd.DataFrame(index = time_list,columns = week_list)
+        for j in range(len(class_name)):
+            i_start = 0
+            i_end = 0
+            for i in range(len(table.index)):
+                start = table.index[i].split('-')[0]
+                end = table.index[i].split('-')[1]
+                if (start_time[j] == start):
+                    i_start = i
+                if (end_time[j] == end):
+                    i_end = i
+            ## locate the time range
+
+            for i in range(i_start,i_end+1):
+                table.iloc[i,day[j]] = class_name[j]
+
+        ## transformation
+        data = dict()
+        for i in range(len(time_list)):
+            data[time_list[i]] = dict()
+            data[time_list[i]]['label'] = time_list[i]
+            for j in range(len(week_list)):
+                data[time_list[i]][week_list[j]] = table.iloc[i,j]
+
         tframe = Frame(master)
         tframe.pack()
-        table = TableCanvas(tframe)
+        table = TableCanvas(tframe, data = data)
         table.show()
 
     def slider(self):
