@@ -11,13 +11,13 @@ import cv2
 from faceCapture import faceCapture
 from homePage import HomePage
 from train import train
-
+import mysql.connector
 import ctypes
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
-#myconn = mysql.connector.connect(host="localhost", user="root", passwd="123456", database="facerecognition")
-#cursor = myconn.cursor()
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="facerecognition")
+cursor = myconn.cursor()
 
 class ConnectDatabase:
     def __init__(self, window):
@@ -145,8 +145,9 @@ class ConnectDatabase:
             if match:
                 home = Tk()
                 Id = 0
-                HomePage(home, Id)
-                home.mainloop()
+                self.window.destory()
+                #HomePage(home, Id)
+                #home.mainloop()
             else:
                 #generate err message
                 e = 'Wrong pwd!'
@@ -172,7 +173,7 @@ class ConnectDatabase:
         self.submit = ImageTk.PhotoImage \
             (file='images\\login.png')
 
-        self.submit_button = Button(self.window, image=self.submit, relief=FLAT, borderwidth=0, background="white",
+        self.submit_button = Button(self.window, command = manuallySignIn, image=self.submit, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.submit_button.place(x=1800, y=940)
 

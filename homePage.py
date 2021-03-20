@@ -7,7 +7,6 @@ import ctypes
 import time
 import mysql.connector
 
-
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
@@ -83,23 +82,20 @@ class HomePage:
             success("send emails")
 
     def profile(self):
+
         pass
 
     def timetable(self):
+
         pass
 
     def courses(self):
-        scrollbar = Scrollbar(self.window)
-        scrollbar.pack(side=RIGHT, fill=Y)
-        mylist = Listbox(self.window, yscrollcommand=scrollbar.set)
-        for line in range(100):
-            mylist.insert(END, "This is line number " + str(line))
-        mylist.pack(side=LEFT, fill=BOTH)
-        self.courses = ImageTk.PhotoImage \
-            (file='images\\courses.png')
+        self.coursegrid = ImageTk.PhotoImage \
+            (file='images\\coursegrid.png')
         self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
                                      cursor="hand2")
-        self.courses_button.place(x=400, y=800)
+        self.courses_button.place(x=1000, y=800)
+        self.window.mainloop()
 
     def generateClassTable():
         #generate class table
@@ -123,7 +119,6 @@ class HomePage:
         now = time.strftime("%H:%M:%S")
         self.label.configure(text=now)
         self.window.after(1000, self.update_clock)
-
 
 # a success window that shows "Successfully " + task each time when something completed by system
 class success:
