@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import *
 import tkinter as tk
 from PIL import Image,ImageTk
+from homePage import home_win
 import random
 import datetime, time
 import os
@@ -10,6 +11,7 @@ import random
 import cv2
 from faceCapture import faceCapture
 from train import train
+import mysql.connector
 import ctypes
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
@@ -144,7 +146,9 @@ def autoSignIn():
                     cv2.rectangle(im, (x, y), (x + w, y + h), (0, 260, 0), 7)
                     cv2.putText(im, str(tt), (x + h, y), font, 1, (255, 255, 0,), 4)                        
                     #open main page according to Id, close login page
+                    Id = 1 # for testing purpose
                     self.window.destroy()
+                    home_win(Id)
                 else:
                     Id = 'Unknown'
                     tt = str(Id)
@@ -184,6 +188,8 @@ def manuallySignIn():
     if match:
         #open main page according to Id, close login page
         self.window.destroy()
+        Id = 1 # for testing purpose
+        home_win(Id)
     else:
         #generate err message
         e = 'Wrong pwd!'
