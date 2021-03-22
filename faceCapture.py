@@ -58,3 +58,6 @@ def faceCapture(user_name):
     # When everything is done, release the capture
     video_capture.release()
     cv2.destroyAllWindows()
+if __name__ == '__main__':
+  user_name = 1
+  faceCapture(user_name)
