@@ -4,9 +4,9 @@ from PIL import Image
 import cv2
 import pickle
 
-def train():
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+def train():
     image_dir = os.path.join(BASE_DIR, "data")
 
     # Load the OpenCV face recognition detector Haar
@@ -55,7 +55,7 @@ def train():
     # Train the recognizer and save the trained model.
     version = '1'
     recognizer.train(x_train, np.array(y_label))
-    recognizer.save("TrainingImageLabel\Trainner_{}.yml".format(version))
+    recognizer.save("TrainingImageLabel\Trainer_{}.yml".format(version))
 
 if __name__ == '__main__':
   train()
