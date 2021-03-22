@@ -220,7 +220,7 @@ class success:
         self.msg.place(x=20, y=200)
         self.window.mainloop()
 
-def win():
+def home_win(Id):
     window = Tk()
     Id = 0
     HomePage(window, Id)
@@ -230,6 +230,8 @@ def win():
 def testSuc(filepath):
     success("send to your emails!", filepath)
 
-win()
+if _name__ == "__main__":
+  #debuging purpose
+  home_win(1)
 #file = "images\\Success\\email.png"
 #testSuc(file)
