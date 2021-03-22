@@ -230,7 +230,7 @@ def home_win(Id):
 def testSuc(filepath):
     success("send to your emails!", filepath)
 
-if _name__ == "__main__":
+if __name__ == "__main__":
   #debuging purpose
   home_win(1)
 #file = "images\\Success\\email.png"
