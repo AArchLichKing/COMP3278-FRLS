@@ -116,7 +116,7 @@ def autoSignIn():
     
         recognizer = cv2.face.LBPHFaceRecognizer_create()  # cv2.createLBPHFaceRecognizer()
         try:
-            recognizer.read("TrainingImageLabel\Trainner.yml")
+            recognizer.read("TrainingImageLabel\Trainer.yml")
         except:
             e = 'Model not found,Please train model'
             Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
