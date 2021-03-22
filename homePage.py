@@ -21,6 +21,7 @@ cursor = myconn.cursor()
 
 class HomePage:
     def __init__(self, window, Id):
+        self.current_panel = 2
         self.window = window
         self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
@@ -75,6 +76,21 @@ class HomePage:
 
         self.deadline_button.place(x=0, y=1000)
 
+        self.deadline_button.place(x=0, y=1000)
+        if (self.current_panel == 1):
+            self.Timetable()
+        if (self.current_panel == 2):
+            self.Courses()
+
+    def Timetable(self):
+        self.deadline2 = ImageTk.PhotoImage \
+            (file='images\\deadline.png')
+        self.deadline_button2 = Button(self.window, command=self.deadline2, image=self.deadline, relief=FLAT,
+                                       borderwidth=0,
+                                       cursor="hand2")
+
+        self.deadline_button2.place(x=1000, y=1000)
+
     def connectDB():
         pass
     
@@ -111,6 +127,22 @@ class HomePage:
     def timetable(self):
 
         pass
+    def Courses(self):
+
+        coursename = "COMP3278, Section 2B, 2020"
+        coursetacher = "Teacher" + "Luo Ping"
+        self.coursegrid = ImageTk.PhotoImage \
+            (file='images\\coursegrid.png')
+        self.courses_button = Button(self.window, command=self.window.destroy, image=self.coursegrid, relief=FLAT, borderwidth=0,
+                                     cursor="hand2")
+        self.courses_button.place(x = 800, y = 600)
+        self.tlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.tlabel.place(x=800, y=600)
+        self.teacherlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.teacherlabel.place(x=800, y=700)
+
 
     def courses(self):
         self.coursegrid = ImageTk.PhotoImage \
