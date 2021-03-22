@@ -59,13 +59,13 @@ class ConnectDatabase:
         self.submit = ImageTk.PhotoImage \
             (file='images\\login.png')
 
-        self.submit_button = Button(self.window, command = manuallySignIn, image=self.submit, relief=FLAT, borderwidth=0, background="white",
+        self.submit_button = Button(self.window, command = self.manuallySignIn, image=self.submit, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.submit_button.place(x=1800, y=940)
 
         self.face= ImageTk.PhotoImage \
             (file='images\\face.png')
-        self.face_button = Button(self.window, command=autoSignIn, image=self.face, relief=FLAT, borderwidth=0, background="white",
+        self.face_button = Button(self.window, command=self.autoSignIn, image=self.face, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.face_button.place(x=2660, y=940)
         
@@ -79,6 +79,128 @@ class ConnectDatabase:
         self.login_button = Button(self.window, image=self.login, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
         self.login_button.place(x=1800, y=1350)
+
+    def autoSignIn(self):
+        now = time.time()  ###For calculate seconds of video
+        future = now + 20
+        login_flag = 0
+        best_conf = 70
+        #record sign in time
+        global ts
+        global date
+        global timeStamp
+        
+        ts = time.time()
+        date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+        timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+        
+        if time.time() < future:
+        
+            recognizer = cv2.face.LBPHFaceRecognizer_create()  # cv2.createLBPHFaceRecognizer()
+            try:
+                recognizer.read("TrainingImageLabel\Trainer_1.yml")
+            except:
+                print('Model not found,Please train model')
+                Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+                Notifica.place(x=20, y=250)
+
+            harcascadePath = "haarcascade\haarcascade_frontalface_default.xml"
+            faceCascade = cv2.CascadeClassifier(harcascadePath)
+            cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            
+            while True:
+                ret, im = cam.read()
+                gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+                faces = faceCascade.detectMultiScale(gray, 1.2, 5)
+                for (x, y, w, h) in faces:
+                    global Id
+                    tmp_Id, conf = recognizer.predict(gray[y:y + h, x:x + w])
+                    
+                    if conf < best_conf:
+                        Id = tmp_Id
+                        best_conf = conf
+                        
+                    if (conf <70):
+                        #Is registered student
+                        print(conf)
+                        ts = time.time()
+                        date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+                        timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+                        global tt
+                        tt = str(Id)
+                        cv2.rectangle(im, (x, y), (x + w, y + h), (0, 260, 0), 7)
+                        cv2.putText(im, str(tt), (x + h, y), font, 1, (255, 255, 0,), 4)                        
+                        #open main page according to Id, close login page
+                        login_flag += 1
+                    else:
+                        Id = 'Unknown'
+                        tt = str(Id)
+                        cv2.rectangle(im, (x, y), (x + w, y + h), (0, 25, 255), 7)
+                        cv2.putText(im, str(tt), (x + h, y), font, 1, (0, 25, 255), 4)
+                if time.time() > future:
+                    break
+                
+                cv2.imshow('Checking Identity..', im)
+                key = cv2.waitKey(30) & 0xff
+                if key == 27 or login_flag > 10:
+                    break
+                    
+            cam.release()
+            cv2.destroyAllWindows()
+            
+            if  login_flag > 10:
+                Id = 1 # for testing purpose
+                self.window.destroy()
+                home_win(Id)
+
+    def manuallySignIn(self):
+        #record sign in time
+        global ts
+        global date
+        global timeStamp
+        
+        ts = time.time()
+        date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+        timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+        
+        #read username from blank
+        username = self.username_entry.get()
+        
+        #get pwd
+        select = "SELECT pwd FROM Student WHERE username='%s'" % (username)
+        name = cursor.execute(select)
+        result = cursor.fetchall()            
+                   
+        #compare with corresponding pwd            
+        match = result == self.password_entry.get()            
+        if match:
+            #open main page according to Id, close login page
+            self.window.destroy()
+            Id = 1 # for testing purpose
+            home_win(Id)
+        else:
+            #generate err message
+            e = 'Wrong pwd!'
+            Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+            Notifica.place(x=20, y=250)
+
+    # ============Placing Button============
+    def Register(self):            
+        #read username from blank
+        username = self.register_username_entry.get()
+        pwd = self.register_password_entry.get()
+        
+        #capture photos of user
+        faceCapture(username)
+        
+        #save username, pwd to database
+        insert = '' #sql query of insert
+        cursor.execute(insert)
+        
+        if True:
+            #train new model with data
+            train()
 
     def slider(self):
         if self.count >= len(self.txt):
@@ -99,119 +221,6 @@ class ConnectDatabase:
         self.heading.config(fg=fg)
         self.heading.after(50, self.heading_color)
         
-def autoSignIn():
-    now = time.time()  ###For calculate seconds of video
-    future = now + 20
-    
-    #record sign in time
-    global ts
-    global date
-    global timeStamp
-    
-    ts = time.time()
-    date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
-    timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
-    
-    if time.time() < future:
-    
-        recognizer = cv2.face.LBPHFaceRecognizer_create()  # cv2.createLBPHFaceRecognizer()
-        try:
-            recognizer.read("TrainingImageLabel\Trainer.yml")
-        except:
-            e = 'Model not found,Please train model'
-            Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
-            Notifica.place(x=20, y=250)
-
-        harcascadePath = "haarcascade\haarcascade_frontalface_default.xml"
-        faceCascade = cv2.CascadeClassifier(harcascadePath)
-        cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        
-        while True:
-            ret, im = cam.read()
-            gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-            faces = faceCascade.detectMultiScale(gray, 1.2, 5)
-            for (x, y, w, h) in faces:
-                global Id
-
-                Id, conf = recognizer.predict(gray[y:y + h, x:x + w])
-                if (conf <70):
-                    #Is registered student
-                    print(conf)
-                    ts = time.time()
-                    date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
-                    timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
-                    global tt
-                    tt = str(Id)
-                    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 260, 0), 7)
-                    cv2.putText(im, str(tt), (x + h, y), font, 1, (255, 255, 0,), 4)                        
-                    #open main page according to Id, close login page
-                    Id = 1 # for testing purpose
-                    self.window.destroy()
-                    home_win(Id)
-                else:
-                    Id = 'Unknown'
-                    tt = str(Id)
-                    cv2.rectangle(im, (x, y), (x + w, y + h), (0, 25, 255), 7)
-                    cv2.putText(im, str(tt), (x + h, y), font, 1, (0, 25, 255), 4)
-            if time.time() > future:
-                break
-            
-            cv2.imshow('Checking Identity..', im)
-            key = cv2.waitKey(30) & 0xff
-            if key == 27:
-                break
-                
-        cam.release()
-        cv2.destroyAllWindows()
-
-def manuallySignIn():
-    #record sign in time
-    global ts
-    global date
-    global timeStamp
-    
-    ts = time.time()
-    date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
-    timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
-    
-    #read username from blank
-    username = self.username_entry.get()
-    
-    #get pwd
-    select = "SELECT pwd FROM Student WHERE username='%s'" % (username)
-    name = cursor.execute(select)
-    result = cursor.fetchall()            
-               
-    #compare with corresponding pwd            
-    match = result == self.password_entry.get()            
-    if match:
-        #open main page according to Id, close login page
-        self.window.destroy()
-        Id = 1 # for testing purpose
-        home_win(Id)
-    else:
-        #generate err message
-        e = 'Wrong pwd!'
-        Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
-        Notifica.place(x=20, y=250)
-
-# ============Placing Button============
-def Register():            
-    #read username from blank
-    username = self.register_username_entry.get()
-    pwd = self.register_password_entry.get()
-    
-    #capture photos of user
-    faceCapture(username)
-    
-    #save username, pwd to database
-    insert = '' #sql query of insert
-    cursor.execute(insert)
-    
-    if True:
-        #train new model with data
-        train()
 
 def win():
     window = Tk()
