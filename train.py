@@ -56,3 +56,6 @@ def train():
     version = '1'
     recognizer.train(x_train, np.array(y_label))
     recognizer.save("TrainingImageLabel\Trainner_{}.yml".format(version))
+
+if __name__ == '__main__':
+  train()
