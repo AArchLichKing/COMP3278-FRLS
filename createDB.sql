@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2021 at 02:46 AM
+-- Generation Time: Mar 30, 2021 at 05:07 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -227,7 +227,9 @@ CREATE TABLE `Student` (
 --
 
 INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `last_login`, `last_logout`, `duration`, `password`) VALUES
-('2', 'Chen Kangyi', 'ckykevin@connect.hku.hk', 2017, 4, '2021-03-18 03:32:07', '2021-03-22 03:32:07', '11:32:07', '123456'),
+('1', 'Chen Kangyi', 'ckykevin@connect.hku.hk', 2017, 4, '2021-03-18 03:32:07', '2021-03-22 03:32:07', '11:32:07', '123456'),
+('2', 'Du Zhixu', '', 2017, 3, '2021-03-16 05:05:34', '2021-03-26 02:05:34', '13:05:23', '123456'),
+('3', 'Feng Yueman', '', 2017, 2, '2021-03-25 05:05:34', '2021-03-22 05:05:34', '16:05:34', '123456'),
 ('4', 'Tang Yudan', 'tangyd@connect.hku.hk', 2018, 2, '2021-03-21 07:00:00', '2021-01-02 04:22:01', '04:05:01', '123456'),
 ('5', 'Zhang Maoqi', 'maoqi@connect.hku.hk', 2018, 3, '2021-03-14 03:32:07', '2021-03-15 03:32:07', '12:32:07', '123456');
 
