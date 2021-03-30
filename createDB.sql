@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2021 at 02:31 PM
+-- Generation Time: Mar 30, 2021 at 02:46 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `COMP3278`
+-- Database: `createDB`
 --
 
 -- --------------------------------------------------------
@@ -47,7 +47,9 @@ INSERT INTO `Course` (`course_id`, `code`, `name`, `credit`, `dept_id`) VALUES
 (5, 'STAT4602', 'Multivariate data analysis', 6, 2),
 (6, 'STAT3621', 'Statistical data analysis', 6, 2),
 (7, 'STAT3799', 'Directed studies in statistics', 6, 2),
-(8, 'STAT4799', 'Statistics project', 12, 2);
+(8, 'STAT4799', 'Statistics project', 12, 2),
+(9, 'MATH3911', 'Game Theory and Strategy', 6, 3),
+(10, 'STAT3600', 'Linear statistical analysis', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -67,7 +69,8 @@ CREATE TABLE `Department` (
 INSERT INTO `Department` (`dept_id`, `dept_name`) VALUES
 (1, 'Computer Science'),
 (2, 'Statistics & Actuarial Science'),
-(3, 'Mathematics');
+(3, 'Mathematics'),
+(4, 'HKU Business School');
 
 -- --------------------------------------------------------
 
@@ -96,7 +99,8 @@ INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`,
 (5, 'Zhang Xiaoyu', 'Miss', 2, 'RRS 114', 'None'),
 (7, 'Wu Jiannan', 'Mr', 1, 'None', 'None'),
 (8, 'Zhang Yan, Dora', 'Dr. ', 2, 'RR 304', 'Friday, 1:30pm - 2:30pm'),
-(9, 'Fang Yuwen', 'Miss', 2, 'RRS 112', 'None');
+(9, 'Fang Yanwen', 'Miss', 2, 'RRS 112', 'None'),
+(10, 'Law Ka Ho', 'Dr.', 3, 'RRS314', '');
 
 -- --------------------------------------------------------
 
@@ -153,6 +157,7 @@ INSERT INTO `Message` (`course_id`, `section_id`, `message`) VALUES
 --
 
 CREATE TABLE `Room` (
+  `room_id` int NOT NULL,
   `building_name` varchar(40) NOT NULL,
   `room_number` varchar(40) NOT NULL,
   `capacity` int NOT NULL
@@ -162,10 +167,10 @@ CREATE TABLE `Room` (
 -- Dumping data for table `Room`
 --
 
-INSERT INTO `Room` (`building_name`, `room_number`, `capacity`) VALUES
-('CPD', 'LG.10', 50),
-('CYPP', '4', 200),
-('online', 'online', 0);
+INSERT INTO `Room` (`room_id`, `building_name`, `room_number`, `capacity`) VALUES
+(1, 'online', 'online', 0),
+(2, 'CPD', 'LG.10', 50),
+(3, 'CYPP', '4', 200);
 
 -- --------------------------------------------------------
 
@@ -186,15 +191,18 @@ CREATE TABLE `Section` (
 --
 
 INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) VALUES
-(1, 1, 'COMP3278 2B', 'Lecture', 'https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09'),
-(1, 2, 'COMP3278 Tutorial ', 'Tutorial', 'https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09'),
-(2, 1, 'COMP3250 2A', 'Lecture', 'https://hku.zoom.us/j/95975951415?pwd=QWRVYThOU1BFZTJRN08wVFVHUEJ4dz09'),
-(2, 2, 'COMP3250 2B', 'Lecture', 'https://hku.zoom.us/j/98446009822?pwd=YWlLOFplRUowMGZCSlplSWRwRTlIdz09'),
-(3, 1, 'COMP3314 2A', 'Lecture', 'https://hku.zoom.us/j/92125651881?pwd=Q0t2WTdrc1ZTMnVOTVAyak82bmpGdz09'),
-(4, 1, 'STAT4601 2A', 'Lecture', 'https://hku.zoom.us/j/92595211727?pwd=am8rR0NucGFWb2RndGZ3RFB0NVFBZz09'),
-(4, 2, 'STAT4601 2A Tutorial 1', 'Tutorial', 'https://hku.zoom.us/j/93339305994?pwd=cDZ3MnNycDFnQmdFN05tTkNmck52QT09'),
-(4, 3, 'STAT4601 2A Tutorial 2', 'Tutorial', 'https://hku.zoom.com.cn/j/3916015671'),
-(6, 1, 'STAT3621 2A', 'lecture', 'https://hku.zoom.us/j/99199478092?pwd=SmZ3UFFvSkJvWEh3aUxYaTNYdGJBZz09');
+(1, 1, 'COMP3278 2B, 2020', 'Lecture', 'https://hku.zoom.us/j/97686555806?pwd=NWxSNVRKTlNDU0NjYTgremxaQ3pldz09'),
+(1, 2, 'COMP3278 Tutorial, 2020 ', 'Tutorial', 'https://hku.zoom.com.cn/j/2640918958?pwd=UmFpek1YMkUzNTFoL0ljRW84M1VLUT09'),
+(2, 1, 'COMP3250 2A, 2020', 'Lecture', 'https://hku.zoom.us/j/95975951415?pwd=QWRVYThOU1BFZTJRN08wVFVHUEJ4dz09'),
+(2, 2, 'COMP3250 2B, 2020', 'Lecture', 'https://hku.zoom.us/j/98446009822?pwd=YWlLOFplRUowMGZCSlplSWRwRTlIdz09'),
+(3, 1, 'COMP3314 2A, 2020', 'Lecture', 'https://hku.zoom.us/j/92125651881?pwd=Q0t2WTdrc1ZTMnVOTVAyak82bmpGdz09'),
+(4, 1, 'STAT4601 2A, 2020', 'Lecture', 'https://hku.zoom.us/j/92595211727?pwd=am8rR0NucGFWb2RndGZ3RFB0NVFBZz09'),
+(4, 2, 'STAT4601 2A Tutorial 1, 2020', 'Tutorial', 'https://hku.zoom.us/j/93339305994?pwd=cDZ3MnNycDFnQmdFN05tTkNmck52QT09'),
+(4, 3, 'STAT4601 2A Tutorial 2, 2020', 'Tutorial', 'https://hku.zoom.com.cn/j/3916015671'),
+(6, 1, 'STAT3621 2A, 2020', 'lecture', 'https://hku.zoom.us/j/99199478092?pwd=SmZ3UFFvSkJvWEh3aUxYaTNYdGJBZz09'),
+(9, 1, 'MATH3911 2A, 2020', 'Lecture', ''),
+(10, 1, 'STAT3600 2B, 2019', 'Lecture', ''),
+(10, 2, 'STAT3600 2B Tutorial, 2019', 'Tutorial', '');
 
 -- --------------------------------------------------------
 
@@ -203,7 +211,7 @@ INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) V
 --
 
 CREATE TABLE `Student` (
-  `student_id` int NOT NULL,
+  `student_id` varchar(10) NOT NULL,
   `info.name` varchar(80) NOT NULL,
   `info.email_addr` varchar(80) NOT NULL,
   `info.admitted_year` int NOT NULL,
@@ -219,7 +227,9 @@ CREATE TABLE `Student` (
 --
 
 INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `last_login`, `last_logout`, `duration`, `password`) VALUES
-(1, 'Tang Yudan', 'tangyd@connect.hku.hk', 2018, 2, '2021-01-01 04:22:01', '2021-01-02 04:22:01', '04:05:01', '123456');
+('2', 'Chen Kangyi', 'ckykevin@connect.hku.hk', 2017, 4, '2021-03-18 03:32:07', '2021-03-22 03:32:07', '11:32:07', '123456'),
+('4', 'Tang Yudan', 'tangyd@connect.hku.hk', 2018, 2, '2021-03-21 07:00:00', '2021-01-02 04:22:01', '04:05:01', '123456'),
+('5', 'Zhang Maoqi', 'maoqi@connect.hku.hk', 2018, 3, '2021-03-14 03:32:07', '2021-03-15 03:32:07', '12:32:07', '123456');
 
 -- --------------------------------------------------------
 
@@ -228,24 +238,28 @@ INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admit
 --
 
 CREATE TABLE `Take` (
-  `student_id` int NOT NULL,
+  `student_id` varchar(10) NOT NULL,
   `course_id` int NOT NULL,
-  `section_id` int NOT NULL
+  `section_id` int NOT NULL,
+  `this_sem` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Take`
 --
 
-INSERT INTO `Take` (`student_id`, `course_id`, `section_id`) VALUES
-(1, 1, 1),
-(1, 1, 2),
-(1, 2, 2),
-(1, 3, 1),
-(1, 4, 1),
-(1, 4, 2),
-(1, 4, 3),
-(1, 6, 1);
+INSERT INTO `Take` (`student_id`, `course_id`, `section_id`, `this_sem`) VALUES
+('1', 2, 1, 1),
+('4', 1, 1, 1),
+('4', 1, 2, 1),
+('4', 2, 2, 1),
+('4', 3, 1, 1),
+('4', 4, 1, 1),
+('4', 4, 2, 1),
+('4', 4, 3, 1),
+('4', 6, 1, 1),
+('4', 10, 1, 0),
+('5', 9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -268,9 +282,12 @@ INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 (2, 3, 1),
 (3, 2, 1),
 (4, 4, 1),
+(4, 10, 1),
 (5, 4, 2),
 (7, 1, 2),
-(8, 6, 1);
+(8, 6, 1),
+(9, 10, 2),
+(10, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -286,24 +303,23 @@ CREATE TABLE `Time` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `duration` time NOT NULL,
-  `building_name` varchar(40) NOT NULL,
-  `room_number` varchar(40) NOT NULL
+  `room_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Time`
 --
 
-INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time`, `end_time`, `duration`, `building_name`, `room_number`) VALUES
-(1, 1, 1, 'FRI', '09:30:00', '12:20:00', '01:50:00', 'online', 'online'),
-(1, 2, 1, 'TUE', '09:30:00', '10:20:00', '00:50:00', 'online', 'online'),
-(2, 1, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 'CPD', 'LG.10'),
-(2, 1, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 'Online', 'Online'),
-(2, 2, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 'Online', 'Online'),
-(2, 2, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 'Online', 'Online'),
-(3, 1, 1, 'MON', '14:30:00', '17:20:00', '02:50:00', 'Online', 'Online'),
-(4, 1, 1, 'TUE', '13:30:00', '16:20:00', '02:50:00', 'Online', 'Online'),
-(6, 1, 1, 'MON', '09:30:00', '12:20:00', '02:50:00', '', '');
+INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time`, `end_time`, `duration`, `room_id`) VALUES
+(1, 1, 1, 'FRI', '09:30:00', '12:20:00', '01:50:00', 1),
+(1, 2, 1, 'TUE', '09:30:00', '10:20:00', '00:50:00', 1),
+(2, 1, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 2),
+(2, 1, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 1),
+(2, 2, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 1),
+(2, 2, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 1),
+(3, 1, 1, 'MON', '14:30:00', '17:20:00', '02:50:00', 1),
+(4, 1, 1, 'TUE', '13:30:00', '16:20:00', '02:50:00', 1),
+(6, 1, 1, 'MON', '09:30:00', '12:20:00', '02:50:00', 3);
 
 --
 -- Indexes for dumped tables
@@ -337,7 +353,7 @@ ALTER TABLE `Material`
 -- Indexes for table `Room`
 --
 ALTER TABLE `Room`
-  ADD PRIMARY KEY (`building_name`,`room_number`);
+  ADD PRIMARY KEY (`room_id`);
 
 --
 -- Indexes for table `Section`
