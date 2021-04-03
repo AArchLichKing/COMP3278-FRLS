@@ -20,7 +20,6 @@ myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207",
 cursor = myconn.cursor()
 
 def time_convert(time):
-    ## Used to transform timedelta format to hr:minute:second
     seconds = time.seconds
     hour = str(seconds // 3600)
     if len(hour) == 1:
@@ -28,10 +27,7 @@ def time_convert(time):
     minute = str((seconds//60)%60)
     if len(minute) == 1:
         minute = "0" + minute
-    second = str(seconds%60)
-    if len(second) == 1:
-        second = "0" + second
-    return hour + ":" + minute + ":" + second
+    return hour + ":" + minute
 
 class HomePage:
     def __init__(self, window, Id):
