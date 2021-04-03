@@ -187,11 +187,20 @@ class HomePage:
         self.courses_button.place(x=1000, y=800)
         self.window.mainloop()
 
-    def generateClassTable(self, class_name, start_time, end_time, day):
+    def generateClassTable(self, student, course):
         #generate class table
         # class_name, start_time and end_time are lists containing each course's information
-        time_list = ["9:00-9:30","9:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
-        week_list = ['Monday','Tuesday','Wednesday','Thursday','Friday']
+        class_name = course.course_name
+        start_time = [time_convert(i) for i in course.start_time]
+        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
+        day = course.weekday
+        print(class_name)
+        print(start_time)
+        print(end_time)
+        print(day)
+        time_list = ["09:00-09:30","09:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
+
+        week_list = ['MON','TUE','WED','THU','FRI']
         table = pd.DataFrame(index = time_list,columns = week_list)
         for j in range(len(class_name)):
             i_start = 0
@@ -206,20 +215,11 @@ class HomePage:
             ## locate the time range
 
             for i in range(i_start,i_end+1):
-                table.iloc[i,day[j]] = class_name[j]
+                table[day[j]].iloc[i] = class_name[j]
 
-        ## transformation
-        data = dict()
-        for i in range(len(time_list)):
-            data[time_list[i]] = dict()
-            data[time_list[i]]['label'] = time_list[i]
-            for j in range(len(week_list)):
-                data[time_list[i]][week_list[j]] = table.iloc[i,j]
+        ## Show table
+        print(table)
 
-        tframe = Frame(master)
-        tframe.pack()
-        table = TableCanvas(tframe, data = data)
-        table.show()
 
     def slider(self):
         if self.count >= len(self.txt):
