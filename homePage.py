@@ -19,6 +19,20 @@ import random
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="facerecognition")
 cursor = myconn.cursor()
 
+def time_convert(time):
+    ## Used to transform timedelta format to hr:minute:second
+    seconds = time.seconds
+    hour = str(seconds // 3600)
+    if len(hour) == 1:
+        hour = "0" + hour
+    minute = str((seconds//60)%60)
+    if len(minute) == 1:
+        minute = "0" + minute
+    second = str(seconds%60)
+    if len(second) == 1:
+        second = "0" + second
+    return hour + ":" + minute + ":" + second
+
 class HomePage:
     def __init__(self, window, Id):
         self.current_panel = 2
