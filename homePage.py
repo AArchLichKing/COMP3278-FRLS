@@ -98,9 +98,34 @@ class HomePage:
         #generate latest messages
         pass 
     
-    def sendEmails(self, content, address):
+    def sendEmails(self, student, course):
         #send emails
         ## set up sender's account
+        num = 0
+        address = student.email_addr
+        content = """Dear {0} ({1}):
+
+    The following course will begin within an hour. The corresponding course materials are attached below for your reference.
+
+        Course name: {2}
+        Course type: {3}
+        Time: {4} {5}-{6}
+        Building: {7}
+        Room: {8}
+        Zoom link: {9}
+        Material name: {10}
+        Released date: {11}
+        Material link: {12}
+        Instructor: {13}
+        Office: {14}
+        Office hour: {15}
+
+    Please check the course information and rememeber to take your course on time.
+
+    Best regards,
+    eLearning Team
+        """.format(student.name, student.email_addr, course.course_name[num], course.course_type[num], course.weekday[num], time_convert(course.start_time[num]), time_convert(course.start_time[num]+course.duration[num]), course.building_name[num], course.room_number[num], course.zoom_link[num], course.material_name[num], course.material_date[num], course.material_link[num], course.instructor[num], course.office[num], course.office_hour[num])
+
         mail_host = 'smtp.163.com'
         mail_user = 'comp3278_group2'
         mail_pass = 'UGQEGXIPKFFLNHEQ'
