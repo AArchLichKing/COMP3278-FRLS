@@ -108,7 +108,7 @@ class HomePage:
         #generate latest messages
         pass 
     
-    def sendEmails(self, student, course):
+    def sendEmails(self, student, course, num):
         #send emails
         ## set up sender's account
         num = 0
@@ -194,10 +194,6 @@ class HomePage:
         start_time = [time_convert(i) for i in course.start_time]
         end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
         day = course.weekday
-        print(class_name)
-        print(start_time)
-        print(end_time)
-        print(day)
         time_list = ["09:00-09:30","09:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
 
         week_list = ['MON','TUE','WED','THU','FRI']
@@ -210,7 +206,7 @@ class HomePage:
                 end = table.index[i].split('-')[1]
                 if (start_time[j] == start):
                     i_start = i
-                if (end_time[j] == end):
+                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (end.split(':')[1] == "30"):
                     i_end = i
             ## locate the time range
 
