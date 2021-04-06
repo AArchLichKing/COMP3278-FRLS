@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2021 at 05:07 AM
+-- Generation Time: Apr 06, 2021 at 05:52 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -140,15 +140,16 @@ INSERT INTO `Material` (`course_id`, `section_id`, `material_id`, `name`, `relea
 CREATE TABLE `Message` (
   `course_id` int NOT NULL,
   `section_id` int NOT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `Message`
 --
 
-INSERT INTO `Message` (`course_id`, `section_id`, `message`) VALUES
-(1, 1, 'New Assignment released');
+INSERT INTO `Message` (`course_id`, `section_id`, `message`, `time`) VALUES
+(1, 1, 'New Assignment released', '2021-04-06 13:51:04');
 
 -- --------------------------------------------------------
 
