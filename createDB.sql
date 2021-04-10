@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2021 at 05:52 AM
+-- Generation Time: Apr 10, 2021 at 05:59 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -255,7 +255,7 @@ INSERT INTO `Take` (`student_id`, `course_id`, `section_id`, `this_sem`) VALUES
 ('1', 2, 1, 1),
 ('4', 1, 1, 1),
 ('4', 1, 2, 1),
-('4', 2, 2, 1),
+('4', 2, 1, 1),
 ('4', 3, 1, 1),
 ('4', 4, 1, 1),
 ('4', 4, 2, 1),
