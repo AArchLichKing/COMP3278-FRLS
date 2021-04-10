@@ -39,8 +39,8 @@ class HomePage:
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
         
-        self.student = Student(Id)
-        self.courses = Course(Id)
+        #self.student = Student(Id)
+        #self.courses = Course(Id)
         '''
         I wish to extract the first course name:
         course.name[0]
@@ -79,7 +79,9 @@ class HomePage:
         notebook.add(f4, text='Frame 4', image = self.deadline)
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
-        self.image_panel = Label(f1, image=self.subframe)
+        self.subframe1 = ImageTk.PhotoImage \
+            (file='images\\f1.png')
+        self.image_panel = Label(f1, image=self.subframe1)
         self.image_panel.pack(fill='both', expand='yes')
         self.image_panel = Label(f2, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
@@ -101,7 +103,6 @@ class HomePage:
         self.image_panel.place(x=1280, y=1400)
         self.image_panel = Button(f3, image=self.coursegrid)
         self.image_panel.place(x=80, y=1400)
-
 
         notebook.grid(row=0, column=0, sticky="nw")
 
@@ -134,8 +135,7 @@ class HomePage:
 
         self.deadline_button2.place(x=1000, y=1000)
 
-    def Coursewindow(self):
-        self.txt = "Successfully "
+    def Coursewindow(self, course, num):
         self.window2 = Toplevel(self.window)
         self.window2.geometry("")
         self.window2.title("success!")
@@ -147,11 +147,11 @@ class HomePage:
         self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=20, y=200)
-        action_with_arg = partial(self.sendEmails, self.student, self.course, 1)
+        #action_with_arg = partial(self.sendEmails, self.student, self.course, 1)
         self.email = ImageTk.PhotoImage \
             (file='images\\20-20.png')
-        self.email_b = Button(self.window2, image=self.email, command = action_with_arg)
-        self.email_b.place(x = 20, y = 1000)
+        self.email_b = Button(self.window2, image=self.email)
+        self.email_b.place(x = 20, y = 1800)
 
     def connectDB():
         pass
