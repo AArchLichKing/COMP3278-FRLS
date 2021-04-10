@@ -38,7 +38,7 @@ class HomePage:
         self.window.geometry("3200x2000+200+100")
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
-        
+
         self.student = Student(4)
         self.courses = Course(4)
         '''
@@ -93,15 +93,15 @@ class HomePage:
             (file='images\\ttFrame.png')
         self.image_panel = Label(f2, image=self.ttF)
         self.image_panel.place(x=300, y=700)
-        self.coursegrid  = ImageTk.PhotoImage \
+        self.coursegrid = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
         self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=1280, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=900)
-        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=1280, y=900)
         self.image_panel = Button(f3, image=self.coursegrid)
         self.image_panel.place(x=1280, y=1400)
@@ -114,7 +114,7 @@ class HomePage:
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
 
-        self.name = "Zhang Maoqi"
+        self.name = self.student.name
         self.clabel = Label(self.window, text= self.name, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.clabel.place(x=170, y=380)
@@ -129,45 +129,20 @@ class HomePage:
         """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.lastlogin.place(x=100, y=500)"""
-        self.timetable2 = self.generateClassTable(self.student, self.courses)
-
-    def generateClassTable(student, course):
-        # generate class table
-        # class_name, start_time and end_time are lists containing each course's information
-        class_name = course.course_name
-        start_time = [time_convert(i) for i in course.start_time]
-        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
-        day = course.weekday
-        print(class_name)
-        print(start_time)
-        print(end_time)
-        print(day)
-        time_list = ["09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-11:30", "11:30-12:00",
-                     "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00", "14:00-14:30", "14:30-15:00",
-                     "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00", "17:00-17:30", "17:30-18:00",
-                     "18:00-18:30"]
-
-        week_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
-        table = pd.DataFrame(index=time_list, columns=week_list)
-        for j in range(len(class_name)):
-            print(class_name[j])
-            i_start = 0
-            i_end = 0
-            for i in range(len(table.index)):
-                start = table.index[i].split('-')[0]
-                end = table.index[i].split('-')[1]
-                if (start_time[j] == start):
-                    i_start = i
-                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (
-                        end.split(':')[1] == "30"):
-                    i_end = i
-                if (end_time[j] == end):
-                    i_end = i
-            ## locate the time range
-
-            for i in range(i_start, i_end + 1):
-                table[day[j]].iloc[i] = class_name[j]
-            return table
+        self.timetable2 = generateClassTable(self.student, self.courses)
+        print(self.timetable2)
+        self.timegrid = ImageTk.PhotoImage(file='images\\timegrid.png')
+        self.X = len(self.timetable2)
+        self.Y = len(self.timetable2.columns) #5
+        for i in range(self.X):
+            for j in range(self.Y):
+                if (isinstance(self.timetable2.iloc[i,j], str)):
+                    self.tt = Label(f2, image=self.timegrid)
+                    self.ttlabel = Label(f2, text = self.timetable2.iloc[i,j], font=("yu gothic ui", 6, "bold"), bg="LightSkyBlue1")
+                    a = 600+300*j
+                    b = 800+60*i
+                    self.tt.place(x=a, y=b)
+                    self.ttlabel.place(x=a, y=b)
 
 
     def Coursewindow(self, course, num):
@@ -245,13 +220,6 @@ class HomePage:
 
         success("Emails sent successfully!")
 
-    def profile(self):
-
-        pass
-
-    def timetable(self):
-
-        pass
     def Courses(self):
 
         coursename = "COMP3278, Section 2B, 2020"
@@ -292,6 +260,10 @@ class HomePage:
 
         week_list = ['MON','TUE','WED','THU','FRI']
         table = pd.DataFrame(index = time_list,columns = week_list)
+        for i in range(len(table)):
+            for j in range(len(table.columns)):
+                table.iloc[i, j] = 'wrong'
+
         for j in range(len(class_name)):
             print(class_name[j])
             i_start = 0
@@ -346,6 +318,43 @@ class success:
                            font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=20, y=200)
         self.win.mainloop()
+def generateClassTable(student, course):
+        # generate class table
+        # class_name, start_time and end_time are lists containing each course's information
+        class_name = course.course_name
+        start_time = [time_convert(i) for i in course.start_time]
+        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
+        day = course.weekday
+        print(class_name)
+        print(start_time)
+        print(end_time)
+        print(day)
+        time_list = ["09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-11:30", "11:30-12:00",
+                     "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00", "14:00-14:30", "14:30-15:00",
+                     "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00", "17:00-17:30", "17:30-18:00",
+                     "18:00-18:30"]
+
+        week_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+        table = pd.DataFrame(index=time_list, columns=week_list)
+        for j in range(len(class_name)):
+            print(class_name[j])
+            i_start = 0
+            i_end = 0
+            for i in range(len(table.index)):
+                start = table.index[i].split('-')[0]
+                end = table.index[i].split('-')[1]
+                if (start_time[j] == start):
+                    i_start = i
+                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (
+                        end.split(':')[1] == "30"):
+                    i_end = i
+                if (end_time[j] == end):
+                    i_end = i
+            ## locate the time range
+
+            for i in range(i_start, i_end + 1):
+                table[day[j]].iloc[i] = class_name[j]
+        return table
 
 def home_win(Id):
     window = Tk()
