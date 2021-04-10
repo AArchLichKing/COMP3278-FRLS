@@ -18,8 +18,8 @@ import pandas as pd
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
-#myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
-#cursor = myconn.cursor()
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
+cursor = myconn.cursor()
 
 def time_convert(time):
     seconds = time.seconds
@@ -146,6 +146,26 @@ class HomePage:
         self.l_year = Label(f1, text=self.student.admitted_year, bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.l_year.place(x = 600, y=485)
+        self.login = Label(f1, text=self.student.last_login, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.login.place(x=600, y=1685)
+        self.logout = Label(f1, text=self.student.last_logout, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.logout.place(x=600, y=1585)
+        self.duration = Label(f1, text=self.student.duration, bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.duration.place(x=600, y=1785)
+        self.changee = ImageTk.PhotoImage \
+            (file='images\\changeemail.png')
+        self.changee_button = Button(f1, command = partial(change, "email", self.student), image=self.changee, relief=FLAT, borderwidth=0,
+                                     cursor="hand2")
+        self.changee_button.place(x=100, y=740)
+        self.changepw = ImageTk.PhotoImage \
+            (file='images\\changepw.png')
+        self.changepw_button = Button(f1, image=self.changee, command = partial(change, "password", self.student), relief=FLAT, borderwidth=0,
+                                     cursor="hand2")
+        self.changepw_button.place(x=850, y=740)
+
 
         self.update_clock()
         for i in range(self.X):
@@ -154,10 +174,9 @@ class HomePage:
                     self.tt = Label(f2, image=self.timegrid)
                     self.ttlabel = Label(f2, text = self.timetable2.iloc[i,j], font=("yu gothic ui", 6, "bold"), bg="LightSkyBlue1")
                     a = 600+300*j
-                    b = 800+60*i
+                    b = 800+60*(i-1)
                     self.tt.place(x=a, y=b)
                     self.ttlabel.place(x=a, y=b)
-
 
     def Coursewindow(self, course, num):
         self.window2 = Toplevel(self.window)
@@ -232,10 +251,9 @@ class HomePage:
         smtp0bj.sendmail(sender,receiver,message.as_string())
         smtp0bj.quit()
 
-        success("Emails sent successfully!")
+        success("send the emails!")
 
     def Courses(self):
-
         coursename = "COMP3278, Section 2B, 2020"
         coursetacher = "Teacher" + "Luo Ping"
         self.coursegrid = ImageTk.PhotoImage \
@@ -249,7 +267,6 @@ class HomePage:
         self.teacherlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.teacherlabel.place(x=800, y=700)
-
 
     def courses(self):
         self.coursegrid = ImageTk.PhotoImage \
@@ -266,10 +283,6 @@ class HomePage:
         start_time = [time_convert(i) for i in course.start_time]
         end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
         day = course.weekday
-        print(class_name)
-        print(start_time)
-        print(end_time)
-        print(day)
         time_list = ["09:00-09:30","09:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
 
         week_list = ['MON','TUE','WED','THU','FRI']
@@ -296,9 +309,6 @@ class HomePage:
             for i in range(i_start,i_end+1):
                 table[day[j]].iloc[i] = class_name[j]
 
-        ## transformation
-        print(table)
-
     def slider(self):
         if self.count >= len(self.txt):
             self.count = -1
@@ -317,21 +327,19 @@ class HomePage:
 
 # a success window that shows "Successfully " + task each time when something completed by system
 class success:
-    def __init__(self, task, filepath = "images\\Success\\email.png"):
+    def __init__(self, task):
         self.txt = "Successfully " + task
-        self.win = Tk()
-        self.win.geometry("800x500+800+800")
-        self.win.title("success!")
-        self.win.resizable(False, False)
-        image = Image.open(filepath)
-        image = image.resize((800, 500), Image.ANTIALIAS)
-        self.database_frame = ImageTk.PhotoImage(image)
-        self.image_panel = Label(self.win, image=self.database_frame)
-        self.image_panel.pack(fill='both', expand='yes')
-        self.msg = Label(self.win, text=self.txt, bg="white", fg="#4f4e4d",
+        self.window = Tk()
+        self.window.geometry("800x600+800+800")
+        self.window.title("success!")
+        self.window.resizable(False, False)
+
+        self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
-        self.msg.place(x=20, y=200)
-        self.win.mainloop()
+        self.msg.place(x=80, y=250)
+        self.window.mainloop()
+
+
 def generateClassTable(student, course):
         # generate class table
         # class_name, start_time and end_time are lists containing each course's information
@@ -370,18 +378,46 @@ def generateClassTable(student, course):
                 table[day[j]].iloc[i] = class_name[j]
         return table
 
+def change(task, student):
+    window = Tk()
+    window.geometry("1000x500+800+800")
+    window.title("Change " + task)
+    window.resizable(False, False)
+    old_entry = Entry(window, relief=FLAT, bg="alice blue", fg="#6b6a69",
+                               font=("yu gothic ui semibold", 12))
+    old_entry.place(x=420, y=80, width=500)
+    old = Label(window, text="Old " + task, bg="white", fg="#4f4e4d",
+                     font=("yu gothic ui", 13, "bold"))
+    old.place(x=50, y=80)
+    new_entry = Entry(window, relief=FLAT, bg="alice blue", fg="#6b6a69",
+                           font=("yu gothic ui semibold", 12))
+    new_entry.place(x=420, y=220, width=500)
+
+    new = Label(window, text="New " + task, bg="white", fg="#4f4e4d",
+                font=("yu gothic ui", 13, "bold"))
+    new.place(x=50, y=220)
+
+    old = old_entry.get()
+    new
+
+    # get pwd
+    select = "SELECT password FROM Student WHERE student_id='%s'" % (student.username)
+    name = cursor.execute(select)
+    result = cursor.fetchall()
+
+    # compare with corresponding pwd
+    match = result == old_entry.get()
+    window.mainloop()
+
+
 def home_win(Id):
     window = Tk()
     Id = 0
     HomePage(window, Id)
     window.mainloop()
 
-#test function for success windows
-def testSuc(filepath):
-    success("send to your emails!", filepath)
 
 if __name__ == "__main__":
   #debuging purpose
-  home_win(4)
-#file = "images\\Success\\email.png"
-#testSuc(file)
+   #home_win(4)
+   change("password", Student(4))
