@@ -27,9 +27,9 @@ class Course:
     #results is displayed as a list of tuples
     def __init__(self, studentId):
         query = "SELECT S.name, S.type, S.zoom_link, TI.weekday, TI.start_time, TI.duration, TI.building_name, TI.room_number, \
-                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message\
+                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name\
                  FROM (SELECT * FROM Take T1 WHERE T1.student_id="+str(studentId)+") T,\
-                                    Section S , Time TI, \
+                                    Section S , Time TI, Course C,\
                                     (SELECT temp.course_id, temp.section_id, temp.material_id, temp.name, temp.released_date, temp.link, Message.message FROM (SELECT Section.course_id, Section.section_id, Material.material_id, Material.name, Material.released_date, Material.link FROM \
                                      Material RIGHT OUTER JOIN Section ON Material.course_id = Section.course_id AND Material.section_id = Section.section_id) temp LEFT OUTER JOIN Message \
                                      ON Message.course_id = temp.course_id AND Message.section_id = temp.section_id) M,\
@@ -37,7 +37,8 @@ class Course:
                                     WHERE T.course_id=S.course_id AND T.section_id=S.section_id \
                                     AND T.course_id=TI.course_id AND T.section_id=TI.section_id \
                                     AND T.course_id=M.course_id AND T.section_id=M.section_id \
-                                    AND T.course_id=I.course_id AND T.section_id=I.section_id"
+                                    AND T.course_id=I.course_id AND T.section_id=I.section_id \
+                                    AND T.course_id=C.course_id"
         cursor.execute(query)
         results = cursor.fetchall()
         self.course_name = [result[0] for result in results]
@@ -55,14 +56,16 @@ class Course:
         self.office = [result[13] for result in results]
         self.office_hour = [result[14] for result in results]
         self.message = [result[15] for result in results]
+        self.course_long_name = [result[16] for result in results]
 
         if DEBUG:
             print(self.course_name)
+            print(self.course_long_name)
             print(self.course_type)
             print(self.zoom_link)
             print(self.weekday)
             print(self.instructor)
-            print(self.duration)
+            print(self.start_time)
             print(self.material_name)
             print(self.message)
 
