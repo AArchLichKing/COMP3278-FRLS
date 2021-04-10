@@ -61,9 +61,9 @@ class HomePage:
             (file='images\\subframe.png')
 
         f1 = Frame(notebook, bg = "white")
-        f2 = Frame(notebook, bg='blue', width = 2000, height=2000)
-        f3 = Frame(notebook, bg='blue', width = 2000, height=2000)
-        f4 = Frame(notebook, bg='blue', width = 2000, height=2000)
+        f2 = Frame(notebook, width = 2000, height=2000)
+        f3 = Frame(notebook, width = 2000, height=2000)
+        f4 = Frame(notebook, width = 2000, height=2000)
 
         self.profile = ImageTk.PhotoImage \
             (file='images\\Profile-18.png')
@@ -134,6 +134,20 @@ class HomePage:
         self.timegrid = ImageTk.PhotoImage(file='images\\timegrid.png')
         self.X = len(self.timetable2)
         self.Y = len(self.timetable2.columns) #5
+        self.l_name = Label(f1, text=self.student.name, bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.l_name.place(x = 400, y = 285)
+        self.l_email = Label(f1, text=self.student.email_addr, bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.l_email.place(x = 500, y=585)
+        self.l_user_id = Label(f1, text=self.student.username, bg="white", fg="#4f4e4d",
+                             font=("yu gothic ui", 13, "bold"))
+        self.l_user_id.place(x=500, y=385)
+        self.l_year = Label(f1, text=self.student.admitted_year, bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
+        self.l_year.place(x = 600, y=485)
+
+        self.update_clock()
         for i in range(self.X):
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i,j], str)):
