@@ -16,8 +16,8 @@ import ctypes
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
-#myconn = mysql.connector.connect(host="localhost", user="root", passwd="123456", database="facerecognition")
-#cursor = myconn.cursor()
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="dzx3501", database="FRLS")
+cursor = myconn.cursor()
 
 class ConnectDatabase:
     def __init__(self, window):
@@ -69,16 +69,16 @@ class ConnectDatabase:
                                     activebackground="white", cursor="hand2")
         self.face_button.place(x=2660, y=940)
         
-        Notifica = tk.Label(self.window, text="", bg="Green", fg="white", width=33,
+        self.Notifica = tk.Label(self.window, text="", bg="Green", fg="white", width=33,
                             height=2, font=('times', 15, 'bold'))
 
         # ============Placing Button============
-        self.login = ImageTk.PhotoImage \
+        self.register_img = ImageTk.PhotoImage \
             (file='images\\Register.png')
 
-        self.login_button = Button(self.window, image=self.login, relief=FLAT, borderwidth=0, background="white",
+        self.login_button = Button(self.window, command=self.register, image=self.register_img, relief=FLAT, borderwidth=0, background="white",
                                     activebackground="white", cursor="hand2")
-        self.login_button.place(x=1800, y=1350)
+        self.login_button.place(x=1800, y=500)
 
     def autoSignIn(self):
         now = time.time()  ###For calculate seconds of video
@@ -100,9 +100,9 @@ class ConnectDatabase:
             try:
                 recognizer.read("TrainingImageLabel\Trainer_1.yml")
             except:
-                print('Model not found,Please train model')
-                Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
-                Notifica.place(x=20, y=250)
+                e = 'Model not found or corrupted,Please train the model by clicking Register New Student'
+                self.Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+                self.Notifica.place(x=20, y=250)
 
             harcascadePath = "haarcascade\haarcascade_frontalface_default.xml"
             faceCascade = cv2.CascadeClassifier(harcascadePath)
@@ -165,42 +165,71 @@ class ConnectDatabase:
         timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
         
         #read username from blank
-        username = self.username_entry.get()
+        Id = self.username_entry.get()
         
         #get pwd
-        select = "SELECT pwd FROM Student WHERE username='%s'" % (username)
+        select = "SELECT password FROM Student WHERE student_id='%s'" % (Id)
         name = cursor.execute(select)
-        result = cursor.fetchall()            
+        result = cursor.fetchall() 
                    
         #compare with corresponding pwd            
         match = result == self.password_entry.get()            
         if match:
             #open main page according to Id, close login page
             self.window.destroy()
-            Id = 1 # for testing purpose
             home_win(Id)
         else:
             #generate err message
-            e = 'Wrong pwd!'
-            Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
-            Notifica.place(x=20, y=250)
+            e = 'You are not legal student! Please input right username' if result==[] else 'Wrong pwd!'
+            self.Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+            self.Notifica.place(x=20, y=250)
 
     # ============Placing Button============
-    def Register(self):            
+    def register(self): 
+    
+        def okay():
+            username = self.register_username_entry.get()
+            pwd = self.register_password_entry.get()
+            
+            register_win.destroy()
+            
+            if pwd != '':
+                update = "UPDATE Student SET password=%s WHERE student_id=%s"
+                name = cursor.execute(update, (str(pwd), Id))
+                myconn.commit()
+            
+            #capture photos of user
+            faceCapture(username)
+            
+            if True:
+                #train new model with data
+                print('Start Training')
+                train()
+            
+            
         #read username from blank
-        username = self.register_username_entry.get()
-        pwd = self.register_password_entry.get()
+        register_win = Toplevel(self.window)
+        register_win.title('Register for face regcognition system')
         
-        #capture photos of user
-        faceCapture(username)
+        self.username_label = Label(register_win, text="Username", bg="white", fg="#4f4e4d",
+                                    font=("yu gothic ui", 13, "bold"))
+        self.username_label.place(x=100, y=100)
+        self.register_username_entry = Entry(register_win, relief=FLAT, bg="alice blue", fg="#6b6a69", 
+                                    font=("yu gothic ui semibold", 12))
+        self.register_username_entry.place(x=100, y=200)
+                                    
+        self.username_label = Label(register_win, text="Updated password (if any)", bg="white", fg="#4f4e4d",
+                                    font=("yu gothic ui", 13, "bold"))
+        self.username_label.place(x=800, y=100)
         
-        #save username, pwd to database
-        insert = '' #sql query of insert
-        cursor.execute(insert)
+        self.register_password_entry = Entry(register_win, relief=FLAT, bg="alice blue", fg="#6b6a69", 
+                                    font=("yu gothic ui semibold", 12))
+        self.register_password_entry.place(x=800, y=200)
         
-        if True:
-            #train new model with data
-            train()
+        self.ok_button = Button(register_win, command = okay, text="Register", relief=FLAT, borderwidth=0, background="white",
+                                    activebackground="white", cursor="hand2")
+        self.ok_button.place(x=300, y=300)
+
 
     def slider(self):
         if self.count >= len(self.txt):

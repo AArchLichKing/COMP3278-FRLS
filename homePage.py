@@ -35,12 +35,12 @@ class HomePage:
     def __init__(self, window, Id):
         self.current_panel = 2
         self.window = window
-        self.window.geometry("3200x2000+200+200")
+        self.window.geometry("3200x2000+200+100")
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
         
-        #self.student = Student(Id)
-        #self.courses = Course(Id)
+        self.student = Student(4)
+        self.courses = Course(4)
         '''
         I wish to extract the first course name:
         course.name[0]
@@ -67,7 +67,7 @@ class HomePage:
 
         self.profile = ImageTk.PhotoImage \
             (file='images\\Profile-18.png')
-        self.courses = ImageTk.PhotoImage \
+        self.coursestab = ImageTk.PhotoImage \
             (file='images\\courses.png')
         self.timetable = ImageTk.PhotoImage \
             (file='images\\timetable.png')
@@ -75,7 +75,7 @@ class HomePage:
             (file='images\\deadline.png')
         notebook.add(f1, text='Frame 1', image = self.profile)
         notebook.add(f2, text='Frame 2', image = self.timetable)
-        notebook.add(f3, text='Frame 3', image = self.courses)
+        notebook.add(f3, text='Frame 3', image = self.coursestab)
         notebook.add(f4, text='Frame 4', image = self.deadline)
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
@@ -89,9 +89,13 @@ class HomePage:
         self.image_panel.pack(fill='both', expand='yes')
         self.image_panel = Label(f4, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
-        self.coursegrid = ImageTk.PhotoImage \
+        self.ttF = ImageTk.PhotoImage \
+            (file='images\\ttFrame.png')
+        self.image_panel = Label(f2, image=self.ttF)
+        self.image_panel.place(x=300, y=700)
+        self.coursegrid  = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
-        self.image_panel = Button(f3, image=self.coursegrid, command=self.Coursewindow)
+        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=400)
         self.image_panel = Button(f3, image=self.coursegrid)
         self.image_panel.place(x=1280, y=400)
@@ -125,15 +129,46 @@ class HomePage:
         """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.lastlogin.place(x=100, y=500)"""
+        self.timetable2 = self.generateClassTable(self.student, self.courses)
 
-    def Timetable(self):
-        self.deadline2 = ImageTk.PhotoImage \
-            (file='images\\deadline.png')
-        self.deadline_button2 = Button(self.window, command=self.deadline2, image=self.deadline, relief=FLAT,
-                                       borderwidth=0,
-                                       cursor="hand2")
+    def generateClassTable(student, course):
+        # generate class table
+        # class_name, start_time and end_time are lists containing each course's information
+        class_name = course.course_name
+        start_time = [time_convert(i) for i in course.start_time]
+        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
+        day = course.weekday
+        print(class_name)
+        print(start_time)
+        print(end_time)
+        print(day)
+        time_list = ["09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-11:30", "11:30-12:00",
+                     "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00", "14:00-14:30", "14:30-15:00",
+                     "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00", "17:00-17:30", "17:30-18:00",
+                     "18:00-18:30"]
 
-        self.deadline_button2.place(x=1000, y=1000)
+        week_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+        table = pd.DataFrame(index=time_list, columns=week_list)
+        for j in range(len(class_name)):
+            print(class_name[j])
+            i_start = 0
+            i_end = 0
+            for i in range(len(table.index)):
+                start = table.index[i].split('-')[0]
+                end = table.index[i].split('-')[1]
+                if (start_time[j] == start):
+                    i_start = i
+                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (
+                        end.split(':')[1] == "30"):
+                    i_end = i
+                if (end_time[j] == end):
+                    i_end = i
+            ## locate the time range
+
+            for i in range(i_start, i_end + 1):
+                table[day[j]].iloc[i] = class_name[j]
+            return table
+
 
     def Coursewindow(self, course, num):
         self.window2 = Toplevel(self.window)
@@ -147,10 +182,10 @@ class HomePage:
         self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=20, y=200)
-        #action_with_arg = partial(self.sendEmails, self.student, self.course, 1)
+        action_with_arg = partial(self.sendEmails, self.student, self.courses, 0)
         self.email = ImageTk.PhotoImage \
             (file='images\\20-20.png')
-        self.email_b = Button(self.window2, image=self.email)
+        self.email_b = Button(self.window2, image=self.email, command = partial(self.sendEmails, self.student, self.courses, 0))
         self.email_b.place(x = 20, y = 1800)
 
     def connectDB():
@@ -160,11 +195,11 @@ class HomePage:
         #generate latest messages
         pass 
     
-    def sendEmails(self, student, course, num):
+    def sendEmails(self, s, c, num):
         #send emails
         ## set up sender's account
         num = 0
-        address = student.email_addr
+        address = "maoqi@connect.hku.hk"
         content = """Dear {0} ({1}):
 
     The following course will begin within an hour. The corresponding course materials are attached below for your reference.
@@ -188,7 +223,7 @@ class HomePage:
 
     Best regards,
     eLearning Team
-        """.format(student.name, student.email_addr, course.course_name[num], course.course_type[num], course.weekday[num], time_convert(course.start_time[num]), time_convert(course.start_time[num]+course.duration[num]), course.building_name[num], course.room_number[num], course.zoom_link[num], course.material_name[num], course.material_date[num], course.material_link[num], course.instructor[num], course.office[num], course.office_hour[num], course.message[num], course.course_long_name[num])
+        """.format(s.name, s.email_addr, c.course_name[num], c.course_type[num], c.weekday[num], time_convert(c.start_time[num]), time_convert(c.start_time[num]+c.duration[num]), c.building_name[num], c.room_number[num], c.zoom_link[num], c.material_name[num], c.material_date[num], c.material_link[num], c.instructor[num], c.office[num], c.office_hour[num], c.message[num], c.course_long_name[num])
 
         mail_host = 'smtp.163.com'
         mail_user = 'comp3278_group2'
@@ -297,21 +332,21 @@ class HomePage:
 
 # a success window that shows "Successfully " + task each time when something completed by system
 class success:
-    def __init__(self, task, filepath):
+    def __init__(self, task, filepath = "images\\Success\\email.png"):
         self.txt = "Successfully " + task
-        self.window = Tk()
-        self.window.geometry("800x500+800+800")
-        self.window.title("success!")
-        self.window.resizable(False, False)
+        self.win = Tk()
+        self.win.geometry("800x500+800+800")
+        self.win.title("success!")
+        self.win.resizable(False, False)
         image = Image.open(filepath)
         image = image.resize((800, 500), Image.ANTIALIAS)
         self.database_frame = ImageTk.PhotoImage(image)
-        self.image_panel = Label(self.window, image=self.database_frame)
+        self.image_panel = Label(self.win, image=self.database_frame)
         self.image_panel.pack(fill='both', expand='yes')
-        self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
+        self.msg = Label(self.win, text=self.txt, bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=20, y=200)
-        self.window.mainloop()
+        self.win.mainloop()
 
 def home_win(Id):
     window = Tk()
@@ -325,6 +360,6 @@ def testSuc(filepath):
 
 if __name__ == "__main__":
   #debuging purpose
-  home_win(1)
+  home_win(4)
 #file = "images\\Success\\email.png"
 #testSuc(file)

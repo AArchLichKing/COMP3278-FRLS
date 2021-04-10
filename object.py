@@ -5,31 +5,32 @@ DEBUG = False
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
+
 class Student:
     def __init__(self, studentId):
         query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`\
                  FROM Student WHERE student_id=" + str(studentId)
-        
+
         cursor.execute(query)
-        
+
         result = cursor.fetchall()[0]
         self.username = result[0]
         self.name = result[1]
         self.email_addr = result[2]
         self.admitted_year = result[3]
         self.dept_id = result[4]
-        
+
         if DEBUG:
             print(self.username, self.name, self.email_addr, self.admitted_year, self.dept_id)
-        
+
 
 class Course:
-    #results is displayed as a list of tuples
+    # results is displayed as a list of tuples
     def __init__(self, studentId):
         query = "SELECT S.name, S.type, S.zoom_link, TI.weekday, TI.start_time, TI.duration, TI.building_name, TI.room_number, \
                         M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name\
-                 FROM (SELECT * FROM Take T1 WHERE T1.student_id="+str(studentId)+") T,\
-                                    Section S , Time TI, Course C,\
+                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T,\
+                                    Section S , (SELECT * FROM Time NATURAL JOIN Room) TI, Course C, \
                                     (SELECT temp.course_id, temp.section_id, temp.material_id, temp.name, temp.released_date, temp.link, Message.message FROM (SELECT Section.course_id, Section.section_id, Material.material_id, Material.name, Material.released_date, Material.link FROM \
                                      Material RIGHT OUTER JOIN Section ON Material.course_id = Section.course_id AND Material.section_id = Section.section_id) temp LEFT OUTER JOIN Message \
                                      ON Message.course_id = temp.course_id AND Message.section_id = temp.section_id) M,\
@@ -59,18 +60,19 @@ class Course:
         self.course_long_name = [result[16] for result in results]
 
         if DEBUG:
-            print(self.course_name)
-            print(self.course_long_name)
-            print(self.course_type)
-            print(self.zoom_link)
-            print(self.weekday)
-            print(self.instructor)
-            print(self.start_time)
-            print(self.material_name)
-            print(self.message)
+            print("course_name", self.course_name)
+            print("name", self.course_long_name)
+            print("type", self.course_type)
+            print("zoom", self.zoom_link)
+            print("weekday", self.weekday)
+            print("instructor", self.instructor)
+            print("start_time", self.start_time)
+            print("material_name", self.material_name)
+            print("message", self.message)
 
 
 if __name__ == '__main__':
-    #Test code purpose
-    student = Student(1)
-    course = Course(1)
+    # Test code purpose
+    student = Student(4)
+    course = Course(4)
+    print(student.username)
