@@ -7,6 +7,7 @@ import ctypes
 import time
 from object import Student, Course
 import mysql.connector
+from functools import partial
 
 import smtplib
 from email.mime.text import MIMEText
@@ -17,8 +18,8 @@ import pandas as pd
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 import random
 
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="facerecognition")
-cursor = myconn.cursor()
+#myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
+#cursor = myconn.cursor()
 
 def time_convert(time):
     seconds = time.seconds
@@ -38,8 +39,8 @@ class HomePage:
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
         
-        student = Student(Id) 
-        courses = Course(Id)
+        self.student = Student(Id)
+        self.courses = Course(Id)
         '''
         I wish to extract the first course name:
         course.name[0]
@@ -88,12 +89,19 @@ class HomePage:
         self.image_panel.pack(fill='both', expand='yes')
         self.coursegrid = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
+        self.image_panel = Button(f3, image=self.coursegrid, command=self.Coursewindow)
+        self.image_panel.place(x=80, y=400)
         self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=100, y=400)
+        self.image_panel.place(x=1280, y=400)
         self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=1300, y=400)
+        self.image_panel.place(x=80, y=900)
         self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=100, y=1000)
+        self.image_panel.place(x=1280, y=900)
+        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel.place(x=1280, y=1400)
+        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel.place(x=80, y=1400)
+
 
         notebook.grid(row=0, column=0, sticky="nw")
 
@@ -125,6 +133,25 @@ class HomePage:
                                        cursor="hand2")
 
         self.deadline_button2.place(x=1000, y=1000)
+
+    def Coursewindow(self):
+        self.txt = "Successfully "
+        self.window2 = Toplevel(self.window)
+        self.window2.geometry("")
+        self.window2.title("success!")
+        self.window2.resizable()
+        self.f = ImageTk.PhotoImage \
+            (file='images\\subcourse.png')
+        self.fw = Label(self.window2, image = self.f)
+        self.fw.pack(fill='both', expand='yes')
+        self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
+                         font=("yu gothic ui", 13, "bold"))
+        self.msg.place(x=20, y=200)
+        action_with_arg = partial(self.sendEmails, student, course, 1)
+        self.email = ImageTk.PhotoImage \
+            (file='images\\20-20.png')
+        self.email_b = Button(self.window2, image=self.email, command =action_with_arg)
+        self.email_b.place(x = 20, y = 1000)
 
     def connectDB():
         pass

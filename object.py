@@ -2,7 +2,7 @@ import mysql.connector
 
 DEBUG = False
 
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="1234567", database="FRLS")
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
 class Student:
