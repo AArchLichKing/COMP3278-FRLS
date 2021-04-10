@@ -147,10 +147,10 @@ class HomePage:
         self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=20, y=200)
-        action_with_arg = partial(self.sendEmails, student, course, 1)
+        action_with_arg = partial(self.sendEmails, self.student, self.course, 1)
         self.email = ImageTk.PhotoImage \
             (file='images\\20-20.png')
-        self.email_b = Button(self.window2, image=self.email, command =action_with_arg)
+        self.email_b = Button(self.window2, image=self.email, command = action_with_arg)
         self.email_b.place(x = 20, y = 1000)
 
     def connectDB():
