@@ -72,5 +72,5 @@ class Course:
 
 if __name__ == '__main__':
     #Test code purpose
-    student = Student(1)
-    course = Course(1)
+    student = Student(4)
+    course = Course(4)
