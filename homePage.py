@@ -5,6 +5,7 @@ from PIL import Image,ImageTk
 from tkintertable import TableCanvas, TableModel
 import ctypes
 import time
+from object import Student, Course
 import mysql.connector
 
 import smtplib
@@ -36,6 +37,20 @@ class HomePage:
         self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
+        
+        student = Student(Id) 
+        courses = Course(Id)
+        '''
+        I wish to extract the first course name:
+        course.name[0]
+        course.time[0]
+        
+        I wish to extract the second course name:
+        course.name[1]
+        course.time[1]
+        
+        for i in range(len(course.name)):
+        '''
 
         style = ttk.Style(window)
         style.configure('lefttab.TNotebook', tabposition='wn')
