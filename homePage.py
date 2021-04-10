@@ -1,5 +1,5 @@
 # This is a sample Python script.
-from tkinter import *
+from tkinter import ttk
 from tkinter import *
 from PIL import Image,ImageTk
 from tkintertable import TableCanvas, TableModel
@@ -36,18 +36,55 @@ class HomePage:
         self.window.geometry("3200x2000+200+200")
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
-        self.database_frame = ImageTk.PhotoImage\
-            (file='images\\home.png')
-        self.image_panel = Label(self.window, image=self.database_frame)
+
+        style = ttk.Style(window)
+        style.configure('lefttab.TNotebook', tabposition='wn')
+
+        notebook = ttk.Notebook(window, style='lefttab.TNotebook')
+        self.subframe = ImageTk.PhotoImage \
+            (file='images\\subframe.png')
+
+        f1 = Frame(notebook, bg = "white")
+        f2 = Frame(notebook, bg='blue', width = 2000, height=2000)
+        f3 = Frame(notebook, bg='blue', width = 2000, height=2000)
+        f4 = Frame(notebook, bg='blue', width = 2000, height=2000)
+
+        self.profile = ImageTk.PhotoImage \
+            (file='images\\Profile-18.png')
+        self.courses = ImageTk.PhotoImage \
+            (file='images\\courses.png')
+        self.timetable = ImageTk.PhotoImage \
+            (file='images\\timetable.png')
+        self.deadline = ImageTk.PhotoImage \
+            (file='images\\deadline.png')
+        notebook.add(f1, text='Frame 1', image = self.profile)
+        notebook.add(f2, text='Frame 2', image = self.timetable)
+        notebook.add(f3, text='Frame 3', image = self.courses)
+        notebook.add(f4, text='Frame 4', image = self.deadline)
+        self.subframe = ImageTk.PhotoImage \
+            (file='images\\subframe.png')
+        self.image_panel = Label(f1, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
+        self.image_panel = Label(f2, image=self.subframe)
+        self.image_panel.pack(fill='both', expand='yes')
+        self.image_panel = Label(f3, image=self.subframe)
+        self.image_panel.pack(fill='both', expand='yes')
+        self.image_panel = Label(f4, image=self.subframe)
+        self.image_panel.pack(fill='both', expand='yes')
+        self.coursegrid = ImageTk.PhotoImage \
+            (file='images\\coursegrid.png')
+        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel.place(x=100, y=400)
+        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel.place(x=1300, y=400)
+        self.image_panel = Button(f3, image=self.coursegrid)
+        self.image_panel.place(x=100, y=1000)
+
+        notebook.grid(row=0, column=0, sticky="nw")
+
         self.txt = "home page"
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
-        self.profile = ImageTk.PhotoImage \
-            (file='images\\profile.png')
-        self.profile_button = Button(self.window, command=self.profile, image=self.profile, relief=FLAT, borderwidth=0,
-                                     cursor="hand2")
-        self.profile_button.place(x=0, y=0)
 
         self.name = "Zhang Maoqi"
         self.clabel = Label(self.window, text= self.name, bg="white", fg="#4f4e4d",
@@ -64,33 +101,6 @@ class HomePage:
         """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.lastlogin.place(x=100, y=500)"""
-
-        self.courses = ImageTk.PhotoImage \
-            (file='images\\courses.png')
-        self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
-                                     cursor="hand2")
-        self.courses_button.place(x=0, y=800)
-
-        self.timetable = ImageTk.PhotoImage \
-            (file='images\\timetable.png')
-        self.timetable_button = Button(self.window, command=self.timetable, image=self.timetable, relief=FLAT, borderwidth=0,
-                                     cursor="hand2")
-
-        self.timetable_button.place(x=0, y=600)
-
-        self.deadline = ImageTk.PhotoImage \
-            (file='images\\deadline.png')
-        self.deadline_button = Button(self.window, command=self.timetable, image=self.deadline, relief=FLAT,
-                                       borderwidth=0,
-                                       cursor="hand2")
-
-        self.deadline_button.place(x=0, y=1000)
-
-        self.deadline_button.place(x=0, y=1000)
-        if (self.current_panel == 1):
-            self.Timetable()
-        if (self.current_panel == 2):
-            self.Courses()
 
     def Timetable(self):
         self.deadline2 = ImageTk.PhotoImage \
