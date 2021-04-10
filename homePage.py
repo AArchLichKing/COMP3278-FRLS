@@ -242,7 +242,7 @@ class HomePage:
         self.courses_button.place(x=1000, y=800)
         self.window.mainloop()
 
-    def generateClassTable(self, student, course):
+    def generateClassTable(student, course):
         #generate class table
         # class_name, start_time and end_time are lists containing each course's information
         class_name = course.course_name
@@ -277,7 +277,6 @@ class HomePage:
 
         ## transformation
         print(table)
-
 
     def slider(self):
         if self.count >= len(self.txt):
