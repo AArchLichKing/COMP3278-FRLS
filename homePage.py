@@ -117,7 +117,8 @@ class HomePage:
 
     The following course will begin within an hour. The corresponding course materials are attached below for your reference.
 
-        Course name: {2}
+        Course code: {2}
+        Course name: {17}
         Course type: {3}
         Time: {4} {5}-{6}
         Building: {7}
@@ -129,12 +130,13 @@ class HomePage:
         Instructor: {13}
         Office: {14}
         Office hour: {15}
+        Teacher's message: {16}
 
     Please check the course information and rememeber to take your course on time.
 
     Best regards,
     eLearning Team
-        """.format(student.name, student.email_addr, course.course_name[num], course.course_type[num], course.weekday[num], time_convert(course.start_time[num]), time_convert(course.start_time[num]+course.duration[num]), course.building_name[num], course.room_number[num], course.zoom_link[num], course.material_name[num], course.material_date[num], course.material_link[num], course.instructor[num], course.office[num], course.office_hour[num])
+        """.format(student.name, student.email_addr, course.course_name[num], course.course_type[num], course.weekday[num], time_convert(course.start_time[num]), time_convert(course.start_time[num]+course.duration[num]), course.building_name[num], course.room_number[num], course.zoom_link[num], course.material_name[num], course.material_date[num], course.material_link[num], course.instructor[num], course.office[num], course.office_hour[num], course.message[num], course.course_long_name[num])
 
         mail_host = 'smtp.163.com'
         mail_user = 'comp3278_group2'
@@ -153,6 +155,7 @@ class HomePage:
         smtp0bj.login(mail_user,mail_pass)
         smtp0bj.sendmail(sender,receiver,message.as_string())
         smtp0bj.quit()
+
         success("Emails sent successfully!")
 
     def profile(self):
