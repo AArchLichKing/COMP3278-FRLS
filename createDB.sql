@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2021 at 05:59 AM
+-- Generation Time: Apr 12, 2021 at 10:01 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -140,7 +140,7 @@ INSERT INTO `Material` (`course_id`, `section_id`, `material_id`, `name`, `relea
 CREATE TABLE `Message` (
   `course_id` int NOT NULL,
   `section_id` int NOT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `message` varchar(160) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -201,6 +201,7 @@ INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) V
 (4, 2, 'STAT4601 2A Tutorial 1, 2020', 'Tutorial', 'https://hku.zoom.us/j/93339305994?pwd=cDZ3MnNycDFnQmdFN05tTkNmck52QT09'),
 (4, 3, 'STAT4601 2A Tutorial 2, 2020', 'Tutorial', 'https://hku.zoom.com.cn/j/3916015671'),
 (6, 1, 'STAT3621 2A, 2020', 'lecture', 'https://hku.zoom.us/j/99199478092?pwd=SmZ3UFFvSkJvWEh3aUxYaTNYdGJBZz09'),
+(6, 2, 'STAT3621 2A Tutorial, 2020', 'Tutorial', ''),
 (9, 1, 'MATH3911 2A, 2020', 'Lecture', ''),
 (10, 1, 'STAT3600 2B, 2019', 'Lecture', ''),
 (10, 2, 'STAT3600 2B Tutorial, 2019', 'Tutorial', '');
@@ -217,9 +218,9 @@ CREATE TABLE `Student` (
   `info.email_addr` varchar(80) NOT NULL,
   `info.admitted_year` int NOT NULL,
   `info.dept_id` int NOT NULL,
-  `last_login` timestamp NOT NULL,
-  `last_logout` timestamp NOT NULL,
-  `duration` time NOT NULL,
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_logout` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `duration` time NOT NULL DEFAULT '00:00:00',
   `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -282,15 +283,15 @@ CREATE TABLE `Teach` (
 
 INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 (1, 1, 1),
-(2, 3, 1),
-(3, 2, 1),
-(4, 4, 1),
-(4, 10, 1),
-(5, 4, 2),
 (7, 1, 2),
+(3, 2, 1),
+(2, 3, 1),
+(4, 4, 1),
+(5, 4, 2),
 (8, 6, 1),
-(9, 10, 2),
-(10, 9, 1);
+(10, 9, 1),
+(4, 10, 1),
+(9, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -332,7 +333,8 @@ INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time
 -- Indexes for table `Course`
 --
 ALTER TABLE `Course`
-  ADD PRIMARY KEY (`course_id`);
+  ADD PRIMARY KEY (`course_id`),
+  ADD KEY `dept_id` (`dept_id`);
 
 --
 -- Indexes for table `Department`
@@ -344,13 +346,20 @@ ALTER TABLE `Department`
 -- Indexes for table `Instructor`
 --
 ALTER TABLE `Instructor`
-  ADD PRIMARY KEY (`instructor_id`);
+  ADD PRIMARY KEY (`instructor_id`),
+  ADD KEY `dept_id` (`dept_id`);
 
 --
 -- Indexes for table `Material`
 --
 ALTER TABLE `Material`
   ADD PRIMARY KEY (`course_id`,`section_id`,`material_id`);
+
+--
+-- Indexes for table `Message`
+--
+ALTER TABLE `Message`
+  ADD PRIMARY KEY (`course_id`,`section_id`,`message`);
 
 --
 -- Indexes for table `Room`
@@ -368,25 +377,90 @@ ALTER TABLE `Section`
 -- Indexes for table `Student`
 --
 ALTER TABLE `Student`
-  ADD PRIMARY KEY (`student_id`);
+  ADD PRIMARY KEY (`student_id`),
+  ADD KEY `info.dept_id` (`info.dept_id`);
 
 --
 -- Indexes for table `Take`
 --
 ALTER TABLE `Take`
-  ADD PRIMARY KEY (`student_id`,`course_id`,`section_id`);
+  ADD PRIMARY KEY (`student_id`,`course_id`,`section_id`),
+  ADD KEY `course_id` (`course_id`,`section_id`);
 
 --
 -- Indexes for table `Teach`
 --
 ALTER TABLE `Teach`
-  ADD PRIMARY KEY (`instructor_id`,`course_id`,`section_id`);
+  ADD PRIMARY KEY (`instructor_id`,`course_id`,`section_id`),
+  ADD KEY `teach_ibfk_2` (`course_id`,`section_id`);
 
 --
 -- Indexes for table `Time`
 --
 ALTER TABLE `Time`
-  ADD PRIMARY KEY (`course_id`,`section_id`,`time_id`);
+  ADD PRIMARY KEY (`course_id`,`section_id`,`time_id`),
+  ADD KEY `room_id` (`room_id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Course`
+--
+ALTER TABLE `Course`
+  ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `Department` (`dept_id`);
+
+--
+-- Constraints for table `Instructor`
+--
+ALTER TABLE `Instructor`
+  ADD CONSTRAINT `instructor_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `Department` (`dept_id`);
+
+--
+-- Constraints for table `Material`
+--
+ALTER TABLE `Material`
+  ADD CONSTRAINT `material_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Message`
+--
+ALTER TABLE `Message`
+  ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Section`
+--
+ALTER TABLE `Section`
+  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `Course` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Student`
+--
+ALTER TABLE `Student`
+  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`info.dept_id`) REFERENCES `Department` (`dept_id`);
+
+--
+-- Constraints for table `Take`
+--
+ALTER TABLE `Take`
+  ADD CONSTRAINT `take_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `take_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `Student` (`student_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Teach`
+--
+ALTER TABLE `Teach`
+  ADD CONSTRAINT `teach_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `Instructor` (`instructor_id`),
+  ADD CONSTRAINT `teach_ibfk_2` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `Time`
+--
+ALTER TABLE `Time`
+  ADD CONSTRAINT `time_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `time_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
