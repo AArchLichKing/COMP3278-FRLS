@@ -405,6 +405,7 @@ class ChangeWin:
                 cursor.execute(update)
                 myconn.commit()
                 self.window.destroy()
+                success("change email")
 
         if attr == "password":
             attr = "`password`"
@@ -418,6 +419,8 @@ class ChangeWin:
                 cursor.execute(update)
                 myconn.commit()
                 self.window.destroy()
+                success("change password")
+
 
 
 
