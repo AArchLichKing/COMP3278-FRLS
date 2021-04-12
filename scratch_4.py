@@ -1,20 +1,15 @@
-import tkinter as tk
-import ctypes
-ctypes.windll.shcore.SetProcessDpiAwareness(1)
-import random
-from functools import partial
+from tkinter import *
 
-root1 = tk.Tk()
+top = Tk()
+sb = Scrollbar(top)
+sb.pack(side=RIGHT, fill=Y)
 
+mylist = Listbox(top, yscrollcommand=sb.set)
 
-class new_window():
-    def __init__(self, id):
-        self.window = tk.Toplevel()
+for line in range(30):
+    mylist.insert(END, "Number " + str(line))
 
+mylist.pack(side=LEFT)
+sb.config(command=mylist.yview)
 
-
-background_image1 = tk.PhotoImage(file = 'images\\email.png')
-# have used a button not a label for me to make another tk window
-background_button1 = tk.Button(root1, image = background_image1, command = partial(new_window,1))
-background_button1.pack()
-root1.mainloop()
+mainloop()

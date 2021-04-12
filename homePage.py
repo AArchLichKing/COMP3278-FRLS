@@ -65,41 +65,57 @@ class HomePage:
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
 
-        f1 = Frame(notebook, bg="white")
-        f2 = Frame(notebook, width=2000, height=2000)
-        f3 = Frame(notebook, width=2000, height=2000)
-        f4 = Frame(notebook, width=2000, height=2000)
+        self.f1 = Frame(notebook, bg="white")
+        self.f2 = Frame(notebook, width=2000, height=2000)
+        self.f3 = Frame(notebook, width=2000, height=2000)
+        self.f4 = Frame(notebook, width=2000, height=2000)
 
         self.profile = ImageTk.PhotoImage \
-            (file='images\\Profile-18.png')
+            (file='images\\Profile.png')
         self.coursestab = ImageTk.PhotoImage \
             (file='images\\courses.png')
         self.timetable = ImageTk.PhotoImage \
             (file='images\\timetable.png')
         self.deadline = ImageTk.PhotoImage \
             (file='images\\deadline.png')
-        notebook.add(f1, text='Frame 1', image=self.profile)
-        notebook.add(f2, text='Frame 2', image=self.timetable)
-        notebook.add(f3, text='Frame 3', image=self.coursestab)
-        notebook.add(f4, text='Frame 4', image=self.deadline)
+        notebook.add(self.f1, text='Frame 1', image=self.profile)
+        notebook.add(self.f2, text='Frame 2', image=self.timetable)
+        notebook.add(self.f3, text='Frame 3', image=self.coursestab)
+        notebook.add(self.f4, text='Frame 4', image=self.deadline)
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
         self.subframe1 = ImageTk.PhotoImage \
             (file='images\\f1.png')
-        self.image_panel = Label(f1, image=self.subframe1)
+        self.image_panel = Label(self.f1, image=self.subframe1)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(f2, image=self.subframe)
+        self.image_panel = Label(self.f2, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(f3, image=self.subframe)
+        self.image_panel = Label(self.f3, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(f4, image=self.subframe)
+        self.image_panel = Label(self.f4, image=self.subframe)
         self.image_panel.pack(fill='both', expand='yes')
         self.ttF = ImageTk.PhotoImage \
             (file='images\\ttFrame.png')
-        self.image_panel = Label(f2, image=self.ttF)
+        self.image_panel = Label(self.f2, image=self.ttF)
         self.image_panel.place(x=300, y=700)
         self.coursegrid = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
+        
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+        """
         self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=400)
         self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
@@ -111,10 +127,9 @@ class HomePage:
         self.image_panel = Button(f3, image=self.coursegrid)
         self.image_panel.place(x=1280, y=1400)
         self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=80, y=1400)
+        self.image_panel.place(x=80, y=1400)    """
 
         notebook.grid(row=0, column=0, sticky="nw")
-
         self.txt = "home page"
         self.heading = Label(self.window, text=self.txt, font=("yu gothic ui", 30, "bold"), bg="white", fg="black",
                              bd=5, relief=FLAT)
@@ -139,46 +154,55 @@ class HomePage:
         self.timegrid = ImageTk.PhotoImage(file='images\\timegrid.png')
         self.X = len(self.timetable2)
         self.Y = len(self.timetable2.columns)  # 5
-        self.l_name = Label(f1, text=self.student.name, bg="white", fg="#4f4e4d",
+        self.l_name = Label(self.f1, text=self.student.name, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.l_name.place(x=400, y=285)
-        self.l_email = Label(f1, text=self.student.email_addr, bg="white", fg="#4f4e4d",
+        self.l_email = Label(self.f1, text=self.student.email_addr, bg="white", fg="#4f4e4d",
                              font=("yu gothic ui", 13, "bold"))
         self.l_email.place(x=500, y=585)
-        self.l_user_id = Label(f1, text=self.student.username, bg="white", fg="#4f4e4d",
+        self.l_user_id = Label(self.f1, text=self.student.username, bg="white", fg="#4f4e4d",
                                font=("yu gothic ui", 13, "bold"))
         self.l_user_id.place(x=500, y=385)
-        self.l_year = Label(f1, text=self.student.admitted_year, bg="white", fg="#4f4e4d",
+        self.l_year = Label(self.f1, text=self.student.admitted_year, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.l_year.place(x=600, y=485)
-        self.login = Label(f1, text=self.student.last_login, bg="white", fg="#4f4e4d",
+        self.login = Label(self.f1, text=self.student.last_login, bg="white", fg="#4f4e4d",
                            font=("yu gothic ui", 13, "bold"))
         self.login.place(x=600, y=1685)
-        self.logout = Label(f1, text=self.student.last_logout, bg="white", fg="#4f4e4d",
+        self.logout = Label(self.f1, text=self.student.last_logout, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.logout.place(x=600, y=1585)
-        self.duration = Label(f1, text=self.student.duration, bg="white", fg="#4f4e4d",
+        self.duration = Label(self.f1, text=self.student.duration, bg="white", fg="#4f4e4d",
                               font=("yu gothic ui", 13, "bold"))
         self.duration.place(x=600, y=1785)
         self.changee = ImageTk.PhotoImage \
             (file='images\\changeemail.png')
-        self.changee_button = Button(f1, command=partial(self.change, "email", self.student), image=self.changee,
+        self.changee_button = Button(self.f1, command=partial(self.change, "email", self.student), image=self.changee,
                                      relief=FLAT, borderwidth=0,
                                      cursor="hand2")
         self.changee_button.place(x=100, y=740)
         self.changepw = ImageTk.PhotoImage \
             (file='images\\changepw.png')
-        self.changepw_button = Button(f1, image=self.changepw, command=partial(self.change, "password", self.student),
+        self.changepw_button = Button(self.f1, image=self.changepw, command=partial(self.change, "password", self.student),
                                       relief=FLAT, borderwidth=0,
                                       cursor="hand2")
         self.changepw_button.place(x=850, y=740)
+        self.notice = Label(self.f4, text="Deadline notification", bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.notice.place(x=100, y=80)
+        self.notice2 = Label(self.f4, text="Deadline notification", bg="white", fg="#4f4e4d",
+                            font=("yu gothic ui", 13, "bold"))
+        self.notice2.place(x=100, y=80)
+        self.CheckCourse(self.courses)
 
         self.update_clock()
+
+
         for i in range(self.X):
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i, j], str)):
-                    self.tt = Label(f2, image=self.timegrid)
-                    self.ttlabel = Label(f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
+                    self.tt = Label(self.f2, image=self.timegrid)
+                    self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
                                          bg="LightSkyBlue1")
                     a = 600 + 300 * j
                     b = 800 + 60 * (i - 1)
@@ -207,10 +231,6 @@ class HomePage:
     def change(self, task, student):
         ChangeWin(self.window, task, student)
         self.student = Student(self.Id)
-
-    def generateMessage():
-        # generate latest messages
-        pass
 
     def sendEmails(self, s, c, num):
         # send emails
@@ -266,29 +286,13 @@ class HomePage:
 
         success("send the emails!")
 
-    def Courses(self):
-        coursename = "COMP3278, Section 2B, 2020"
-        coursetacher = "Teacher" + "Luo Ping"
-        self.coursegrid = ImageTk.PhotoImage \
-            (file='images\\coursegrid.png')
-        self.courses_button = Button(self.window, command=self.window.destroy, image=self.coursegrid, relief=FLAT,
-                                     borderwidth=0,
-                                     cursor="hand2")
-        self.courses_button.place(x=800, y=600)
-        self.tlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
-                            font=("yu gothic ui", 13, "bold"))
-        self.tlabel.place(x=800, y=600)
-        self.teacherlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
-                                  font=("yu gothic ui", 13, "bold"))
-        self.teacherlabel.place(x=800, y=700)
-
-    def courses(self):
-        self.coursegrid = ImageTk.PhotoImage \
-            (file='images\\coursegrid.png')
-        self.courses_button = Button(self.window, command=self.courses, image=self.courses, relief=FLAT, borderwidth=0,
-                                     cursor="hand2")
-        self.courses_button.place(x=1000, y=800)
-        self.window.mainloop()
+    def CheckCourse(self, course):
+        now = time.strftime("%H:%M:%S")
+        if (TimeConverter(now) == 0 ):
+            self.msg("You have class in ten minutes! " +
+                     "\n Click the right button to send details to your email",1)
+        else :
+            self.msg("No courses in ten minutes, check timetable for details",0)
 
     def slider(self):
         if self.count >= len(self.txt):
@@ -306,8 +310,30 @@ class HomePage:
         self.label.configure(text=now)
         self.window.after(1000, self.update_clock)
 
+    def msg(self, text, y):
+        if y == 1:
+            self.haveclassbg = ImageTk.PhotoImage \
+                           (file='images\\haveclass.png')
+            self.haveclass = Label(self.f2, image=self.haveclassbg,
+                                       relief=FLAT, borderwidth=0,
+                                       cursor="hand2")
+            self.haveclass.place(x=300, y=350)
+            self.checkButton = ImageTk.PhotoImage \
+                           (file='images\\checkButton.png')
+            self.check_button = Button(self.f2, image=self.checkButton, command=partial(self.sendEmails, self.student, self.courses, 0),
+                                       relief=FLAT, borderwidth=0,                                                                                 
+                                       cursor="hand2")                                                                                             
+            self.check_button.place(x=1900, y=400)
+        else:
+             self.noclassbg = ImageTk.PhotoImage \
+                            (file='images\\noclass.png')
+             self.noclass = Label(self.f2, image=self.noclassbg,
+                                        relief=FLAT, borderwidth=0,
+                                        cursor="hand2")
+             self.noclass.place(x=300, y=350)
+        self.msg = Label(self.f2, text = text, font=("yu gothic ui", 13, "bold"))
+        self.msg.place(x=400, y = 400)                       
 
-# a success window that shows "Successfully " + task each time when something completed by system
 class successWin:
     def __init__(self, task):
         self.txt = "Successfully " + task
@@ -321,11 +347,9 @@ class successWin:
         self.msg.place(x=80, y=250)
         self.window.mainloop()
 
-
 def success(task):
-    successWin(task)
-    successWin.window.mainloop
-
+    S = successWin(task)
+    S.window.mainloop()
 
 def generateClassTable(student, course):
     # generate class table
@@ -359,7 +383,6 @@ def generateClassTable(student, course):
         for i in range(i_start, i_end + 1):
             table[day[j]].iloc[i] = class_name[j]
     return table
-
 
 class ChangeWin:
     def __init__(self, window, task, student):
@@ -399,7 +422,6 @@ class ChangeWin:
 
             print(re.search(regex, new))
             if result[0][0] == old and re.search(regex, new) and new != old:
-                print("yes")
                 new = "\'"+ new +"\'"
                 update = "UPDATE Student SET `info.email_addr`= {} WHERE student_id={}".format(new, Id)
                 cursor.execute(update)
@@ -413,7 +435,6 @@ class ChangeWin:
             cursor.execute(select)
             result = cursor.fetchall()
             if result[0][0] == old and new != old:
-                print("yes")
                 new = "\'"+ new +"\'"
                 update = "UPDATE Student SET `password`= {} WHERE student_id={}".format(new, Id)
                 cursor.execute(update)
@@ -421,17 +442,25 @@ class ChangeWin:
                 self.window.destroy()
                 success("change password")
 
-
-
-
-
 def home_win(Id):
     window = Tk()
     Id = 0
     HomePage(window, Id)
     window.mainloop()
 
+def TimeConverter(timestr):
+    ftr = [3600,60,1]
+    return sum([a*b for a,b in zip(ftr, map(int,timestr.split(':')))])
+
 
 if __name__ == "__main__":
     # debuging purpose
     home_win(4)
+
+
+
+
+
+
+
+
