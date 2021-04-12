@@ -35,7 +35,6 @@ def time_convert(time):
         minute = "0" + minute
     return hour + ":" + minute
 
-
 class HomePage:
     def __init__(self, window, Id):
         self.Id = Id
@@ -310,7 +309,6 @@ class HomePage:
              self.msg(current,1)
         else:
              self.msg("No courses in ten minutes, check timetable for details",0)
-
 
     def slider(self):
         if self.count >= len(self.txt):

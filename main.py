@@ -16,7 +16,7 @@ import ctypes
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="dzx3501", database="FRLS")
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
 class ConnectDatabase:
@@ -210,25 +210,29 @@ class ConnectDatabase:
         #read username from blank
         register_win = Toplevel(self.window)
         register_win.title('Register for face regcognition system')
-        
+        register_win.geometry("1000x600+800+800")
+        register_win.resizable(False, False)
+        self.changebg = ImageTk.PhotoImage \
+            (file='images\\changebg.png')
+        self.bg = Label(register_win, image=self.changebg)
+        self.bg.pack(fill='both', expand='yes')
         self.username_label = Label(register_win, text="Username", bg="white", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
-        self.username_label.place(x=100, y=100)
+        self.username_label.place(x=50, y=80)
         self.register_username_entry = Entry(register_win, relief=FLAT, bg="alice blue", fg="#6b6a69", 
                                     font=("yu gothic ui semibold", 12))
-        self.register_username_entry.place(x=100, y=200)
-                                    
-        self.username_label = Label(register_win, text="Updated password (if any)", bg="white", fg="#4f4e4d",
+        self.register_username_entry.place(x=420, y=80, width=500)
+        self.username_label = Label(register_win, text="password", bg="white", fg="#4f4e4d",
                                     font=("yu gothic ui", 13, "bold"))
-        self.username_label.place(x=800, y=100)
-        
+        self.username_label.place(x=50, y=220)
         self.register_password_entry = Entry(register_win, relief=FLAT, bg="alice blue", fg="#6b6a69", 
                                     font=("yu gothic ui semibold", 12))
-        self.register_password_entry.place(x=800, y=200)
-        
-        self.ok_button = Button(register_win, command = okay, text="Register", relief=FLAT, borderwidth=0, background="white",
-                                    activebackground="white", cursor="hand2")
-        self.ok_button.place(x=300, y=300)
+        self.register_password_entry.place(x=420, y=220, width=500)
+
+        self.confirmNew = ImageTk.PhotoImage \
+            (file='images\\confirm.png')
+        self.confirml = Button(register_win, image=self.confirmNew, command=okay)
+        self.confirml.place(x=300, y=400)
 
 
     def slider(self):
@@ -255,6 +259,5 @@ def win():
     window = Tk()
     ConnectDatabase(window)
     window.mainloop()
-
 
 win()
