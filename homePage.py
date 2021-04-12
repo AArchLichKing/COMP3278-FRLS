@@ -9,6 +9,7 @@ from object import Student, Course
 import mysql.connector
 from functools import partial
 import re
+import datetime
 
 import smtplib
 from email.mime.text import MIMEText
@@ -288,11 +289,38 @@ class HomePage:
 
     def CheckCourse(self, course):
         now = time.strftime("%H:%M:%S")
-        if (TimeConverter(now) == 0 ):
-            self.msg("You have class in ten minutes! " +
-                     "\n Click the right button to send details to your email",1)
-        else :
-            self.msg("No courses in ten minutes, check timetable for details",0)
+        now = time.strftime("%H:%M:%S")
+        current = TimeConverter(now)
+        today = 1 #datetime.datetime.today().weekday()
+        flag = False
+        num = 0
+        for i in range(len(course.start_time)):
+            start = course.start_time[i]
+            weekday = course.weekday[i]
+            duration = course.duration[i]
+            D = ["MON", "TUE","WED","THU","FRI"]
+            d = dict(enumerate(D))
+            if (weekday == d.get(today)):
+                if (start.seconds - current <= 3600) and (start.seconds >= current):
+                    flag = True
+                    num = i
+                    break
+                elif (start.seconds+duration.seconds  >= current and start.seconds < current):
+                    num = -i
+                    flag = True
+                    break
+
+
+        if flag == True and num >= 0:
+             upcoming = "You have class {} in ten minutes!\n Click the right button to send details to your email".format(course.course_name[num])
+             self.msg(upcoming,1)
+        elif flag:
+             current = "You are currentlt taking {}! \n Click the right button to send details to your email".format(course.course_name[-num])
+             self.msg(current,1)
+
+        else:
+             self.msg("No courses in ten minutes, check timetable for details",0)
+
 
     def slider(self):
         if self.count >= len(self.txt):
@@ -450,21 +478,9 @@ def home_win(Id):
 
 def TimeConverter(timestr):
     ftr = [3600,60,1]
-    return sum([a*b for a,b in zip(ftr, map(int,timestr.split(':')))])
+    return sum([a*b for a,b in zip(ftr, map(int, timestr.split(':')))])
 
 
 if __name__ == "__main__":
     # debuging purpose
-    #home_win(4)
-    course=Course(4)
-    now = time.strftime("%H:%M:%S")          
-    current = TimeConverter(now)
-    flag = False
-    num = 0
-    for i in range(len(course.start_time)):
-        start = course.start_time[i]
-        print(start)
-        if (start.seconds - current <= 3600) and (start.seconds >= current):
-            flag = True
-            num = i
-            break
+    home_win(4)
