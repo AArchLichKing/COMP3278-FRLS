@@ -1,18 +1,20 @@
 # This is a sample Python script.
 from tkinter import ttk
 from tkinter import *
-from PIL import Image,ImageTk
+from PIL import Image, ImageTk
 from tkintertable import TableCanvas, TableModel
 import ctypes
 import time
 from object import Student, Course
 import mysql.connector
 from functools import partial
+import re
 
 import smtplib
 from email.mime.text import MIMEText
 ## import packages for send_email()
 import pandas as pd
+
 ## import packages for generateClassTable()
 
 ctypes.windll.shcore.SetProcessDpiAwareness(1)
@@ -21,18 +23,21 @@ import random
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
+
 def time_convert(time):
     seconds = time.seconds
     hour = str(seconds // 3600)
     if len(hour) == 1:
         hour = "0" + hour
-    minute = str((seconds//60)%60)
+    minute = str((seconds // 60) % 60)
     if len(minute) == 1:
         minute = "0" + minute
     return hour + ":" + minute
 
+
 class HomePage:
     def __init__(self, window, Id):
+        self.Id = Id
         self.current_panel = 2
         self.window = window
         self.window.geometry("3200x2000+200+100")
@@ -60,10 +65,10 @@ class HomePage:
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
 
-        f1 = Frame(notebook, bg = "white")
-        f2 = Frame(notebook, width = 2000, height=2000)
-        f3 = Frame(notebook, width = 2000, height=2000)
-        f4 = Frame(notebook, width = 2000, height=2000)
+        f1 = Frame(notebook, bg="white")
+        f2 = Frame(notebook, width=2000, height=2000)
+        f3 = Frame(notebook, width=2000, height=2000)
+        f4 = Frame(notebook, width=2000, height=2000)
 
         self.profile = ImageTk.PhotoImage \
             (file='images\\Profile-18.png')
@@ -73,10 +78,10 @@ class HomePage:
             (file='images\\timetable.png')
         self.deadline = ImageTk.PhotoImage \
             (file='images\\deadline.png')
-        notebook.add(f1, text='Frame 1', image = self.profile)
-        notebook.add(f2, text='Frame 2', image = self.timetable)
-        notebook.add(f3, text='Frame 3', image = self.coursestab)
-        notebook.add(f4, text='Frame 4', image = self.deadline)
+        notebook.add(f1, text='Frame 1', image=self.profile)
+        notebook.add(f2, text='Frame 2', image=self.timetable)
+        notebook.add(f3, text='Frame 3', image=self.coursestab)
+        notebook.add(f4, text='Frame 4', image=self.deadline)
         self.subframe = ImageTk.PhotoImage \
             (file='images\\subframe.png')
         self.subframe1 = ImageTk.PhotoImage \
@@ -97,11 +102,11 @@ class HomePage:
             (file='images\\coursegrid.png')
         self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
+        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=1280, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
+        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=80, y=900)
-        self.image_panel = Button(f3, image=self.coursegrid,command=partial(self.Coursewindow, self.courses, 0))
+        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
         self.image_panel.place(x=1280, y=900)
         self.image_panel = Button(f3, image=self.coursegrid)
         self.image_panel.place(x=1280, y=1400)
@@ -115,15 +120,15 @@ class HomePage:
                              bd=5, relief=FLAT)
 
         self.name = self.student.name
-        self.clabel = Label(self.window, text= self.name, bg="white", fg="#4f4e4d",
+        self.clabel = Label(self.window, text=self.name, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.clabel.place(x=170, y=380)
 
         self.clabel = Label(self.window, text="Current time", bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
+                            font=("yu gothic ui", 13, "bold"))
         self.clabel.place(x=100, y=480)
         self.label = Label(self.window, text="", bg="white", fg="#4f4e4d",
-                                    font=("yu gothic ui", 13, "bold"))
+                           font=("yu gothic ui", 13, "bold"))
         self.update_clock()
         self.label.place(x=450, y=480)
         """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
@@ -133,48 +138,50 @@ class HomePage:
         print(self.timetable2)
         self.timegrid = ImageTk.PhotoImage(file='images\\timegrid.png')
         self.X = len(self.timetable2)
-        self.Y = len(self.timetable2.columns) #5
+        self.Y = len(self.timetable2.columns)  # 5
         self.l_name = Label(f1, text=self.student.name, bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
-        self.l_name.place(x = 400, y = 285)
+                            font=("yu gothic ui", 13, "bold"))
+        self.l_name.place(x=400, y=285)
         self.l_email = Label(f1, text=self.student.email_addr, bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
-        self.l_email.place(x = 500, y=585)
-        self.l_user_id = Label(f1, text=self.student.username, bg="white", fg="#4f4e4d",
                              font=("yu gothic ui", 13, "bold"))
+        self.l_email.place(x=500, y=585)
+        self.l_user_id = Label(f1, text=self.student.username, bg="white", fg="#4f4e4d",
+                               font=("yu gothic ui", 13, "bold"))
         self.l_user_id.place(x=500, y=385)
         self.l_year = Label(f1, text=self.student.admitted_year, bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
-        self.l_year.place(x = 600, y=485)
-        self.login = Label(f1, text=self.student.last_login, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
+        self.l_year.place(x=600, y=485)
+        self.login = Label(f1, text=self.student.last_login, bg="white", fg="#4f4e4d",
+                           font=("yu gothic ui", 13, "bold"))
         self.login.place(x=600, y=1685)
         self.logout = Label(f1, text=self.student.last_logout, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.logout.place(x=600, y=1585)
         self.duration = Label(f1, text=self.student.duration, bg="white", fg="#4f4e4d",
-                            font=("yu gothic ui", 13, "bold"))
+                              font=("yu gothic ui", 13, "bold"))
         self.duration.place(x=600, y=1785)
         self.changee = ImageTk.PhotoImage \
             (file='images\\changeemail.png')
-        self.changee_button = Button(f1, command = partial(change, "email", self.student), image=self.changee, relief=FLAT, borderwidth=0,
+        self.changee_button = Button(f1, command=partial(self.change, "email", self.student), image=self.changee,
+                                     relief=FLAT, borderwidth=0,
                                      cursor="hand2")
         self.changee_button.place(x=100, y=740)
         self.changepw = ImageTk.PhotoImage \
             (file='images\\changepw.png')
-        self.changepw_button = Button(f1, image=self.changee, command = partial(change, "password", self.student), relief=FLAT, borderwidth=0,
-                                     cursor="hand2")
+        self.changepw_button = Button(f1, image=self.changepw, command=partial(self.change, "password", self.student),
+                                      relief=FLAT, borderwidth=0,
+                                      cursor="hand2")
         self.changepw_button.place(x=850, y=740)
-
 
         self.update_clock()
         for i in range(self.X):
             for j in range(self.Y):
-                if (isinstance(self.timetable2.iloc[i,j], str)):
+                if (isinstance(self.timetable2.iloc[i, j], str)):
                     self.tt = Label(f2, image=self.timegrid)
-                    self.ttlabel = Label(f2, text = self.timetable2.iloc[i,j], font=("yu gothic ui", 6, "bold"), bg="LightSkyBlue1")
-                    a = 600+300*j
-                    b = 800+60*(i-1)
+                    self.ttlabel = Label(f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
+                                         bg="LightSkyBlue1")
+                    a = 600 + 300 * j
+                    b = 800 + 60 * (i - 1)
                     self.tt.place(x=a, y=b)
                     self.ttlabel.place(x=a, y=b)
 
@@ -185,7 +192,7 @@ class HomePage:
         self.window2.resizable()
         self.f = ImageTk.PhotoImage \
             (file='images\\subcourse.png')
-        self.fw = Label(self.window2, image = self.f)
+        self.fw = Label(self.window2, image=self.f)
         self.fw.pack(fill='both', expand='yes')
         self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 13, "bold"))
@@ -193,18 +200,20 @@ class HomePage:
         action_with_arg = partial(self.sendEmails, self.student, self.courses, 0)
         self.email = ImageTk.PhotoImage \
             (file='images\\20-20.png')
-        self.email_b = Button(self.window2, image=self.email, command = partial(self.sendEmails, self.student, self.courses, 0))
-        self.email_b.place(x = 20, y = 1800)
+        self.email_b = Button(self.window2, image=self.email,
+                              command=partial(self.sendEmails, self.student, self.courses, 0))
+        self.email_b.place(x=20, y=1800)
 
-    def connectDB():
-        pass
-    
+    def change(self, task, student):
+        ChangeWin(self.window, task, student)
+        self.student = Student(self.Id)
+
     def generateMessage():
-        #generate latest messages
-        pass 
-    
+        # generate latest messages
+        pass
+
     def sendEmails(self, s, c, num):
-        #send emails
+        # send emails
         ## set up sender's account
         num = 0
         address = "maoqi@connect.hku.hk"
@@ -231,7 +240,11 @@ class HomePage:
 
     Best regards,
     eLearning Team
-        """.format(s.name, s.email_addr, c.course_name[num], c.course_type[num], c.weekday[num], time_convert(c.start_time[num]), time_convert(c.start_time[num]+c.duration[num]), c.building_name[num], c.room_number[num], c.zoom_link[num], c.material_name[num], c.material_date[num], c.material_link[num], c.instructor[num], c.office[num], c.office_hour[num], c.message[num], c.course_long_name[num])
+        """.format(s.name, s.email_addr, c.course_name[num], c.course_type[num], c.weekday[num],
+                   time_convert(c.start_time[num]), time_convert(c.start_time[num] + c.duration[num]),
+                   c.building_name[num], c.room_number[num], c.zoom_link[num], c.material_name[num],
+                   c.material_date[num], c.material_link[num], c.instructor[num], c.office[num], c.office_hour[num],
+                   c.message[num], c.course_long_name[num])
 
         mail_host = 'smtp.163.com'
         mail_user = 'comp3278_group2'
@@ -240,15 +253,15 @@ class HomePage:
         receiver = [address]
 
         ## set up email information
-        message = MIMEText(content,'plain','utf-8')
+        message = MIMEText(content, 'plain', 'utf-8')
         message['Subject'] = 'HKU Course Notices'
         message['From'] = "{}".format(sender)
         message['To'] = ",".join(receiver)
 
         ## send email
-        smtp0bj = smtplib.SMTP_SSL(mail_host,465)
-        smtp0bj.login(mail_user,mail_pass)
-        smtp0bj.sendmail(sender,receiver,message.as_string())
+        smtp0bj = smtplib.SMTP_SSL(mail_host, 465)
+        smtp0bj.login(mail_user, mail_pass)
+        smtp0bj.sendmail(sender, receiver, message.as_string())
         smtp0bj.quit()
 
         success("send the emails!")
@@ -258,14 +271,15 @@ class HomePage:
         coursetacher = "Teacher" + "Luo Ping"
         self.coursegrid = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
-        self.courses_button = Button(self.window, command=self.window.destroy, image=self.coursegrid, relief=FLAT, borderwidth=0,
+        self.courses_button = Button(self.window, command=self.window.destroy, image=self.coursegrid, relief=FLAT,
+                                     borderwidth=0,
                                      cursor="hand2")
-        self.courses_button.place(x = 800, y = 600)
+        self.courses_button.place(x=800, y=600)
         self.tlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
         self.tlabel.place(x=800, y=600)
         self.teacherlabel = Label(self.window, text=coursename, bg="white", fg="#4f4e4d",
-                            font=("yu gothic ui", 13, "bold"))
+                                  font=("yu gothic ui", 13, "bold"))
         self.teacherlabel.place(x=800, y=700)
 
     def courses(self):
@@ -275,39 +289,6 @@ class HomePage:
                                      cursor="hand2")
         self.courses_button.place(x=1000, y=800)
         self.window.mainloop()
-
-    def generateClassTable(student, course):
-        #generate class table
-        # class_name, start_time and end_time are lists containing each course's information
-        class_name = course.course_name
-        start_time = [time_convert(i) for i in course.start_time]
-        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
-        day = course.weekday
-        time_list = ["09:00-09:30","09:30-10:00","10:00-10:30","10:30-11:00","11:00-11:30","11:30-12:00","12:00-12:30","12:30-13:00","13:00-13:30","13:30-14:00","14:00-14:30","14:30-15:00","15:00-15:30","15:30-16:00","16:00-16:30","16:30-17:00","17:00-17:30","17:30-18:00","18:00-18:30"]
-
-        week_list = ['MON','TUE','WED','THU','FRI']
-        table = pd.DataFrame(index = time_list,columns = week_list)
-        for i in range(len(table)):
-            for j in range(len(table.columns)):
-                table.iloc[i, j] = 'wrong'
-
-        for j in range(len(class_name)):
-            print(class_name[j])
-            i_start = 0
-            i_end = 0
-            for i in range(len(table.index)):
-                start = table.index[i].split('-')[0]
-                end = table.index[i].split('-')[1]
-                if (start_time[j] == start):
-                    i_start = i
-                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (end.split(':')[1] == "30"):
-                    i_end = i
-                if (end_time[j] == end):
-                    i_end = i
-            ## locate the time range
-
-            for i in range(i_start,i_end+1):
-                table[day[j]].iloc[i] = class_name[j]
 
     def slider(self):
         if self.count >= len(self.txt):
@@ -325,8 +306,9 @@ class HomePage:
         self.label.configure(text=now)
         self.window.after(1000, self.update_clock)
 
+
 # a success window that shows "Successfully " + task each time when something completed by system
-class success:
+class successWin:
     def __init__(self, task):
         self.txt = "Successfully " + task
         self.window = Tk()
@@ -335,79 +317,97 @@ class success:
         self.window.resizable(False, False)
 
         self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
+                         font=("yu gothic ui", 13, "bold"))
         self.msg.place(x=80, y=250)
         self.window.mainloop()
 
 
+def success(task):
+    successWin(task)
+    successWin.window.mainloop
+
+
 def generateClassTable(student, course):
-        # generate class table
-        # class_name, start_time and end_time are lists containing each course's information
-        class_name = course.course_name
-        start_time = [time_convert(i) for i in course.start_time]
-        end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
-        day = course.weekday
-        print(class_name)
-        print(start_time)
-        print(end_time)
-        print(day)
-        time_list = ["09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-11:30", "11:30-12:00",
-                     "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00", "14:00-14:30", "14:30-15:00",
-                     "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00", "17:00-17:30", "17:30-18:00",
-                     "18:00-18:30"]
+    # generate class table
+    # class_name, start_time and end_time are lists containing each course's information
+    class_name = course.course_name
+    start_time = [time_convert(i) for i in course.start_time]
+    end_time = [time_convert(course.start_time[i] + course.duration[i]) for i in range(len(course.start_time))]
+    day = course.weekday
+    time_list = ["09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", "11:00-11:30", "11:30-12:00",
+                 "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00", "14:00-14:30", "14:30-15:00",
+                 "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00", "17:00-17:30", "17:30-18:00",
+                 "18:00-18:30"]
 
-        week_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
-        table = pd.DataFrame(index=time_list, columns=week_list)
-        for j in range(len(class_name)):
-            print(class_name[j])
-            i_start = 0
-            i_end = 0
-            for i in range(len(table.index)):
-                start = table.index[i].split('-')[0]
-                end = table.index[i].split('-')[1]
-                if (start_time[j] == start):
-                    i_start = i
-                if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (
-                        end.split(':')[1] == "30"):
-                    i_end = i
-                if (end_time[j] == end):
-                    i_end = i
-            ## locate the time range
+    week_list = ['MON', 'TUE', 'WED', 'THU', 'FRI']
+    table = pd.DataFrame(index=time_list, columns=week_list)
+    for j in range(len(class_name)):
+        i_start = 0
+        i_end = 0
+        for i in range(len(table.index)):
+            start = table.index[i].split('-')[0]
+            end = table.index[i].split('-')[1]
+            if (start_time[j] == start):
+                i_start = i
+            if (end_time[j].split(':')[0] == end.split(':')[0]) and (end_time[j].split(':')[1] == "20") and (
+                    end.split(':')[1] == "30"):
+                i_end = i
+            if (end_time[j] == end):
+                i_end = i
+        ## locate the time range
 
-            for i in range(i_start, i_end + 1):
-                table[day[j]].iloc[i] = class_name[j]
-        return table
+        for i in range(i_start, i_end + 1):
+            table[day[j]].iloc[i] = class_name[j]
+    return table
 
-def change(task, student):
-    window = Tk()
-    window.geometry("1000x500+800+800")
-    window.title("Change " + task)
-    window.resizable(False, False)
-    old_entry = Entry(window, relief=FLAT, bg="alice blue", fg="#6b6a69",
+
+class ChangeWin:
+    def __init__(self, window, task, student):
+        self.window = Toplevel(window)
+        self.window.geometry("1000x600+800+800")
+        self.window.title("Change " + task)
+        self.window.resizable(False, False)
+        self.old_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
                                font=("yu gothic ui semibold", 12))
-    old_entry.place(x=420, y=80, width=500)
-    old = Label(window, text="Old " + task, bg="white", fg="#4f4e4d",
-                     font=("yu gothic ui", 13, "bold"))
-    old.place(x=50, y=80)
-    new_entry = Entry(window, relief=FLAT, bg="alice blue", fg="#6b6a69",
-                           font=("yu gothic ui semibold", 12))
-    new_entry.place(x=420, y=220, width=500)
+        self.old_entry.place(x=420, y=80, width=500)
+        self.old = Label(self.window, text="Old " + task, bg="white", fg="#4f4e4d",
+                         font=("yu gothic ui", 13, "bold"))
+        self.old.place(x=50, y=80)
+        self.new_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
+                               font=("yu gothic ui semibold", 12))
+        self.new_entry.place(x=420, y=220, width=500)
 
-    new = Label(window, text="New " + task, bg="white", fg="#4f4e4d",
-                font=("yu gothic ui", 13, "bold"))
-    new.place(x=50, y=220)
+        self.new = Label(self.window, text="New " + task, bg="white", fg="#4f4e4d",
+                         font=("yu gothic ui", 13, "bold"))
+        self.new.place(x=50, y=220)
+        self.confirm = ImageTk.PhotoImage \
+            (file='images\\confirm.png')
+        self.confirml = Button(self.window, image=self.confirm, command=partial(self.SQLchange, task, student.username))
+        self.confirml.place(x=300, y=400)
+        self.window.mainloop()
 
-    old = old_entry.get()
-    new
+    def SQLchange(self, attr, Id):
+        old = self.old_entry.get()
+        new = self.new_entry.get()
+        # get pwd
+        if attr == "email":
+            attr = "`info.email_addr`"
+            select = "SELECT {} FROM Student WHERE student_id={}".format(attr, Id)
+            cursor.execute(select)
+            result = cursor.fetchall()
+            regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
 
-    # get pwd
-    select = "SELECT password FROM Student WHERE student_id='%s'" % (student.username)
-    name = cursor.execute(select)
-    result = cursor.fetchall()
+            print(re.search(regex, new))
+            if result[0][0] == old and re.search(regex, new) and new != old:
+                print("yes")
+                new = "\'"+ new +"\'"
+                update = "UPDATE Student SET `info.email_addr`= {} WHERE student_id={}".format(new, Id)
+                cursor.execute(update)
+                myconn.commit()
+                self.window.destroy()
+        print(result)
 
-    # compare with corresponding pwd
-    match = result == old_entry.get()
-    window.mainloop()
+
 
 
 def home_win(Id):
@@ -418,6 +418,5 @@ def home_win(Id):
 
 
 if __name__ == "__main__":
-  #debuging purpose
-   #home_win(4)
-   change("password", Student(4))
+    # debuging purpose
+    home_win(4)
