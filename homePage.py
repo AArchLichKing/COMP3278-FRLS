@@ -405,7 +405,19 @@ class ChangeWin:
                 cursor.execute(update)
                 myconn.commit()
                 self.window.destroy()
-        print(result)
+
+        if attr == "password":
+            attr = "`password`"
+            select = "SELECT {} FROM Student WHERE student_id={}".format(attr, Id)
+            cursor.execute(select)
+            result = cursor.fetchall()
+            if result[0][0] == old and new != old:
+                print("yes")
+                new = "\'"+ new +"\'"
+                update = "UPDATE Student SET `password`= {} WHERE student_id={}".format(new, Id)
+                cursor.execute(update)
+                myconn.commit()
+                self.window.destroy()
 
 
 
