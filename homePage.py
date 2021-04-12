@@ -353,36 +353,44 @@ class HomePage:
         self.msg.place(x=400, y = 400)                       
 
 class successWin:
-    def __init__(self, task):
+    def __init__(self, task, window):
         self.txt = "Successfully " + task
-        self.window = Tk()
-        self.window.geometry("800x600+800+800")
+        self.window = Toplevel(window)
+        self.window.geometry("800x500+800+800")
         self.window.title("success!")
+        self.successbg =ImageTk.PhotoImage \
+                      (file='images\\successbg.png')
+        self.bg = Button(self.window, image=self.successbg)
+        self.bg.pack(fill='both', expand='yes')
         self.window.resizable(False, False)
         self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 10, "bold"))
-        self.msg.place(x=80, y=250)
+        self.msg.place(x=80, y=200)
         self.window.mainloop()
 
-def success(task):
-    S = successWin(task)
+def success(task,window):
+    S = successWin(task, window)
     S.window.mainloop()
 
 
 class FailureWin:
-    def __init__(self, task):
+    def __init__(self, task, window):
         self.txt = "Problems: unable to " + task+", \nyou need to check your input."
-        self.window = Tk()
-        self.window.geometry("800x600+800+800")
+        self.window = Toplevel(window)
+        self.window.geometry("800x500+800+800")
         self.window.title("Warning!")
+        self.failurebg =ImageTk.PhotoImage \
+                      (file='images\\failurebg.png')
+        self.bg = Button(self.window, image=self.failurebg)
+        self.bg.pack(fill='both', expand='yes')
         self.window.resizable(False, False)
         self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
                          font=("yu gothic ui", 10, "bold"))
-        self.msg.place(x=80, y=250)
+        self.msg.place(x=80, y=200)
         self.window.mainloop()
 
-def failure(task):
-    S = FailureWin(task)
+def failure(task,window):
+    S = FailureWin(task,window)
     S.window.mainloop()
 
 
@@ -421,10 +429,15 @@ def generateClassTable(student, course):
 
 class ChangeWin:
     def __init__(self, window, task, student):
+        self.upper = window
         self.window = Toplevel(window)
         self.window.geometry("1000x600+800+800")
         self.window.title("Change " + task)
         self.window.resizable(False, False)
+        self.changebg =ImageTk.PhotoImage \
+                      (file='images\\changebg.png')
+        self.bg = Button(self.window, image=self.changebg)
+        self.bg.pack(fill='both', expand='yes')
         self.old_entry = Entry(self.window, relief=FLAT, bg="alice blue", fg="#6b6a69",
                                font=("yu gothic ui semibold", 12))
         self.old_entry.place(x=420, y=80, width=500)
@@ -462,9 +475,10 @@ class ChangeWin:
                 cursor.execute(update)
                 myconn.commit()
                 self.window.destroy()
-                success("change email")
+                success("change email", self.upper)
+
             else:
-                failure("change email")
+                failure("change email", self.window)
 
         if attr == "password":
             attr = "`password`"
