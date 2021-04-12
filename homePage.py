@@ -224,7 +224,7 @@ class HomePage:
 
     def change(self, task, student):
         ChangeWin(self.window, task, student)
-        self.student = Student(self.Id)
+        self.student = Student(4)
 
     def sendEmails(self, s, c, num):
         # send emails
@@ -491,9 +491,9 @@ class ChangeWin:
                 cursor.execute(update)
                 myconn.commit()
                 self.window.destroy()
-                success("change password")
+                success("change password", self.upper)
             else:
-                failure("change password")
+                failure("change password", self.window)
 
 def home_win(Id):
     window = Tk()
