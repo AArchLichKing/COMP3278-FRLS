@@ -147,12 +147,9 @@ class HomePage:
                            font=("yu gothic ui", 13, "bold"))
         self.update_clock()
         self.label.place(x=450, y=480)
-        """self.lastlogin = Label(self.window, text="Last login", bg="white", fg="#4f4e4d",
-                           font=("yu gothic ui", 13, "bold"))
-        self.lastlogin.place(x=100, y=500)"""
         self.timetable2 = generateClassTable(self.student, self.courses)
-        print(self.timetable2)
         self.timegrid = ImageTk.PhotoImage(file='images\\timegrid.png')
+        self.tutorialgrid = ImageTk.PhotoImage(file='images\\tutorialgrid.png')
         self.X = len(self.timetable2)
         self.Y = len(self.timetable2.columns)  # 5
         self.l_name = Label(self.f1, text=self.student.name, bg="white", fg="#4f4e4d",
@@ -198,14 +195,19 @@ class HomePage:
 
         self.update_clock()
 
-
         for i in range(self.X):
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i, j], str)):
-                    self.tt = Label(self.f2, image=self.timegrid)
-                    self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
-                                         bg="LightSkyBlue1")
-                    a = 600 + 300 * j
+                    if  re.search("Tutorial", self.timetable2.iloc[i, j]):
+                        self.tt = Label(self.f2, image=self.tutorialgrid)
+                        self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
+                                         bg="pale green")
+                    else:
+                        self.tt = Label(self.f2, image=self.timegrid)
+                        self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
+                                         bg="pale turquoise")
+
+                    a = 600 + 300 * j        
                     b = 800 + 60 * (i - 1)
                     self.tt.place(x=a, y=b)
                     self.ttlabel.place(x=a, y=b)
@@ -315,9 +317,8 @@ class HomePage:
              upcoming = "You have class {} in ten minutes!\n Click the right button to send details to your email".format(course.course_name[num])
              self.msg(upcoming,1)
         elif flag:
-             current = "You are currentlt taking {}! \n Click the right button to send details to your email".format(course.course_name[-num])
+             current = "You are currently taking {}! \n Click the right button to send details to your email".format(course.course_name[-num])
              self.msg(current,1)
-
         else:
              self.msg("No courses in ten minutes, check timetable for details",0)
 
