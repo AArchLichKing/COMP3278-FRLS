@@ -104,16 +104,6 @@ class HomePage:
         
 
 
-        
-
-
-
-
-
-
-
-
-
 
 
         """
@@ -200,11 +190,11 @@ class HomePage:
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i, j], str)):
                     if  re.search("Tutorial", self.timetable2.iloc[i, j]):
-                        self.tt = Label(self.f2, image=self.tutorialgrid)
+                        self.tt = Label(self.f2, image=self.tutorialgrid, relief=FLAT, borderwidth=0,  cursor="hand2")
                         self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
                                          bg="pale green")
                     else:
-                        self.tt = Label(self.f2, image=self.timegrid)
+                        self.tt = Label(self.f2, image=self.timegrid, relief=FLAT, borderwidth=0,  cursor="hand2")
                         self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
                                          bg="pale turquoise")
 
@@ -312,8 +302,6 @@ class HomePage:
                     num = -i
                     flag = True
                     break
-
-
         if flag == True and num >= 0:
              upcoming = "You have class {} in ten minutes!\n Click the right button to send details to your email".format(course.course_name[num])
              self.msg(upcoming,1)
@@ -371,15 +359,32 @@ class successWin:
         self.window.geometry("800x600+800+800")
         self.window.title("success!")
         self.window.resizable(False, False)
-
         self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
-                         font=("yu gothic ui", 13, "bold"))
+                         font=("yu gothic ui", 10, "bold"))
         self.msg.place(x=80, y=250)
         self.window.mainloop()
 
 def success(task):
     S = successWin(task)
     S.window.mainloop()
+
+
+class FailureWin:
+    def __init__(self, task):
+        self.txt = "Problems: unable to " + task+", \nyou need to check your input."
+        self.window = Tk()
+        self.window.geometry("800x600+800+800")
+        self.window.title("Warning!")
+        self.window.resizable(False, False)
+        self.msg = Label(self.window, text=self.txt, bg="white", fg="#4f4e4d",
+                         font=("yu gothic ui", 10, "bold"))
+        self.msg.place(x=80, y=250)
+        self.window.mainloop()
+
+def failure(task):
+    S = FailureWin(task)
+    S.window.mainloop()
+
 
 def generateClassTable(student, course):
     # generate class table
@@ -458,6 +463,8 @@ class ChangeWin:
                 myconn.commit()
                 self.window.destroy()
                 success("change email")
+            else:
+                failure("change email")
 
         if attr == "password":
             attr = "`password`"
@@ -471,6 +478,8 @@ class ChangeWin:
                 myconn.commit()
                 self.window.destroy()
                 success("change password")
+            else:
+                failure("change password")
 
 def home_win(Id):
     window = Tk()
