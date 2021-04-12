@@ -194,7 +194,8 @@ class HomePage:
         self.CheckCourse(self.courses)
 
         self.update_clock()
-
+        notebook.select(self.f2)
+        
         for i in range(self.X):
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i, j], str)):
