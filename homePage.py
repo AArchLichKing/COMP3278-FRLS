@@ -455,12 +455,16 @@ def TimeConverter(timestr):
 
 if __name__ == "__main__":
     # debuging purpose
-    home_win(4)
-
-
-
-
-
-
-
-
+    #home_win(4)
+    course=Course(4)
+    now = time.strftime("%H:%M:%S")          
+    current = TimeConverter(now)
+    flag = False
+    num = 0
+    for i in range(len(course.start_time)):
+        start = course.start_time[i]
+        print(start)
+        if (start.seconds - current <= 3600) and (start.seconds >= current):
+            flag = True
+            num = i
+            break
