@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2021 at 10:01 AM
+-- Generation Time: Apr 16, 2021 at 03:50 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -49,7 +49,19 @@ INSERT INTO `Course` (`course_id`, `code`, `name`, `credit`, `dept_id`) VALUES
 (7, 'STAT3799', 'Directed studies in statistics', 6, 2),
 (8, 'STAT4799', 'Statistics project', 12, 2),
 (9, 'MATH3911', 'Game Theory and Strategy', 6, 3),
-(10, 'STAT3600', 'Linear statistical analysis', 6, 2);
+(10, 'STAT3600', 'Linear statistical analysis', 6, 2),
+(11, 'ECON4200', 'Senior Seminar in Economics and Finance', 6, 4),
+(12, 'ECON3283', 'Economic Forecasting', 6, 4),
+(13, 'ECON3284', 'Introduction to Causal Inference and Statistical Learning', 6, 4),
+(14, 'MATH4602', 'Scientific computing', 6, 3),
+(15, 'MATH2102', 'Linear algebra II', 6, 3),
+(16, 'CCHU9051', 'Mysteries of the Human Mind', 6, 9),
+(17, 'CHEM1043', 'General chemistry II', 6, 5),
+(18, 'BIOL3404', 'Protein structure and function', 6, 6),
+(19, 'BIOC3605', 'Sequence bioinformatics', 6, 6),
+(20, 'CCHU9045', 'The Science and Art of Perception', 6, 7),
+(21, 'CCHU9021', 'Critical Thinking in Contemporary Society', 6, 9),
+(22, 'CCGL9035', 'Challenges of Global Governance: Past and Present', 6, 10);
 
 -- --------------------------------------------------------
 
@@ -70,7 +82,13 @@ INSERT INTO `Department` (`dept_id`, `dept_name`) VALUES
 (1, 'Computer Science'),
 (2, 'Statistics & Actuarial Science'),
 (3, 'Mathematics'),
-(4, 'HKU Business School');
+(4, 'HKU Business School'),
+(5, 'Chemistry'),
+(6, 'Biomedical Sciences'),
+(7, 'Paediatrics and Adolescent Medicine'),
+(8, 'Ophthalmology'),
+(9, 'Philosophy'),
+(10, 'Politics and Public Administration');
 
 -- --------------------------------------------------------
 
@@ -96,11 +114,23 @@ INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`,
 (2, 'Yu Yizhou', 'Prof.', 1, 'CB 325', 'Monday, 5:30 pm - 6:30 pm'),
 (3, 'Huang Zhiyi', 'Dr. ', 1, 'CB 423', 'Tuesday, 4:00 pm - 5:00 pm'),
 (4, 'Li Guodong', 'Dr.', 2, 'RRS 222', 'Friday,  2:30pm - 3:30pm'),
-(5, 'Zhang Xiaoyu', 'Miss', 2, 'RRS 114', 'None'),
-(7, 'Wu Jiannan', 'Mr', 1, 'None', 'None'),
-(8, 'Zhang Yan, Dora', 'Dr. ', 2, 'RR 304', 'Friday, 1:30pm - 2:30pm'),
-(9, 'Fang Yanwen', 'Miss', 2, 'RRS 112', 'None'),
-(10, 'Law Ka Ho', 'Dr.', 3, 'RRS314', '');
+(5, 'Zhang Xiaoyu', 'Miss', 2, 'RRS 114', ''),
+(7, 'Wu Jiannan', 'Mr', 1, 'None', ''),
+(8, 'Zhang Yan, Dora', 'Dr. ', 2, 'RRS 304', 'Friday, 1:30pm - 2:30pm'),
+(9, 'Fang Yanwen', 'Miss', 2, 'RRS 112', ''),
+(10, 'Law Ka Ho', 'Dr.', 3, 'RRS 314', ''),
+(11, 'LIU Tingjun', 'Prof.', 4, 'KK 1002', ''),
+(12, 'Maurice K.S. TSE', 'Dr.', 4, 'KK 919', ''),
+(13, 'CHING Wai-Ki', 'Prof.', 3, 'RRS 414', ''),
+(14, 'CHING Tak Wing ', 'Dr.', 3, 'RRS 316', ''),
+(15, 'Li Wentao', 'Dr. ', 2, 'RRS 118', ''),
+(16, 'HO, Joshua Wing Kei', 'Dr. ', 6, 'LB 444', ''),
+(17, 'YAO Kwok Ming', 'Dr.', 6, 'LB 369', ''),
+(18, 'TONG, Angela Pui Ling', 'Dr. ', 5, 'CYC 602', ''),
+(19, 'Chan, Godfrey Chi-Fung ', 'Prof.', 7, 'NCB 102', ''),
+(20, 'Amit Chaturvedi', 'Dr.', 9, 'RRST 1009', ''),
+(21, 'CHOW Wilfred', 'Dr.', 10, 'C 945', ''),
+(22, 'Alexandra Cook', 'Prof.', 9, 'RRST 1004', '');
 
 -- --------------------------------------------------------
 
@@ -149,7 +179,10 @@ CREATE TABLE `Message` (
 --
 
 INSERT INTO `Message` (`course_id`, `section_id`, `message`, `time`) VALUES
-(1, 1, 'New Assignment released', '2021-04-06 13:51:04');
+(1, 1, 'New Assignment released', '2021-04-06 13:51:04'),
+(1, 2, 'Tutorial material uploaded', '2021-04-19 11:49:45'),
+(4, 1, 'Register Olex system by 16/04', '2021-04-16 11:49:34'),
+(15, 1, 'Test 1 result released', '2021-04-16 11:49:34');
 
 -- --------------------------------------------------------
 
@@ -169,9 +202,16 @@ CREATE TABLE `Room` (
 --
 
 INSERT INTO `Room` (`room_id`, `building_name`, `room_number`, `capacity`) VALUES
-(1, 'online', 'online', 0),
+(1, 'online', 'online', 999),
 (2, 'CPD', 'LG.10', 50),
-(3, 'CYPP', '4', 200);
+(3, 'CYPP', '4', 200),
+(4, 'JL', 'G01', 50),
+(5, 'JL', 'G05', 60),
+(6, 'LE', '5', 100),
+(7, 'KB', '223', 200),
+(8, 'CPD', 'LG.01', 300),
+(9, 'KK', '201', 80),
+(10, 'TT', '403', 90);
 
 -- --------------------------------------------------------
 
@@ -202,9 +242,28 @@ INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) V
 (4, 3, 'STAT4601 2A Tutorial 2, 2020', 'Tutorial', 'https://hku.zoom.com.cn/j/3916015671'),
 (6, 1, 'STAT3621 2A, 2020', 'lecture', 'https://hku.zoom.us/j/99199478092?pwd=SmZ3UFFvSkJvWEh3aUxYaTNYdGJBZz09'),
 (6, 2, 'STAT3621 2A Tutorial, 2020', 'Tutorial', ''),
+(7, 1, 'STAT3799 2A, 2020', 'Meeting', 'https://hku.zoom.us/j/98577457215?pwd=ODNmY1VpcmY3WWYyUWNkN0w0Rnp1Zz09'),
 (9, 1, 'MATH3911 2A, 2020', 'Lecture', ''),
+(9, 2, 'MATH3911 2A Tutorial, 2020', 'Tutorial', ''),
 (10, 1, 'STAT3600 2B, 2019', 'Lecture', ''),
-(10, 2, 'STAT3600 2B Tutorial, 2019', 'Tutorial', '');
+(10, 2, 'STAT3600 2B Tutorial, 2019', 'Tutorial', ''),
+(10, 3, 'STAT3600 2B, 2020', 'Lecture', ''),
+(11, 1, 'ECON4200 2I, 2020', 'Lecture', ''),
+(12, 1, 'ECON3283 2A, 2020', 'Lecture', ''),
+(13, 1, 'ECON3284 2A, 2020', 'Lecture', ''),
+(14, 1, 'MATH4602 2A, 2020', 'Lecture', ''),
+(15, 1, 'MATH2102 2A, 2020', 'Lecture', ''),
+(15, 2, 'MATH2102 2A Tutorial, 2020', 'Tutorial', ''),
+(16, 1, 'CCHU9051 2A, 2020', 'Lecture', ''),
+(16, 2, 'CCHU9051 2A Tutorial, 2020', 'Tutorial', ''),
+(17, 1, 'CHEM1043 2B, 2020', 'Lecture', ''),
+(18, 1, 'BIOL3404 2A', 'Lecture', ''),
+(19, 1, 'BIOC3605 2A, 2020', 'Lecture', ''),
+(20, 1, 'CCHU9045 2B, 2020', 'Lecture', ''),
+(21, 1, 'CCHU9021 2B, 2020', 'Lecture', ''),
+(21, 2, 'CCHU9021 2B Tutorial, 2020', 'Tutorial', ''),
+(22, 1, 'CCGL9035 2A, 2020', 'Lecture', ''),
+(22, 2, 'CCGL9035 2A Tutorial, 2020', 'Tutorial', '');
 
 -- --------------------------------------------------------
 
@@ -245,7 +304,7 @@ CREATE TABLE `Take` (
   `student_id` varchar(10) NOT NULL,
   `course_id` int NOT NULL,
   `section_id` int NOT NULL,
-  `this_sem` int NOT NULL
+  `this_sem` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -253,17 +312,44 @@ CREATE TABLE `Take` (
 --
 
 INSERT INTO `Take` (`student_id`, `course_id`, `section_id`, `this_sem`) VALUES
+('1', 1, 1, 1),
+('1', 1, 2, 1),
 ('1', 2, 1, 1),
+('1', 3, 1, 1),
+('1', 11, 1, 1),
+('1', 12, 1, 1),
+('1', 13, 1, 1),
+('2', 16, 1, 1),
+('2', 16, 2, 1),
+('2', 21, 1, 1),
+('2', 21, 2, 1),
+('2', 22, 1, 1),
+('2', 22, 2, 1),
+('3', 1, 1, 1),
+('3', 1, 2, 1),
+('3', 4, 1, 1),
+('3', 4, 3, 1),
+('3', 17, 1, 1),
+('3', 18, 1, 1),
+('3', 19, 1, 1),
+('3', 20, 1, 1),
 ('4', 1, 1, 1),
 ('4', 1, 2, 1),
 ('4', 2, 1, 1),
 ('4', 3, 1, 1),
 ('4', 4, 1, 1),
 ('4', 4, 2, 1),
-('4', 4, 3, 1),
 ('4', 6, 1, 1),
+('4', 7, 1, 1),
 ('4', 10, 1, 0),
-('5', 9, 1, 1);
+('5', 1, 1, 1),
+('5', 1, 2, 1),
+('5', 9, 1, 1),
+('5', 9, 2, 1),
+('5', 10, 3, 1),
+('5', 14, 1, 1),
+('5', 15, 1, 1),
+('5', 15, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -289,9 +375,27 @@ INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 (4, 4, 1),
 (5, 4, 2),
 (8, 6, 1),
+(15, 7, 1),
 (10, 9, 1),
+(10, 9, 2),
 (4, 10, 1),
-(9, 10, 2);
+(9, 10, 2),
+(15, 10, 3),
+(11, 11, 1),
+(12, 12, 1),
+(13, 14, 1),
+(14, 15, 1),
+(14, 15, 2),
+(20, 16, 1),
+(20, 16, 2),
+(18, 17, 1),
+(17, 18, 1),
+(16, 19, 1),
+(19, 20, 1),
+(22, 21, 1),
+(22, 21, 2),
+(21, 22, 1),
+(21, 22, 2);
 
 -- --------------------------------------------------------
 
@@ -323,7 +427,36 @@ INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time
 (2, 2, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 1),
 (3, 1, 1, 'MON', '14:30:00', '17:20:00', '02:50:00', 1),
 (4, 1, 1, 'TUE', '13:30:00', '16:20:00', '02:50:00', 1),
-(6, 1, 1, 'MON', '09:30:00', '12:20:00', '02:50:00', 3);
+(4, 2, 1, 'WED', '11:30:00', '12:20:00', '00:50:00', 1),
+(4, 3, 1, 'WED', '11:30:00', '12:20:00', '00:50:00', 1),
+(6, 1, 1, 'MON', '09:30:00', '12:20:00', '02:50:00', 3),
+(7, 1, 1, 'TUE', '17:00:00', '18:00:00', '01:00:00', 1),
+(9, 1, 1, 'TUE', '10:30:00', '12:20:00', '01:50:00', 6),
+(9, 1, 2, 'FRI', '11:30:00', '12:20:00', '00:50:00', 6),
+(9, 2, 1, 'THU', '17:30:00', '18:20:00', '00:50:00', 5),
+(10, 3, 1, 'FRI', '14:30:00', '17:20:00', '02:50:00', 7),
+(11, 1, 1, 'TUE', '13:30:00', '16:20:00', '02:50:00', 9),
+(12, 1, 1, 'WED', '09:30:00', '12:20:00', '02:50:00', 10),
+(13, 1, 1, 'THU', '13:30:00', '16:20:00', '02:50:00', 6),
+(14, 1, 1, 'MON', '09:30:00', '11:20:00', '01:50:00', 4),
+(14, 1, 2, 'FRI', '12:30:00', '13:20:00', '00:50:00', 4),
+(14, 1, 3, 'THU', '09:30:00', '10:20:00', '00:50:00', 4),
+(15, 1, 1, 'MON', '14:30:00', '15:20:00', '00:50:00', 5),
+(15, 1, 2, 'THU', '13:30:00', '15:20:00', '01:50:00', 5),
+(15, 2, 1, 'THU', '10:30:00', '11:20:00', '00:50:00', 5),
+(16, 1, 1, 'WED', '18:30:00', '20:20:00', '01:50:00', 1),
+(16, 2, 1, 'MON', '14:30:00', '15:20:00', '00:50:00', 1),
+(17, 1, 1, 'MON', '15:30:00', '17:20:00', '01:50:00', 1),
+(17, 1, 2, 'THU', '15:30:00', '16:20:00', '00:50:00', 1),
+(18, 1, 1, 'TUE', '10:30:00', '12:20:00', '01:50:00', 1),
+(18, 1, 2, 'FRI', '11:30:00', '12:20:00', '00:50:00', 1),
+(19, 1, 1, 'TUE', '12:30:00', '13:20:00', '00:50:00', 1),
+(19, 1, 2, 'FRI', '12:30:00', '14:20:00', '01:50:00', 1),
+(20, 1, 1, 'WED', '16:30:00', '18:20:00', '01:50:00', 8),
+(21, 1, 1, 'WED', '14:30:00', '16:20:00', '01:50:00', 1),
+(21, 2, 1, 'MON', '15:30:00', '16:20:00', '00:50:00', 1),
+(22, 1, 1, 'WED', '12:30:00', '14:20:00', '01:50:00', 1),
+(22, 2, 1, 'TUE', '16:30:00', '17:20:00', '00:50:00', 1);
 
 --
 -- Indexes for dumped tables
