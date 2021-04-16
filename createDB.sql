@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2021 at 03:50 AM
+-- Generation Time: Apr 16, 2021 at 06:01 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.3.24-(to be removed in future macOS)
 
@@ -130,7 +130,8 @@ INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`,
 (19, 'Chan, Godfrey Chi-Fung ', 'Prof.', 7, 'NCB 102', ''),
 (20, 'Amit Chaturvedi', 'Dr.', 9, 'RRST 1009', ''),
 (21, 'CHOW Wilfred', 'Dr.', 10, 'C 945', ''),
-(22, 'Alexandra Cook', 'Prof.', 9, 'RRST 1004', '');
+(22, 'Alexandra Cook', 'Prof.', 9, 'RRST 1004', ''),
+(23, 'Wu Yanhui', 'Dr.', 4, 'KK 931', '');
 
 -- --------------------------------------------------------
 
@@ -383,6 +384,7 @@ INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 (15, 10, 3),
 (11, 11, 1),
 (12, 12, 1),
+(23, 13, 1),
 (13, 14, 1),
 (14, 15, 1),
 (14, 15, 2),
