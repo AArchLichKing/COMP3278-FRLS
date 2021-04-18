@@ -20,7 +20,7 @@ class Deadline:
         
 class Student:
     def __init__(self, studentId):
-        query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `last_login`,`last_logout`,`duration`,`password`\
+        query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `login.date`,`login.time`,`duration`,`password`, `logout.date`, `logout.time`\
                  FROM Student WHERE student_id=" + str(studentId)
 
         cursor.execute(query)
@@ -31,10 +31,12 @@ class Student:
         self.email_addr = result[2]
         self.admitted_year = result[3]
         self.dept_id = result[4]
-        self.last_login = result[5]
-        self.last_logout = result[6]
+        self.login_date = result[5]
+        self.login_time = result[6]
         self.duration = result[7]
         self.password = result[8]
+        self.logout_date = result[9]
+        self.logout_time = result[10]
 
         if DEBUG:
             print(self.username, self.name, self.email_addr, self.admitted_year, self.dept_id)
