@@ -32,19 +32,18 @@ class Course:
     # results is displayed as a list of tuples
     def __init__(self, studentId):
         query = "SELECT S.name, S.type, S.zoom_link, TI.weekday, TI.start_time, TI.duration, TI.building_name, TI.room_number, \
-                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name, T.this_sem, D.date, D.time, D.event\
-                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T, Deadline D,\
+                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name, T.this_sem, M.date, M.time, M.event\
+                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T,\
                                     Section S , (SELECT * FROM Time NATURAL JOIN Room) TI, Course C, \
-                                    (SELECT temp.course_id, temp.section_id, temp.material_id, temp.name, temp.released_date, temp.link, Message.message FROM (SELECT Section.course_id, Section.section_id, Material.material_id, Material.name, Material.released_date, Material.link FROM \
+                                    (SELECT M2.course_id, M2.section_id, M2.material_id, M2.name, M2.released_date, M2.link, M2.message, D.date, D.time, D.event FROM (SELECT temp.course_id, temp.section_id, temp.material_id, temp.name, temp.released_date, temp.link, Message.message FROM (SELECT Section.course_id, Section.section_id, Material.material_id, Material.name, Material.released_date, Material.link FROM \
                                      Material RIGHT OUTER JOIN Section ON Material.course_id = Section.course_id AND Material.section_id = Section.section_id) temp LEFT OUTER JOIN Message \
-                                     ON Message.course_id = temp.course_id AND Message.section_id = temp.section_id) M,\
+                                     ON Message.course_id = temp.course_id AND Message.section_id = temp.section_id)M2 LEFT OUTER JOIN Deadline D ON M2.course_id = D.course_id AND M2.section_id = D.section_id) M,\
                                     (SELECT I2.name, I2.title, I2.office, I2.office_hour, T2.course_id, T2.section_id FROM Teach T2, Instructor I2 WHERE T2.instructor_id=I2.instructor_id) I\
                                     WHERE T.course_id=S.course_id AND T.section_id=S.section_id \
                                     AND T.course_id=TI.course_id AND T.section_id=TI.section_id \
                                     AND T.course_id=M.course_id AND T.section_id=M.section_id \
                                     AND T.course_id=I.course_id AND T.section_id=I.section_id \
-                                    AND T.course_id=C.course_id AND T.course_id = D.course_id \
-                                    AND T.section_id = D.section_id"
+                                    AND T.course_id=C.course_id "
         cursor.execute(query)
         results = cursor.fetchall()
         self.course_name = [result[0] for result in results]
