@@ -32,7 +32,7 @@ class Course:
     # results is displayed as a list of tuples
     def __init__(self, studentId):
         query = "SELECT S.name, S.type, S.zoom_link, TI.weekday, TI.start_time, TI.duration, TI.building_name, TI.room_number, \
-                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name\
+                        M.name AS 'Material', M.released_date, M.link, I.name, I.title, I.office, I.office_hour, M.message, C.name, T.this_sem\
                  FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T,\
                                     Section S , (SELECT * FROM Time NATURAL JOIN Room) TI, Course C, \
                                     (SELECT temp.course_id, temp.section_id, temp.material_id, temp.name, temp.released_date, temp.link, Message.message FROM (SELECT Section.course_id, Section.section_id, Material.material_id, Material.name, Material.released_date, Material.link FROM \
@@ -62,6 +62,7 @@ class Course:
         self.office_hour = [result[14] for result in results]
         self.message = [result[15] for result in results]
         self.course_long_name = [result[16] for result in results]
+        self.this_sem = [result[17] for result in results]
 
         if DEBUG:
             print("course_name", self.course_name)

@@ -2,7 +2,6 @@
 from tkinter import ttk
 from tkinter import *
 from PIL import Image, ImageTk
-from tkintertable import TableCanvas, TableModel
 import ctypes
 import time
 from object import Student, Course
@@ -10,6 +9,7 @@ import mysql.connector
 from functools import partial
 import re
 import datetime
+import webbrowser
 
 import smtplib
 from email.mime.text import MIMEText
@@ -44,20 +44,8 @@ class HomePage:
         self.window.title("HKU Student System")
         self.window.resizable(False, False)
 
-        self.student = Student(4)
-        self.courses = Course(4)
-        '''
-        I wish to extract the first course name:
-        course.name[0]
-        course.time[0]
-        
-        I wish to extract the second course name:
-        course.name[1]
-        course.time[1]
-        
-        for i in range(len(course.name)):
-        '''
-
+        self.student = Student(Id)
+        self.courses = Course(Id)
         style = ttk.Style(window)
         style.configure('lefttab.TNotebook', tabposition='wn')
 
@@ -82,17 +70,21 @@ class HomePage:
         notebook.add(self.f2, text='Frame 2', image=self.timetable)
         notebook.add(self.f3, text='Frame 3', image=self.coursestab)
         notebook.add(self.f4, text='Frame 4', image=self.deadline)
-        self.subframe = ImageTk.PhotoImage \
-            (file='images\\subframe.png')
         self.subframe1 = ImageTk.PhotoImage \
             (file='images\\f1.png')
+        self.subframe2 = ImageTk.PhotoImage \
+            (file='images\\f2.png')
+        self.subframe3 = ImageTk.PhotoImage \
+            (file='images\\f3.png')
+        self.subframe4 = ImageTk.PhotoImage \
+            (file='images\\f4.png')
         self.image_panel = Label(self.f1, image=self.subframe1)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(self.f2, image=self.subframe)
+        self.image_panel = Label(self.f2, image=self.subframe2)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(self.f3, image=self.subframe)
+        self.image_panel = Label(self.f3, image=self.subframe3)
         self.image_panel.pack(fill='both', expand='yes')
-        self.image_panel = Label(self.f4, image=self.subframe)
+        self.image_panel = Label(self.f4, image=self.subframe4)
         self.image_panel.pack(fill='both', expand='yes')
         self.ttF = ImageTk.PhotoImage \
             (file='images\\ttFrame.png')
@@ -100,24 +92,6 @@ class HomePage:
         self.image_panel.place(x=300, y=700)
         self.coursegrid = ImageTk.PhotoImage \
             (file='images\\coursegrid.png')
-        
-
-
-
-
-        """
-        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
-        self.image_panel.place(x=80, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
-        self.image_panel.place(x=1280, y=400)
-        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
-        self.image_panel.place(x=80, y=900)
-        self.image_panel = Button(f3, image=self.coursegrid, command=partial(self.Coursewindow, self.courses, 0))
-        self.image_panel.place(x=1280, y=900)
-        self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=1280, y=1400)
-        self.image_panel = Button(f3, image=self.coursegrid)
-        self.image_panel.place(x=80, y=1400)    """
 
         notebook.grid(row=0, column=0, sticky="nw")
         self.txt = "home page"
@@ -176,15 +150,50 @@ class HomePage:
         self.changepw_button.place(x=850, y=740)
         self.notice = Label(self.f4, text="Deadline notification", bg="white", fg="#4f4e4d",
                             font=("yu gothic ui", 13, "bold"))
-        self.notice.place(x=100, y=80)
-        self.notice2 = Label(self.f4, text="Deadline notification", bg="white", fg="#4f4e4d",
-                            font=("yu gothic ui", 13, "bold"))
-        self.notice2.place(x=100, y=80)
+        self.notice.place(x=100, y=400)
         self.CheckCourse(self.courses)
+        k = len(self.courses.course_name)
+        self.subnotebook = ttk.Notebook(self.f3)
+        self.Lecture = Frame(self.subnotebook, width=3000, height=2000)
+        self.Tutorial = Frame(self.subnotebook, bg="white", width=3000, height=2000)
+        self.subnotebook.add(self.Lecture, text='Lecture')
+        self.subnotebook.add(self.Tutorial, text='Tutorial')
+        self.subnotebook.place(x = 0, y = 200)
+        self.filterTutorial()
+        self.course_panel = []
+        self.tutorial_panel = []
+        self.tgrid = []
+        self.lgrid = []
+        for i in range(len(self.L)):
+            m = i // 2
+            n = i % 2
+            self.lgrid.append(ImageTk.PhotoImage \
+                (file='images\\coursegrid.png'))
+            self.course_panel.append(Button(self.Lecture, image=self.lgrid[i], command = partial(self.Coursewindow, self.L[i])))
+            self.course_panel[i].place(x=80 + n * 1200, y=100 + m * 500)
+            self.course_info1 = Label(self.Lecture, text=self.courses.course_name[self.L[i]])
+            self.course_info1.place(x=90 + n * 1200, y=110 + m * 500)
+            self.course_info2 = Label(self.Lecture, text=self.courses.course_long_name[self.L[i]])
+            self.course_info2.place(x=90 + n * 1200, y=170 + m * 500)
+            self.course_info3 = Label(self.Lecture, text="Instructor: "+ self.courses.instructor[self.L[i]])
+            self.course_info3.place(x=90 + n * 1200, y=230 + m * 500)
+        for i in range(len(self.T)):
+            m = i // 2
+            n = i % 2
+            self.tgrid.append(ImageTk.PhotoImage \
+                (file='images\\coursegrid.png'))
+            self.tutorial_panel.append(Button(self.Tutorial, image=self.tgrid[i], command = partial(self.Coursewindow, self.T[i])))
+            self.tutorial_panel[i].place(x=80 + n * 1200, y=100 + m * 500)
+            self.course_info1 = Label(self.Tutorial, text=self.courses.course_name[self.T[i]])
+            self.course_info1.place(x=90 + n * 1200, y=110 + m * 500)
+            self.course_info2 = Label(self.Tutorial, text=self.courses.course_long_name[self.T[i]])
+            self.course_info2.place(x=90 + n * 1200, y=170 + m * 500)
+            self.course_info3 = Label(self.Tutorial, text="Instructor: " + self.courses.instructor[self.T[i]])
+            self.course_info3.place(x=90 + n * 1200, y=230 + m * 500)
 
         self.update_clock()
         notebook.select(self.f2)
-        
+
         for i in range(self.X):
             for j in range(self.Y):
                 if (isinstance(self.timetable2.iloc[i, j], str)):
@@ -196,43 +205,87 @@ class HomePage:
                         self.tt = Label(self.f2, image=self.timegrid, relief=FLAT, borderwidth=0,  cursor="hand2")
                         self.ttlabel = Label(self.f2, text=self.timetable2.iloc[i, j], font=("yu gothic ui", 6, "bold"),
                                          bg="pale turquoise")
-
                     a = 600 + 300 * j        
                     b = 800 + 60 * (i - 1)
                     self.tt.place(x=a, y=b)
                     self.ttlabel.place(x=a, y=b)
 
-    def Coursewindow(self, course, num):
+    def Coursewindow(self, num):
         self.window2 = Toplevel(self.window)
         self.window2.geometry("")
-        self.window2.title("success!")
+        self.window2.title(self.courses.course_name[num]+"  "+ self.courses.course_long_name[num])
         self.window2.resizable()
         self.f = ImageTk.PhotoImage \
             (file='images\\subcourse.png')
         self.fw = Label(self.window2, image=self.f)
         self.fw.pack(fill='both', expand='yes')
-        self.msg = Label(self.window2, text=self.txt, bg="white", fg="#4f4e4d",
-                         font=("yu gothic ui", 13, "bold"))
-        self.msg.place(x=20, y=200)
-        action_with_arg = partial(self.sendEmails, self.student, self.courses, 0)
+        self.msg = Label(self.window2, text=self.courses.course_name[num]+"  "+ self.courses.course_long_name[num],
+                         font=("yu gothic ui", 10, "bold"))
+        self.msg.place(x=120, y=250)
+        self.start_time = Label(self.window2, text="Instructor: " + self.courses.instructor[num], font=("yu gothic ui", 10, "bold"), bg = "white")
+        self.start_time.place(x=120, y=400)
+        self.duration_time = Label(self.window2, text="Office: "+self.courses.office[num], font=("yu gothic ui", 10, "bold"), bg = "white")
+        self.duration_time.place(x=120, y=500)
+        self.offHour = Label(self.window2, text= "Office Hour: " + self.courses.office_hour[num], font=("yu gothic ui", 10, "bold"), bg = "white")
+        self.offHour.place(x=120, y=600)
+        self.zoomlinkl = Label(self.window2, text="Zoom Link:",
+                              font=("yu gothic ui", 10, "bold"), bg="white")
+        self.zoomlinkl.place(x=120, y=800)
+        self.zoomlink = Message(self.window2, text=self.courses.zoom_link[num],
+                             font=("yu gothic ui", 10, "bold"), bg="white", width = 1200)
+        self.zoomlink.place(x=110, y=900)
+        self.zoomlink.bind("<Button-1>", callback)
+        self.w2 = Frame(self.window2, bg = "RED", width = 2000, height = 700)
+        self.w2.place(x = 0, y = 1200)
+        sb = Scrollbar(self.w2)
+        sb.pack(side=RIGHT, fill=Y)
+        mylist = Listbox(self.w2, yscrollcommand=sb.set, width = 83)
+        for line in range(30):
+            mylist.insert(END, "Number 000000000000" + str(line))
+        mylist.pack(side=LEFT)
+        sb.config(command=mylist.yview)
+
+        self.zoomlinkl = Label(self.window2, text="Site: "+ self.courses.building_name[num]+self.courses.room_number[num],
+                               font=("yu gothic ui", 10, "bold"), bg="white")
+        self.zoomlinkl.place(x=120, y=700)
+        self.mn = Label(self.window2, text=self.courses.material_name[num],
+                              font=("yu gothic ui", 10, "bold"), bg="white")
+        self.mn.place(x=120, y=1200)
+        self.md = Label(self.window2, text=self.courses.material_date[num],
+                          font=("yu gothic ui", 10, "bold"), bg="white")
+        self.md.place(x=120, y=1300)
+        self.ml = Label(self.window2, text=self.courses.material_link[num],
+                          font=("yu gothic ui", 10, "bold"), bg="white")
+        self.ml.place(x=120, y=1400)
+        self.ml.bind("<Button-1>", callback)
+
         self.email = ImageTk.PhotoImage \
             (file='images\\20-20.png')
         self.email_b = Button(self.window2, image=self.email,
-                              command=partial(self.sendEmails, self.student, self.courses, 0))
-        self.email_b.place(x=20, y=1800)
+                              command=partial(self.sendEmails, self.student, self.courses, num, ""))
+        self.email_b.place(x=20, y=1900)
+
+    def filterTutorial(self):
+        k = len(self.courses.course_type)
+        self.T = []
+        self.L = []
+        for i in range(k):
+            if self.courses.course_type[i] =="Tutorial":
+                self.T.append(i)
+            else:
+                self.L.append(i)
 
     def change(self, task, student):
         ChangeWin(self.window, task, student)
-        self.student = Student(4)
+        self.student = Student(self.Id)
 
-    def sendEmails(self, s, c, num):
+    def sendEmails(self, s, c, num, begin = "The following course will begin within an hour."):
         # send emails
         ## set up sender's account
-        num = 0
-        address = "maoqi@connect.hku.hk"
+        address = "maoqi@connect.hku.hk" #s.email_addr
         content = """Dear {0} ({1}):
 
-    The following course will begin within an hour. The corresponding course materials are attached below for your reference.
+        {18} The corresponding course materials are attached below for your reference.
 
         Course code: {2}
         Course name: {17}
@@ -257,7 +310,7 @@ class HomePage:
                    time_convert(c.start_time[num]), time_convert(c.start_time[num] + c.duration[num]),
                    c.building_name[num], c.room_number[num], c.zoom_link[num], c.material_name[num],
                    c.material_date[num], c.material_link[num], c.instructor[num], c.office[num], c.office_hour[num],
-                   c.message[num], c.course_long_name[num])
+                   c.message[num], c.course_long_name[num], begin)
 
         mail_host = 'smtp.163.com'
         mail_user = 'comp3278_group2'
@@ -276,21 +329,19 @@ class HomePage:
         smtp0bj.login(mail_user, mail_pass)
         smtp0bj.sendmail(sender, receiver, message.as_string())
         smtp0bj.quit()
-
-        success("send the emails!")
+        success("send the emails!", self.window)
 
     def CheckCourse(self, course):
         now = time.strftime("%H:%M:%S")
-        now = time.strftime("%H:%M:%S")
         current = TimeConverter(now)
-        today = 1 #datetime.datetime.today().weekday()
+        today = datetime.datetime.today().weekday()
         flag = False
         num = 0
         for i in range(len(course.start_time)):
             start = course.start_time[i]
             weekday = course.weekday[i]
             duration = course.duration[i]
-            D = ["MON", "TUE","WED","THU","FRI"]
+            D = ["MON", "TUE", "WED", "THU", "FRI"]
             d = dict(enumerate(D))
             if (weekday == d.get(today)):
                 if (start.seconds - current <= 3600) and (start.seconds >= current):
@@ -303,12 +354,12 @@ class HomePage:
                     break
         if flag == True and num >= 0:
              upcoming = "You have class {} in ten minutes!\n Click the right button to send details to your email".format(course.course_name[num])
-             self.msg(upcoming,1)
+             self.msg(upcoming, 1, num)
         elif flag:
              current = "You are currently taking {}! \n Click the right button to send details to your email".format(course.course_name[-num])
-             self.msg(current,1)
+             self.msg(current, 1, -num)
         else:
-             self.msg("No courses in ten minutes, check timetable for details",0)
+             self.msg("No courses in ten minutes, check timetable for details", 0,0)
 
     def slider(self):
         if self.count >= len(self.txt):
@@ -326,7 +377,7 @@ class HomePage:
         self.label.configure(text=now)
         self.window.after(1000, self.update_clock)
 
-    def msg(self, text, y):
+    def msg(self, text, y, num):
         if y == 1:
             self.haveclassbg = ImageTk.PhotoImage \
                            (file='images\\haveclass.png')
@@ -336,7 +387,7 @@ class HomePage:
             self.haveclass.place(x=300, y=350)
             self.checkButton = ImageTk.PhotoImage \
                            (file='images\\checkButton.png')
-            self.check_button = Button(self.f2, image=self.checkButton, command=partial(self.sendEmails, self.student, self.courses, 0),
+            self.check_button = Button(self.f2, image=self.checkButton, command=partial(self.sendEmails, self.student, self.courses, num),
                                        relief=FLAT, borderwidth=0,                                                                                 
                                        cursor="hand2")                                                                                             
             self.check_button.place(x=1900, y=400)
@@ -348,7 +399,19 @@ class HomePage:
                                         cursor="hand2")
              self.noclass.place(x=300, y=350)
         self.msg = Label(self.f2, text = text, font=("yu gothic ui", 13, "bold"))
-        self.msg.place(x=400, y = 400)                       
+        self.msg.place(x=400, y = 400)
+
+    def display_course(self, window, courses, num, i):
+        m = i//2
+        n = i % 2
+        self.coursegrid = ImageTk.PhotoImage \
+            (file='images\\coursegrid.png')
+        self.image_panel = Button(window, image=self.coursegrid, command=partial(self.Coursewindow, courses, num))
+        self.image_panel.place(x=80+n*1200, y=400+m*500)
+        self.course_info = Label(window, text = courses.course_name[num] )
+        self.course_info.place(x=90 + n * 1200, y=410 + m * 500)
+        self.course_info = Label(window, text=courses.instructor[num])
+        self.course_info.place(x=90 + n * 1200, y=470 + m * 500)
 
 class successWin:
     def __init__(self, task, window):
@@ -370,7 +433,6 @@ def success(task,window):
     S = successWin(task, window)
     S.window.mainloop()
 
-
 class FailureWin:
     def __init__(self, task, window):
         self.txt = "Problems: unable to " + task+", \nyou need to check your input."
@@ -390,7 +452,6 @@ class FailureWin:
 def failure(task,window):
     S = FailureWin(task,window)
     S.window.mainloop()
-
 
 def generateClassTable(student, course):
     # generate class table
@@ -495,15 +556,16 @@ class ChangeWin:
 
 def home_win(Id):
     window = Tk()
-    Id = 0
     HomePage(window, Id)
     window.mainloop()
 
 def TimeConverter(timestr):
     ftr = [3600,60,1]
-    return sum([a*b for a,b in zip(ftr, map(int, timestr.split(':')))])
+    return sum([a*b for a, b in zip(ftr, map(int, timestr.split(':')))])
 
+def callback(event):
+    webbrowser.open_new(event.widget.cget("text"))
 
 if __name__ == "__main__":
     # debuging purpose
-    home_win(4)
+    home_win(5)
