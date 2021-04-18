@@ -5,7 +5,19 @@ DEBUG = False
 myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
-
+class Deadline:
+    def __init__(self, studentId):
+        query = "SELECT D.course_id, D.section_id, D.date, D.time, D.event\
+                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T, Deadline D \
+                                    WHERE T.course_id = D.course_id AND T.section_id = D.section_id"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        self.course_id = [result[0] for result in results]
+        self.section_id= [result[1] for result in results]
+        self.date = [result[2] for result in results]
+        self.time = [result[3] for result in results]
+        self.event = [result[4] for result in results]
+        
 class Student:
     def __init__(self, studentId):
         query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `last_login`,`last_logout`,`duration`,`password`\
@@ -83,4 +95,5 @@ if __name__ == '__main__':
     # Test code purpose
     student = Student(4)
     course = Course(4)
+    deadline = Deadline(4)
     print(student.username)
