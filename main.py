@@ -181,25 +181,34 @@ class ConnectDatabase:
 
     # ============Placing Button============
     def register(self): 
-    
+
         def okay():
             username = self.register_username_entry.get()
+            Id = self.register_username_entry.get()
             pwd = self.register_password_entry.get()
-            
+
             register_win.destroy()
-            
-            if pwd != '':
-                update = "UPDATE Student SET password=%s WHERE student_id=%s"
-                name = cursor.execute(update, (str(pwd), Id))
-                myconn.commit()
-            
-            #capture photos of user
-            faceCapture(username)
-            
-            if True:
-                #train new model with data
-                print('Start Training')
-                train()
+            select = "SELECT password FROM Student WHERE student_id={}".format(Id)
+            cursor.execute(select)
+            result = cursor.fetchall()
+
+            if result == []:
+                e = 'The current user is not in database, please input correct student ID'
+                reg_Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+                reg_Notifica.place(x=20, y=250)
+            elif str(pwd) != str(result[0][0]):
+                e = 'The password is not correct, please input correct password'
+                reg_Notifica.configure(text=e, bg="red", fg="black", width=33, font=('times', 15, 'bold'))
+                reg_Notifica.place(x=20, y=250)
+            else:  
+                #username is in the database and pwd correct
+                register_win.destroy()
+                faceCapture(username)
+
+                if True:
+                    #train new model with data
+                    print('Start Training')
+                    train()
             
             
         #read username from blank
