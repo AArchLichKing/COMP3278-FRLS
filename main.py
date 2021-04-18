@@ -168,7 +168,7 @@ class ConnectDatabase:
         result = cursor.fetchall() 
                    
         #compare with corresponding pwd            
-        match = result == self.password_entry.get()            
+        match = result[0][0] == self.password_entry.get()            
         if match:
             #open main page according to Id, close login page
             self.window.destroy()
