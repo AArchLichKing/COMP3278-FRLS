@@ -7,16 +7,16 @@ cursor = myconn.cursor()
 
 class Deadline:
     def __init__(self, studentId):
-        query = "SELECT D.course_id, D.section_id, D.date, D.time, D.event\
-                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T, Deadline D \
-                                    WHERE T.course_id = D.course_id AND T.section_id = D.section_id"
+        query = "SELECT S.name, D.date, D.time, D.event\
+                 FROM (SELECT * FROM Take T1 WHERE T1.student_id=" + str(studentId) + ") T, Deadline D, Section S\
+                                    WHERE T.course_id = D.course_id AND T.section_id = D.section_id \
+                                    AND T.course_id = S.course_id AND T.section_id = S.section_id"
         cursor.execute(query)
         results = cursor.fetchall()
-        self.course_id = [result[0] for result in results]
-        self.section_id= [result[1] for result in results]
-        self.date = [result[2] for result in results]
-        self.time = [result[3] for result in results]
-        self.event = [result[4] for result in results]
+        self.course_name = [result[0] for result in results]
+        self.date= [result[1] for result in results]
+        self.time = [result[2] for result in results]
+        self.event = [result[3] for result in results]
         
 class Student:
     def __init__(self, studentId):
