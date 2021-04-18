@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 18, 2021 at 08:20 AM
--- Server version: 8.0.23
--- PHP Version: 7.3.24-(to be removed in future macOS)
+-- 主机： localhost
+-- 生成日期： 2021-04-18 09:48:32
+-- 服务器版本： 8.0.23
+-- PHP 版本： 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `createDB`
+-- 数据库： `db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Course`
+-- 表的结构 `Course`
 --
 
 CREATE TABLE `Course` (
@@ -36,7 +36,7 @@ CREATE TABLE `Course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Course`
+-- 转存表中的数据 `Course`
 --
 
 INSERT INTO `Course` (`course_id`, `code`, `name`, `credit`, `dept_id`) VALUES
@@ -66,7 +66,7 @@ INSERT INTO `Course` (`course_id`, `code`, `name`, `credit`, `dept_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `deadline`
+-- 表的结构 `deadline`
 --
 
 CREATE TABLE `deadline` (
@@ -79,7 +79,7 @@ CREATE TABLE `deadline` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `deadline`
+-- 转存表中的数据 `deadline`
 --
 
 INSERT INTO `deadline` (`course_id`, `section_id`, `ddl_id`, `date`, `time`, `event`) VALUES
@@ -93,7 +93,7 @@ INSERT INTO `deadline` (`course_id`, `section_id`, `ddl_id`, `date`, `time`, `ev
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Department`
+-- 表的结构 `Department`
 --
 
 CREATE TABLE `Department` (
@@ -102,7 +102,7 @@ CREATE TABLE `Department` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Department`
+-- 转存表中的数据 `Department`
 --
 
 INSERT INTO `Department` (`dept_id`, `dept_name`) VALUES
@@ -120,7 +120,7 @@ INSERT INTO `Department` (`dept_id`, `dept_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Instructor`
+-- 表的结构 `Instructor`
 --
 
 CREATE TABLE `Instructor` (
@@ -133,7 +133,7 @@ CREATE TABLE `Instructor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Instructor`
+-- 转存表中的数据 `Instructor`
 --
 
 INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`, `office_hour`) VALUES
@@ -163,7 +163,7 @@ INSERT INTO `Instructor` (`instructor_id`, `name`, `title`, `dept_id`, `office`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Material`
+-- 表的结构 `Material`
 --
 
 CREATE TABLE `Material` (
@@ -176,12 +176,14 @@ CREATE TABLE `Material` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Material`
+-- 转存表中的数据 `Material`
 --
 
 INSERT INTO `Material` (`course_id`, `section_id`, `material_id`, `name`, `released_date`, `link`) VALUES
 (1, 1, 1, 'Lecture 2: ER model', '2021-02-01', 'https://drive.google.com/file/d/1qCF9CIfcNygJYUw3SFIJ2j6QavZxDjIp/view?usp=sharing'),
 (1, 1, 2, 'Lecture 2: ER design', '2021-02-04', 'https://drive.google.com/file/d/101XCSb-KcsF6A72l67i4WRowhSrNZGR1/view?usp=sharing'),
+(1, 1, 3, 'Assignment 2: Relational Algebra', '2021-04-01', 'https://drive.google.com/drive/folders/1Fk2l5mSrYdNU1aGNIE_dFxgq0ll37Dd_?usp=sharing'),
+(1, 2, 1, 'tutorial files', '2021-04-07', 'https://drive.google.com/drive/u/0/folders/1K9MPFTDDOvcQiGXiKBMgr_xeM56cvrP5'),
 (2, 1, 1, 'Lecture 6: Closest Pair', '2021-02-22', 'https://drive.google.com/file/d/14R5wo0G8VpjMJqTs0mkSeH-nTsFpqycZ/view?usp=sharing'),
 (2, 2, 1, 'Lecture 1: Divide and Conquer 1', '2021-01-25', 'https://drive.google.com/file/d/1fipkHqRjY6lqYT6BYAaFifQyKcO3rhln/view?usp=sharing'),
 (2, 2, 2, 'Lecture 2: Divide and Conquer 2', '2021-01-27', 'https://drive.google.com/file/d/1KNgR40D7ijOv51I3SBBXCu6eKSVmKYv8/view?usp=sharing'),
@@ -192,7 +194,7 @@ INSERT INTO `Material` (`course_id`, `section_id`, `material_id`, `name`, `relea
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Message`
+-- 表的结构 `Message`
 --
 
 CREATE TABLE `Message` (
@@ -203,7 +205,7 @@ CREATE TABLE `Message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Message`
+-- 转存表中的数据 `Message`
 --
 
 INSERT INTO `Message` (`course_id`, `section_id`, `message`, `time`) VALUES
@@ -215,7 +217,7 @@ INSERT INTO `Message` (`course_id`, `section_id`, `message`, `time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Room`
+-- 表的结构 `Room`
 --
 
 CREATE TABLE `Room` (
@@ -226,7 +228,7 @@ CREATE TABLE `Room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Room`
+-- 转存表中的数据 `Room`
 --
 
 INSERT INTO `Room` (`room_id`, `building_name`, `room_number`, `capacity`) VALUES
@@ -244,7 +246,7 @@ INSERT INTO `Room` (`room_id`, `building_name`, `room_number`, `capacity`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Section`
+-- 表的结构 `Section`
 --
 
 CREATE TABLE `Section` (
@@ -256,7 +258,7 @@ CREATE TABLE `Section` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Section`
+-- 转存表中的数据 `Section`
 --
 
 INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) VALUES
@@ -296,7 +298,7 @@ INSERT INTO `Section` (`course_id`, `section_id`, `name`, `type`, `zoom_link`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Student`
+-- 表的结构 `Student`
 --
 
 CREATE TABLE `Student` (
@@ -314,7 +316,7 @@ CREATE TABLE `Student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Student`
+-- 转存表中的数据 `Student`
 --
 
 INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `duration`, `password`, `login.date`, `login.time`, `logout.date`, `logout.time`) VALUES
@@ -327,7 +329,7 @@ INSERT INTO `Student` (`student_id`, `info.name`, `info.email_addr`, `info.admit
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Take`
+-- 表的结构 `Take`
 --
 
 CREATE TABLE `Take` (
@@ -338,7 +340,7 @@ CREATE TABLE `Take` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Take`
+-- 转存表中的数据 `Take`
 --
 
 INSERT INTO `Take` (`student_id`, `course_id`, `section_id`, `this_sem`) VALUES
@@ -384,7 +386,7 @@ INSERT INTO `Take` (`student_id`, `course_id`, `section_id`, `this_sem`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Teach`
+-- 表的结构 `Teach`
 --
 
 CREATE TABLE `Teach` (
@@ -394,7 +396,7 @@ CREATE TABLE `Teach` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Teach`
+-- 转存表中的数据 `Teach`
 --
 
 INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
@@ -431,7 +433,7 @@ INSERT INTO `Teach` (`instructor_id`, `course_id`, `section_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Time`
+-- 表的结构 `Time`
 --
 
 CREATE TABLE `Time` (
@@ -446,7 +448,7 @@ CREATE TABLE `Time` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `Time`
+-- 转存表中的数据 `Time`
 --
 
 INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time`, `end_time`, `duration`, `room_id`) VALUES
@@ -490,149 +492,149 @@ INSERT INTO `Time` (`course_id`, `section_id`, `time_id`, `weekday`, `start_time
 (22, 2, 1, 'TUE', '16:30:00', '17:20:00', '00:50:00', 1);
 
 --
--- Indexes for dumped tables
+-- 转储表的索引
 --
 
 --
--- Indexes for table `Course`
+-- 表的索引 `Course`
 --
 ALTER TABLE `Course`
   ADD PRIMARY KEY (`course_id`),
   ADD KEY `dept_id_2` (`dept_id`);
 
 --
--- Indexes for table `deadline`
+-- 表的索引 `deadline`
 --
 ALTER TABLE `deadline`
   ADD PRIMARY KEY (`course_id`,`section_id`,`ddl_id`);
 
 --
--- Indexes for table `Department`
+-- 表的索引 `Department`
 --
 ALTER TABLE `Department`
   ADD PRIMARY KEY (`dept_id`);
 
 --
--- Indexes for table `Instructor`
+-- 表的索引 `Instructor`
 --
 ALTER TABLE `Instructor`
   ADD PRIMARY KEY (`instructor_id`),
   ADD KEY `dept_id` (`dept_id`);
 
 --
--- Indexes for table `Material`
+-- 表的索引 `Material`
 --
 ALTER TABLE `Material`
   ADD PRIMARY KEY (`course_id`,`section_id`,`material_id`);
 
 --
--- Indexes for table `Message`
+-- 表的索引 `Message`
 --
 ALTER TABLE `Message`
   ADD PRIMARY KEY (`course_id`,`section_id`,`message`);
 
 --
--- Indexes for table `Room`
+-- 表的索引 `Room`
 --
 ALTER TABLE `Room`
   ADD PRIMARY KEY (`room_id`);
 
 --
--- Indexes for table `Section`
+-- 表的索引 `Section`
 --
 ALTER TABLE `Section`
   ADD PRIMARY KEY (`course_id`,`section_id`);
 
 --
--- Indexes for table `Student`
+-- 表的索引 `Student`
 --
 ALTER TABLE `Student`
   ADD PRIMARY KEY (`student_id`),
   ADD KEY `info.dept_id` (`info.dept_id`);
 
 --
--- Indexes for table `Take`
+-- 表的索引 `Take`
 --
 ALTER TABLE `Take`
   ADD PRIMARY KEY (`student_id`,`course_id`,`section_id`),
   ADD KEY `course_id` (`course_id`,`section_id`);
 
 --
--- Indexes for table `Teach`
+-- 表的索引 `Teach`
 --
 ALTER TABLE `Teach`
   ADD PRIMARY KEY (`instructor_id`,`course_id`,`section_id`),
   ADD KEY `teach_ibfk_2` (`course_id`,`section_id`);
 
 --
--- Indexes for table `Time`
+-- 表的索引 `Time`
 --
 ALTER TABLE `Time`
   ADD PRIMARY KEY (`course_id`,`section_id`,`time_id`),
   ADD KEY `room_id` (`room_id`);
 
 --
--- Constraints for dumped tables
+-- 限制导出的表
 --
 
 --
--- Constraints for table `Course`
+-- 限制表 `Course`
 --
 ALTER TABLE `Course`
   ADD CONSTRAINT `course_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `Department` (`dept_id`);
 
 --
--- Constraints for table `deadline`
+-- 限制表 `deadline`
 --
 ALTER TABLE `deadline`
   ADD CONSTRAINT `deadline_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Instructor`
+-- 限制表 `Instructor`
 --
 ALTER TABLE `Instructor`
   ADD CONSTRAINT `instructor_ibfk_1` FOREIGN KEY (`dept_id`) REFERENCES `Department` (`dept_id`);
 
 --
--- Constraints for table `Material`
+-- 限制表 `Material`
 --
 ALTER TABLE `Material`
   ADD CONSTRAINT `material_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Message`
+-- 限制表 `Message`
 --
 ALTER TABLE `Message`
   ADD CONSTRAINT `message_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Section`
+-- 限制表 `Section`
 --
 ALTER TABLE `Section`
   ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `Course` (`course_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Student`
+-- 限制表 `Student`
 --
 ALTER TABLE `Student`
   ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`info.dept_id`) REFERENCES `Department` (`dept_id`);
 
 --
--- Constraints for table `Take`
+-- 限制表 `Take`
 --
 ALTER TABLE `Take`
   ADD CONSTRAINT `take_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `take_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `Student` (`student_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Teach`
+-- 限制表 `Teach`
 --
 ALTER TABLE `Teach`
   ADD CONSTRAINT `teach_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `Instructor` (`instructor_id`),
   ADD CONSTRAINT `teach_ibfk_2` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
--- Constraints for table `Time`
+-- 限制表 `Time`
 --
 ALTER TABLE `Time`
   ADD CONSTRAINT `time_ibfk_1` FOREIGN KEY (`course_id`,`section_id`) REFERENCES `Section` (`course_id`, `section_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
