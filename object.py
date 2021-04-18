@@ -43,7 +43,8 @@ class Course:
                                     AND T.course_id=TI.course_id AND T.section_id=TI.section_id \
                                     AND T.course_id=M.course_id AND T.section_id=M.section_id \
                                     AND T.course_id=I.course_id AND T.section_id=I.section_id \
-                                    AND T.course_id=C.course_id"
+                                    AND T.course_id=C.course_id AND T.course_id = D.course_id \
+                                    AND T.section_id = D.section_id"
         cursor.execute(query)
         results = cursor.fetchall()
         self.course_name = [result[0] for result in results]
