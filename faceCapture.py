@@ -7,7 +7,7 @@ def faceCapture(user_name):
     video_capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
     # Specify the `user_name` and `NUM_IMGS` here.
-    NUM_IMGS = 400
+    NUM_IMGS = 50
     if not os.path.exists('data/{}'.format(user_name)):
         os.mkdir('data/{}'.format(user_name))
 

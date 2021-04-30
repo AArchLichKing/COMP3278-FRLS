@@ -17,7 +17,7 @@ class Deadline:
         self.date= [result[1] for result in results]
         self.time = [result[2] for result in results]
         self.event = [result[3] for result in results]
-        
+
 class Student:
     def __init__(self, studentId):
         query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `login.date`,`login.time`,`duration`,`password`, `logout.date`, `logout.time`\
@@ -40,7 +40,6 @@ class Student:
 
         if DEBUG:
             print(self.username, self.name, self.email_addr, self.admitted_year, self.dept_id)
-
 
 class Course:
     # results is displayed as a list of tuples

@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def train():
     image_dir = os.path.join(BASE_DIR, "data")
-
+    print(image_dir)
     # Load the OpenCV face recognition detector Haar
     face_cascade = cv2.CascadeClassifier('haarcascade/haarcascade_frontalface_default.xml')
     # Create OpenCV LBPH recognizer for training
@@ -37,7 +37,7 @@ def train():
 
                 pil_image = Image.open(path).convert("L")
                 image_array = np.array(pil_image, "uint8")
-                print(image_array)
+                #print(image_array)
                 # Using multiscle detection
                 faces = face_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
 
@@ -53,7 +53,7 @@ def train():
         pickle.dump(label_ids, f)
 
     # Train the recognizer and save the trained model.
-    version = '1'
+    version = '3'
     recognizer.train(x_train, np.array(y_label))
     recognizer.save("TrainingImageLabel\Trainer_{}.yml".format(version))
 
