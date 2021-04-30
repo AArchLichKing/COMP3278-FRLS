@@ -1,5 +1,5 @@
 # COMP3278-FRLS
-Course project for COMP3278 DBMS. Targeting on automatic login system by face recogniton. 
+Course project for COMP3278 DBMS of Group2. Targeting on automatic login system by face recogniton. 
 
 To use this project, first clone the repository to your own machine by
 
