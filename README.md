@@ -11,14 +11,22 @@ files in the project.rar. The files are too big to be uploaded in Github.)
 For other installing and running details, see our extra guidance video. 
 
 Note that you need to install all libraries mentioned in this project to run the program. 
+
 (Listed below)
+
 tkinter
+
 PIL
+
 datetime, time
+
 random
+
 cv2, os 
+
 mysql.connector
-*ctypes (This one is only for resolution in Windows. If you are using Mac, please delete lined related to this)
+
+*ctypes (This one is only for resolution in Windows. If you are using Mac, please delete lines related to this)
 
 To adjust the size of display, change the resizee and resizei in Homepage.py and self.i in Main.py.
 (larger value, larger window.)
