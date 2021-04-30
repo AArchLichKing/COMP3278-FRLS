@@ -2,7 +2,7 @@ import mysql.connector
 
 DEBUG = False
 
-myconn = mysql.connector.connect(host="localhost", user="root", passwd="Tyd3035534775", database="createDB")
+myconn = mysql.connector.connect(host="localhost", user="root", passwd="010207", database="db")
 cursor = myconn.cursor()
 
 class Deadline:
@@ -17,7 +17,7 @@ class Deadline:
         self.date= [result[1] for result in results]
         self.time = [result[2] for result in results]
         self.event = [result[3] for result in results]
-        
+
 class Student:
     def __init__(self, studentId):
         query = "SELECT student_id, `info.name`, `info.email_addr`, `info.admitted_year`, `info.dept_id`, `login.date`,`login.time`,`duration`,`password`, `logout.date`, `logout.time`\
@@ -40,7 +40,6 @@ class Student:
 
         if DEBUG:
             print(self.username, self.name, self.email_addr, self.admitted_year, self.dept_id)
-
 
 class Course:
     # results is displayed as a list of tuples
