@@ -8,7 +8,6 @@ from object import Student, Course, Deadline
 import mysql.connector
 from functools import partial
 import re
-import sys
 import datetime
 import webbrowser
 
